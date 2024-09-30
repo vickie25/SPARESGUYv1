@@ -1,0 +1,11 @@
+.statistics{
+    margin-bottom: 10px;
+  }
+    
+  .statistics h3 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    .statistics p {
+      margin: 0;
+    }

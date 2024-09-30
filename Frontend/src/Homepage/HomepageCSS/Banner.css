@@ -1,0 +1,22 @@
+.banner {
+    background: url('C:\Users\apbc Africa\Desktop\MySparesGuy\SPARES_STORE\frontend\src\Homepage\Homepageimages\Rectangle 1.svg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 100px 25px; /* Default padding */
+    margin-top: 8px;
+    height: 60%; /* Default height */
+  }
+  
+  @media (min-width: 768px) {
+    .banner {
+        padding: 150px 25px; /* More padding on larger screens */
+        height: 70%; /* More height on larger screens */
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .banner {
+        padding: 200px 25px; /* Even more padding for larger screens */
+        height: auto; /* Let content dictate height */
+    }
+  }
