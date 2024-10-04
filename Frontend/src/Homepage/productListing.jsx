@@ -1,34 +1,44 @@
 import React from 'react';
+import { useState } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import './HomepageCSS/ProductListing.css';
 import rearlights from './Homepageimages/rearlights.svg'
 
 const ProductListing = () => {
+  const [selectedTab, setSelectedTab] = useState('Latest');
+
   const products = [
-    { id: 1, name: 'Air Filter', price: 253.00, imageUrl: '/path/to/air-filter.jpg' },
-    { id: 2, name: 'Brake Pads', price: 150.00, imageUrl: '/path/to/brake-pads.jpg' },
-    { id: 3, name: 'Spark Plugs', price: 75.00, imageUrl: '/path/to/spark-plugs.jpg' },
-    { id: 4, name: 'Oil Filter', price: 50.00, imageUrl: '/path/to/oil-filter.jpg' }
+    { id: 1, name: 'Air Filter', price: '$235.00', imageUrl: '/path-to-air-filter-image.jpg' },
+    { id: 2, name: 'Tail Light', price: '$235.00', imageUrl: '/path-to-tail-light-image.jpg' },
+    // Add more products as needed
   ];
 
+  const tabs = ['Latest', 'Best Sellers', 'Featured'];
+
   return (
-    <Container className="my-5">
-      <Row>
-        {products.map(product => (
-          <Col key={product.id} xs={12} md={6} lg={3}>
-            <Card className="mb-4">
-              <Card.Img variant="top" src={rearlights} />
-              {/* <Card.Img variant="top" src={product.imageUrl} /> */}
-              <Card.Body>
-                <Card.Title>{product.name}</Card.Title>
-                <Card.Text>Ksh{product.price.toFixed(2)}</Card.Text>
-                <Button variant="primary">Add to Cart</Button>
-              </Card.Body>
-            </Card>
-          </Col>
+    <div className="product-section">
+      <div className="tabs">
+        {tabs.map(tab => (
+          <button
+            key={tab}
+            className={selectedTab === tab ? 'active' : ''}
+            onClick={() => setSelectedTab(tab)}
+          >
+            {tab}
+          </button>
         ))}
-      </Row>
-    </Container>
+      </div>
+      <div className="products">
+        {products.map(product => (
+          <div key={product.id} className="product-card">
+            <img src={product.imageUrl} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.price}</p>
+            <button>Add to cart</button>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

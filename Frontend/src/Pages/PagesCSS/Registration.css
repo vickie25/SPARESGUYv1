@@ -1,0 +1,62 @@
+.registration-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .registration-image {
+    flex: 1;
+    background: url('/path-to-your-background-image.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(5px);
+  }
+  
+  .registration-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+  }
+  
+  .registration-form h1 {
+    margin-bottom: 20px;
+  }
+  
+  .registration-form form {
+    width: 100%;
+  }
+  
+  .registration-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .registration-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .google-signup {
+    background-color: #4285F4;
+  }
+  
+  .login-link {
+    margin-top: 20px;
+  }
+  
+  .login-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  

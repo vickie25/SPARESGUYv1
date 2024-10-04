@@ -4,18 +4,25 @@ import './HomepageCSS/Header.css';
 
 const Header = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" className="w-100">
-      <Navbar.Brand href="#home">SpareParts</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ms-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#about">About Us</Nav.Link>
-          <Nav.Link href="#shop">Shop</Nav.Link>
-          <Nav.Link href="#contact">Contact</Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+    <header className="header">
+      <div className="logo">
+        <img src="/path-to-your-logo.png" alt="Logo" />
+      </div>
+      <nav className="nav-links">
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact Us</a>
+      </nav>
+      <div className="search-bar">
+        <input type="text" placeholder="Search products..." />
+        <button type="submit">Search</button>
+      </div>
+      <div className="icons">
+        <i className="user-icon">User</i>
+        <i className="cart-icon">Cart</i>
+      </div>
+    </header>
   );
 };
 

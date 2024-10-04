@@ -1,44 +1,34 @@
 import React from 'react';
-import { Container, Button, Row, Col} from 'react-bootstrap';
-import Carousel from 'react-bootstrap/Carousel';
 import './HomepageCSS/Banner.css';
 import airfilter from './Homepageimages/airfilters.svg'
+import { Carousel } from 'flowbite-react'
+import plugs from './Homepageimages/plugs.svg'
+import { useNavigate } from 'react-router-dom';
 
 
 const Banner = () => {
-    return (
-        <div className="banner">
-        <Container>
-            <Row>
-                <Col md={6} className="text-center">
-                    <h1>Get The Quality At Your Doorstep</h1>
-                    <p>High-quality vehicle spare parts delivered to your door.</p>
-                    <Button variant="primary">Shop Now</Button>
-                </Col>
-                <Col md={6}>
-                    <Carousel interval={3000} indicators={false}>
-                        {/* Add Carousel.Item for each image you want to display */}
-                        <Carousel.Item>
-                            <img
-                                className="d-block w-100"
-                                src={airfilter}
-                                alt="First slide"
-                            />
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img
-                                className="d-block w-100"
-                                src={airfilter}
-                                alt="Second slide"
-                            />
-                        </Carousel.Item>
-                        {/* Add more Carousel.Item blocks as needed */}
-                    </Carousel>
-                </Col>
-            </Row>
-        </Container>
+  const navigate = useNavigate();
+
+  const handleLoginRedirect = () => {
+    navigate('/login'); // Change this line
+  }
+
+  return (
+    <div className="banner">
+      <div className="banner-text">
+        <h1>Get The Quality At Your Doorstep</h1>
+        <button className="shop-now-btn" onClick={handleLoginRedirect}>Shop Now -&gt;</button>
+      </div>
+      <div className="banner-image">
+        <Carousel slide={true} autoplay={true} interval={3000}>
+          <img src={plugs} alt="Spare Part 1" />
+          <img src="https://example.com/image2.jpg" alt="Spare Part 2" />
+          <img src="https://example.com/image3.jpg" alt="Spare Part 3" />
+          {/* Add more images as needed */}
+        </Carousel>
+      </div>
     </div>
-    );
+  );
 };
 
 export default Banner;

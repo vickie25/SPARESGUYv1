@@ -1,4 +1,12 @@
-.brand-logo {
-    max-width: 100px;
-    margin: 10px;
-  }
+.brand-logos-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background */
+}
+
+.brand-logos-container img {
+  max-height: 50px; /* Adjust size as needed */
+  margin: 0 10px;
+}

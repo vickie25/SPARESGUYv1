@@ -1,4 +1,63 @@
-.card img {
-    height: 200px;
-    object-fit: cover;
-  }
+.promotional-section {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.promotion-banner {
+  text-align: left;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.explore-more-btn {
+  background-color: #ff9900;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.products {
+  display: flex;
+  justify-content: space-around;
+}
+
+.product-item {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.product-details {
+  margin-top: 10px;
+}
+
+.discount-badge {
+  background-color: #ff0000;
+  color: #fff;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.price {
+  margin: 10px 0;
+}
+
+.discounted-price {
+  font-weight: bold;
+  color: #ff0000;
+}
+
+.original-price {
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.rating {
+  color: #ff9900;
+}

@@ -1,43 +1,29 @@
-
-.navbar.navbar-dark {
-    background-color: #88293b !important; /* Dark background color */
-}
-
-/* Navbar brand and links */
-.navbar-dark .navbar-brand, .navbar-dark .nav-link {
-    color: #ffffff !important; /* White text color */
-}
-
-/* Change the color of the links on hover */
-.navbar-dark .nav-link:hover {
-    color: #f8f9fa !important; /* Light gray color on hover */
-}
-
-/* Optional: Add some padding to the navbar links */
-.nav-link {
-    padding: 0.5rem 1rem;
-}
-
-/* Ensure navbar items are displayed horizontally */
-.navbar-nav {
-    flex-direction: row; /* Ensure items are in a row */
-}
-
-/* Media queries for responsive design */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 0.5rem 1rem;
-    }
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
-    .nav-link {
-        font-size: 0.9rem;
-    }
-}
-
-@media (min-width: 769px) {
-    .navbar {
-        padding: 1rem 2rem;
-    }
-}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f0f8ff; /* Light blue background */
+    border-bottom: 2px solid #00008b; /* Dark blue bottom border */
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  .nav-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #000;
+  }
+  
+  .search-bar input {
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .icons i {
+    margin-left: 15px;
+    cursor: pointer;
+  }
+  
