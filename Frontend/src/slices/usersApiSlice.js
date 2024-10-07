@@ -1,11 +1,10 @@
 // slices for user registration using react redux toolkit
 
 import { USERS_URL } from "../Constants/constants.js";
-import {apiSlice} from "./apiSlice.js";
+import apiSlice from "./apiSlice";
 
-export const usersApiSlice = apiSlice({
-    name: 'usersApi',
-    reducerPath: 'usersApi',
+export const usersApiSlice = apiSlice.injectEndpoints({
+
     endpoints: (builder) => ({
         registerUser: builder.mutation({
             query: (user) => ({
