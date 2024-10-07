@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom';
 
 
 const PageLayout = () => {
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
@@ -43,6 +45,10 @@ const PageLayout = () => {
     return items.slice(startIndex, startIndex + itemsPerPage);
   };
 
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
+  };
+
   // Handle page change
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -66,7 +72,12 @@ const PageLayout = () => {
               <input type="text" placeholder="Search..." className="search-input" />
             </div></li>
             <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
-            <li><Link to="/cart"><FaShoppingCart /></Link></li>
+            <li className="cart-icon-container">
+              <Link to="/cart">
+                <FaShoppingCart />
+                {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+              </Link>
+            </li>
             <li><Link to="/profile"><FaUser /></Link></li>
           </ul>
         </nav>
@@ -79,7 +90,7 @@ const PageLayout = () => {
           <div className="categories-container">
             <h3>Product Categories</h3>
             <ul>
-              {['Category 1', 'Category 2', 'Category 3', 'Category 4'].map((category) => (
+              {['Body Parts', 'Engine Parts', 'Electrical Components', 'Suspension Parts', 'Transmission Parts'].map((category) => (
                 <li key={category} onClick={() => toggleCategory(category)}>
                   {checkedCategories.includes(category) ? <IoCheckboxOutline /> : <IoSquareOutline />} {category}
                 </li>
@@ -90,7 +101,7 @@ const PageLayout = () => {
           <div className="categories-container">
             <h3>Filter by brand</h3>
             <ul>
-              {['Brand 1', 'Brand 2', 'Brand 3', 'Brand 4'].map((brand) => (
+              {['Nissan', 'Subaru', 'Hyundai', 'Toyota', 'Vovlo', 'Mercedes-Benz'].map((brand) => (
                 <li key={brand} onClick={() => toggleCategory(brand)}>
                   {checkedCategories.includes(brand) ? <IoCheckboxOutline /> : <IoSquareOutline />} {brand}
                 </li>
@@ -130,7 +141,16 @@ const PageLayout = () => {
 
           {getCurrentPageItems().map((item, index) => (
             <div key={index} className="grid-item">
-              {item}
+              <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
+                {item.image ? (
+                  <img src={item.image} alt={item.name} className="product-image" />
+                ) : (
+                  <span className="image-placeholder">Image not available</span>
+                )}
+              </div>
+              <p className="product-name">{item.name || 'Product Name'}</p>
+              <p className="product-cost">Ksh{item.cost || '0.00'}</p>
+              <button className="add-to-cart-button" onClick={() => handleAddToCart(item)}>Add to Cart</button>
             </div>
           ))}
 
@@ -161,7 +181,7 @@ const PageLayout = () => {
       <div className="benefits">
         <div className='benefit'>
           <HiOutlineTrophy /><div className="text"><h3>High Quality</h3>
-            <p>crafted from top materials</p></div>
+            <p>Crafted from top materials</p></div>
         </div>
         <div className='benefit'>
           <HiOutlineCheckBadge /><div className="text"><h3>Warranty Protection</h3>
