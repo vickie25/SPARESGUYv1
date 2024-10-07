@@ -4,7 +4,7 @@
   align-items: center;
   padding: 20px;
   height: 400px; /* Increase the height of the banner */
-  background-color: #ddd; /* Dark background */
+  background-color: #4e0538; /* Dark background */
   background-image: url('./Homepage/HomepageImages/Bg-Banner.svg'); /* Add your background image */
   background-size: cover; /* Ensure the image covers the entire banner */
   background-position: center; /* Center the background image */
@@ -19,8 +19,8 @@
   margin-top: 10px;
   padding: 10px 20px;
   background-color: #ff9900; /* Button color */
-  border: none;
-  color: #fff;
+  border-radius: 20px;
+  color: #998b8b;
   cursor: pointer;
 }
 
@@ -32,4 +32,10 @@
 .banner-image {
   width: 50%; /* Adjust width as needed */
   height: auto; /* Maintain aspect ratio */
+}
+.part1 {
+  width: 20%; /* Ensure the image takes up the full width */
+    height: 20%; /* Maintain the aspect ratio */
+    object-fit: cover; /* Ensure the image covers the container */
+    border-radius: 20px
 }
