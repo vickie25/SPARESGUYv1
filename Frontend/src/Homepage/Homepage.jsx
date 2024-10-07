@@ -6,21 +6,21 @@ import Header from './Header'
 // import Testimonials from './Testimonials'
 // import Statistics from './Statistics'
 import ProductListing from './Productlisting'
-import Footer from './Footer'
+import Footer from '../Homepage/Footer'
 import StatisticsBar from './StatisticsBar'
 
- 
+
 
 const Homepage = () => {
   return (
     <>
-      <Header/>
-      <Banner/>
-      <BrandLogos/>
-      <FeaturedProducts/>
-      <ProductListing/>
-      <StatisticsBar/>
-      <Footer/>
+      <Header />
+      <Banner />
+      <BrandLogos />
+      <FeaturedProducts />
+      <ProductListing />
+      <StatisticsBar />
+      <Footer />
     </>
   )
 }
