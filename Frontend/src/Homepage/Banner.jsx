@@ -21,7 +21,7 @@ const Banner = () => {
       </div>
       <div className="banner-image">
         <Carousel slide={true} autoplay={true} interval={3000}>
-          <img src={plugs} alt="Spare Part 1" />
+          <img  className = "part1" src={plugs} alt="Spare Part 1" />
           <img src="https://example.com/image2.jpg" alt="Spare Part 2" />
           <img src="https://example.com/image3.jpg" alt="Spare Part 3" />
           {/* Add more images as needed */}

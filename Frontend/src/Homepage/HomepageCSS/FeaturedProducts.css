@@ -1,20 +1,26 @@
 .promotional-section {
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 0px;
+  background-color:#aa9f9f;
+  margin-top: 20px;
 }
 
 .promotion-banner {
-  text-align: left;
-  background-color: #333;
+  text-align: left ; 
+  background-color:#4e0538;/* Dark background */
   color: #fff;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 20px;
+  margin-left:0px;
+  
+}
+.h1 {
+  margin-left:10px;
 }
 
 .explore-more-btn {
   background-color: #ff9900;
   color: #fff;
-  border: none;
+  border-radius: 20px;  
   padding: 10px 20px;
   cursor: pointer;
 }
@@ -22,13 +28,19 @@
 .products {
   display: flex;
   justify-content: space-around;
+  width: 100%; /* Ensure the image takes up the full width */
+  height: 50%; /* Maintain the aspect ratio */
+  object-fit: cover; /* Ensure the image covers the container */
+  border-radius:20px;
 }
 
 .product-item {
   background-color: #fff;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: px solid;
   text-align: center;
+  border-radius:20px;
+  
 }
 
 .product-details {
@@ -37,7 +49,7 @@
 
 .discount-badge {
   background-color: #ff0000;
-  color: #fff;
+  color: #a19090;
   padding: 5px;
   position: absolute;
   top: 10px;
@@ -60,4 +72,5 @@
 
 .rating {
   color: #ff9900;
+
 }
