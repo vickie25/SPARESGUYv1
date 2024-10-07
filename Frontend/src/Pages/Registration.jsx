@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import './PagesCSS/Registration.css'
 import LoginFrame from '../Homepage/HomepageImages/LoginFrame.svg'
+import {useRegisterUserMutation} from '../slices/usersApiSlice'
 
 const RegistrationPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    emailOrPhone: '',
-    password: '',
-    confirmPassword: '',
-  });
+ const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [registerUser, {isLoading, isError}] = useRegisterUserMutation();
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+    }
+    const res = await registerUser({name, email, password});
+    console.log(res);
+
+  }
 
   return (
     <div className="registration-container">
@@ -31,31 +36,31 @@ const RegistrationPage = () => {
             type="text"
             name="name"
             placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <input 
             type="text"
             name="emailOrPhone"
             placeholder="Email or Phone Number"
-            value={formData.emailOrPhone}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input 
             type="password"
             name="password"
             placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
+            value={password}
+            onChange={(e) => setName(e.target.value)}
           />
           <input 
             type="password"
             name="confirmPassword"
             placeholder="Confirm Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <button type="submit">Create Account</button>
+          <button onClick={handleRegister} type="submit">Create Account</button>
         </form>
         <button className="google-signup">Sign up with Google</button>
         <div className="login-link">

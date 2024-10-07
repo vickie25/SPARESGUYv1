@@ -1,8 +1,8 @@
 //a model for user registration and login
 
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -18,28 +18,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
-module.exports = User;
-// Compare this snippet from Frontend/src/Pages/Registration.jsx:
-//             onChange={handleChange}
-//           />
-//           <button type="submit">Register</button>
-//         </form>
-//         <div className="login-link">
-//           <p>Already have an account? <a href="/login">Login</a></p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-//
-// export default RegistrationPage;
-// Compare this snippet from Frontend/src/store.js:
-// import { createStore } from 'redux';
-// import rootReducer from './reducers';
-//
-// const store = createStore(rootReducer);
-//
-// export default store;
-// Compare this snippet from Frontend/src/reducers/index.js:
+export default User;
+

@@ -1,5 +1,6 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+import userRoutes from './routes/userRoutes.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -18,8 +19,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
 
-// // Use routes
-// app.use('/api/users', userRoutes);
+// Use routes
+app.use('/api/users', userRoutes);
 
 // // Product Routes 
 // app.use('/api/products', productRoutes);
