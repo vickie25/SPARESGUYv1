@@ -1,55 +1,71 @@
 import React from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './HomepageCSS/Footer.css';
-  
+import { BsTelephone } from "react-icons/bs";
+import { FiMail, FiMapPin } from "react-icons/fi";
+import { BiAccessibility } from "react-icons/bi";
+// import logo from '../assets/logobg.png';
+import "./HomepageCSS/Footer.css"
+
 const Footer = () => {
+
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="footer">
-      <div className="footer-section">
-        <h5>Top Cities</h5>
-        <ul>
-          <li>Nairobi</li>
-          <li>Rwanda</li>
-          <li>Uganda</li>
-          <li>Tanzania</li>
-        </ul>
+      <div className="footer-top">
+        <div className="footer-section logo">
+          {/* <img src={logo} alt="Logo" className="footer-logo" /> */}
+          <h3>MY SPARES GUY</h3>
+          <a href="https://www.google.com/maps/place/Ngara,+Nairobi" target="_blank" rel="noopener noreferrer"><FiMapPin /> 11122-Ngara,
+            Nairobi</a>
+        </div>
+        <div className="footer-section cities">
+          <h3>Top Cities</h3>
+          <ul>
+            <li>Kenya</li>
+            <li>Uganda</li>
+            <li>Rwanda</li>
+            <li>Tanzania</li>
+          </ul>
+        </div>
+        <div className="footer-section links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div className="footer-section newsletter">
+          <h3>Subscribe to Newsletter</h3>
+          <ul>
+            <p>Get $10 off your first order.</p>
+            <p>Stay updated with our latest news.</p>
+          </ul>
+          <form className="newsletter-form">
+            <input type="email" placeholder="Enter your email" required />
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+        <div className="footer-section contact">
+          <h3>Contact Us</h3>
+          <ul>
+            <li><a href="tel:+2547123456"><BsTelephone className='icon' />+2547123456</a></li>
+            <li><a href="mailto:apbcafricait@gmail.com"><FiMail className='icon' />apbcafricait@gmail.com</a></li>
+          </ul>
+        </div>
       </div>
-
-      <div className="footer-section">
-        <h5>Quick Links</h5>
-        <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>FAQ</li>
-          <li>Contact Us</li>
-        </ul>
-      </div>
-
-      <div className="footer-section">
-        <h5>Subscribe to newsletter</h5>
-        <p>Stay updated with our latest.</p>
-        <form action="/subscribe" method="POST">
-          <input type="email" placeholder="Email..." name="email" />
-          <button type="submit">→</button>
-        </form>
-      </div>
-
-      <div className="footer-section">
-        <h5>Contact Us</h5>
-        <p>Phone: +254-707-245890</p>
-        <p>Email:@gmail.com</p>
-      </div>
+      <hr />
 
       <div className="footer-bottom">
-        <p>11201 Ngara</p>
-        <p>©2021 My Spares Guy. All rights reserved</p>
-        <p>
-          <a href="/privacy-policy">Privacy Policy</a> | 
-          <a href="/terms-conditions">Terms & Conditions</a> | 
-          <a href="/accessibility">ACCESSIBILITY</a>
-        </p>
+        <p>&copy; {currentYear} My Website. All rights reserved.</p>
+        <p>Privacy policy</p>
+        <p>Terms & Conditions</p>
+        <p> <BiAccessibility className='icon' />ACCESSIBILITY</p>
       </div>
     </footer>
+
   );
 };
 
