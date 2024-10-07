@@ -8,6 +8,8 @@ import Homepage from './Homepage/Homepage.jsx'
 import Login from './Pages/login.jsx'
 import Registration from './Pages/Registration.jsx'
 import Shop from './Pages/shoppingPage.jsx'
+import ProductDetail from './Pages/productDetail.jsx';
+import CartPage from './Pages/cartPage.jsx'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
@@ -21,6 +23,8 @@ const routes = createBrowserRouter( createRoutesFromElements(
   <Route path='/login' element={<Login />}/>
   <Route path='/registration' element={<Registration />}/>
   <Route path='/shop' element={<Shop />}/>
+  <Route path='/prd' element={<ProductDetail />} />
+  <Route path='/cart' element={<CartPage />} />
   </>
  
 ))
