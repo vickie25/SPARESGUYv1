@@ -11,7 +11,8 @@ import { BiSupport } from "react-icons/bi";
 import { RiHandCoinFill } from "react-icons/ri";
 import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer'
-import { Link } from 'react-router-dom';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { Link, useLocation } from 'react-router-dom';
 
 
 const PageLayout = () => {
@@ -45,9 +46,32 @@ const PageLayout = () => {
     return items.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
+
+  // State to toggle the dropdown
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
+  // Calculate the subtotal
+  const calculateSubtotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
+
+
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+  };
+
+  const handleDelete = (id) => {
+    const updatedCart = cart.filter(item => item.id !== id);
+    setCart(updatedCart);
+  };
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+
+
 
   // Handle page change
   const handlePageChange = (page) => {
@@ -73,19 +97,56 @@ const PageLayout = () => {
             </div></li>
             <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
             <li className="cart-icon-container">
-              <Link to="/cart">
+              <div className="cart-icon" onClick={toggleDropdown}>
                 <FaShoppingCart />
                 {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
-              </Link>
+              </div>
+
+              {/* Dropdown for cart items */}
+              {isDropdownVisible && (
+                <div className="cart-dropdown">
+                  {cart.length === 0 ? (
+                    <p>Your cart is empty.</p>
+                  ) : (
+                    <div>
+                      <h2>Order Summary</h2>
+                      {cart.map((item) => (
+                        <div key={item.id} className="cart-dropdown-item">
+                          <img src={item.image} alt={item.name} className="cart-item-image" />
+                          <div className="cart-item-details">
+                            <h4>{item.name}</h4>
+                            <p>Price: Ksh{item.price}</p>
+                            <p>Quantity: {item.quantity}</p>
+                          </div>
+                          <button
+                            onClick={() => handleDelete(item.id)} // Delete item
+                            className="delete-button"
+                          >
+                            <RiDeleteBin6Line />
+                          </button>
+                        </div>
+                      ))}
+
+                      {/* Subtotal Calculation */}
+                      <div className="cart-subtotal">
+                        <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
+                      </div>
+
+                      {/* Checkout Button */}
+                      <button className="checkout-button">Checkout</button>
+                    </div>
+                  )}
+                </div>
+              )}
             </li>
             <li><Link to="/profile"><FaUser /></Link></li>
           </ul>
         </nav>
       </header>
 
-      <h2>Shop</h2>
+      <h2>{location.pathname}</h2>
 
-      <main>
+      <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
           <div className="categories-container">
             <h3>Product Categories</h3>
@@ -119,7 +180,7 @@ const PageLayout = () => {
               value={priceRange}
               onChange={handlePriceChange}
             />
-            <div>Price: ${priceRange[0]} - ${priceRange[1]}</div>
+            <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
           </div>
 
           <div className="categories-container">
@@ -135,10 +196,10 @@ const PageLayout = () => {
         </aside>
 
         <section className="grid-section">
+
           <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
             < IoFilterOutline /> Filter
           </div>
-
           {getCurrentPageItems().map((item, index) => (
             <div key={index} className="grid-item">
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
