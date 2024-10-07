@@ -27,10 +27,10 @@ const FeaturedProducts = () => {
   return (
     <div className="promotional-section">
       <div className="promotion-banner">
-        <h1>HURRY UP</h1>
-        <p>20% OFF ANY TOYOTA PRODUCT</p>
-        <p>THIS WEEK ONLY SHOPPING DAYS</p>
-        <h2>73 HOURS TO GO!</h2>
+        <h1 className="h1">HURRY UP</h1>
+        <p  className="h1">20% OFF ANY TOYOTA PRODUCT</p>
+        <p  className="h1">THIS WEEK ONLY SHOPPING DAYS</p>
+        <h2  className="h1">73 HOURS TO GO!</h2>
         <button className="explore-more-btn">Explore More</button>
       </div>
       <div className="products">

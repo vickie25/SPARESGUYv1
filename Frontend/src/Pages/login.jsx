@@ -45,7 +45,8 @@ const LoginPage = () => {
             value={credentials.password}
             onChange={handleChange}
           />
-          <button type="submit">Login</button>
+          <br></br>       
+            <button type="submit">Login</button>
         </form>
         <button className="forgot-password">Forgot Password?</button>
         <div className="signup-link">
