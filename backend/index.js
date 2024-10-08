@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './Config/db.js';
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './Routes/UserRoutes.js';
+import { authMiddleware } from './Middleware/AuthMiddleware.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -25,10 +26,10 @@ app.use('/api/users', userRoutes);
 // // Product Routes 
 // app.use('/api/products', productRoutes);
 
-// // Protect the profile route
-// app.get('/profile', authMiddleware, (req, res) => {
-//     res.json({ message: `Welcome, ${req.user.userId}!` });
-// });
+// Protect the profile route
+app.get('/profile', authMiddleware, (req, res) => {
+    res.json({ message: `Welcome, ${req.user.userId}!` });
+});
 
 // Start the server
 app.listen(PORT, () => {
