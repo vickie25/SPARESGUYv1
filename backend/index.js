@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './Config/db.js';
-import userRoutes from './Routes/UserRoutes.js';
+import userRoutes from './routes/UserRoutes.js';
+import productRoutes from './routes/productRoutes.js'
 import { authMiddleware } from './Middleware/AuthMiddleware.js';
 import dotenv from 'dotenv';
 
@@ -12,6 +13,9 @@ const PORT = process.env.PORT || 7000;
 // Middleware
 app.use(express.json());
 
+// Serve files in the uploads directory
+app.use('/uploads', express.static('uploads'));
+
 // Connect to the database
 connectDB();
 
@@ -20,11 +24,11 @@ app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
 
-// Use routes
+// User routes
 app.use('/api/users', userRoutes);
 
-// // Product Routes 
-// app.use('/api/products', productRoutes);
+// Product routes
+app.use('/api/products', productRoutes);
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
