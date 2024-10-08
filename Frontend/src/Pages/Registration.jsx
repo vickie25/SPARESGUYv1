@@ -31,7 +31,7 @@ const RegistrationPage = () => {
       </div>
       <div className="registration-form">
         <h1>Create an account</h1>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}> */}
           <input 
             type="text"
             name="name"
@@ -61,7 +61,7 @@ const RegistrationPage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <button onClick={handleRegister} type="submit">Create Account</button>
-        </form>
+        {/* </form> */}
         <button className="google-signup">Sign up with Google</button>
         <div className="login-link">
           <p>Already have an account? <a href="/login">Log in</a></p>
