@@ -1,13 +1,20 @@
 .registration-container {
     display: flex;
     height: 100vh;
-  }
+    background: url('../../Homepage/HomepageImages/LoginFrame.svg') ;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: cover; 
+}
   
   .registration-image {
     flex: 1;
-    background: url('/path-to-your-background-image.jpg') no-repeat center center;
-    background-size: cover;
-    filter: blur(5px);
+    filter: blur(2px);
+    border-radius:20px;
+    object-fit:fill;
+    width:200%;
+    background-position: center; 
+    height: 100%;
   }
   
   .registration-form {
@@ -18,10 +25,14 @@
     align-items: center;
     background-color: #fff;
     padding: 20px;
+   
   }
   
   .registration-form h1 {
     margin-bottom: 20px;
+    font-size: 3em;
+    margin-right:50px;
+    text-align: center;
   }
   
   .registration-form form {
@@ -29,15 +40,16 @@
   }
   
   .registration-form input {
-    width: 100%;
+    width: 50%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    margin-left:20px;
   }
   
   .registration-form button {
-    width: 100%;
+    width: 20%;
     padding: 10px;
     background-color: #333;
     color: #fff;
@@ -45,6 +57,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-bottom: 10px;
+    margin-right:50px;
   }
   
   .google-signup {
