@@ -13,6 +13,7 @@ import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link, useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 
 const PageLayout = () => {
@@ -21,7 +22,37 @@ const PageLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
-  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27];
+  const productsPerPage = 9;
+  const items = [
+    { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
+    { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
+    { id: 3, name: "Product 3", price: 300, image: "path/to/image3" },
+    { id: 4, name: "Product 4", price: 450, image: "path/to/image4" },
+    { id: 5, name: "Product 5", price: 800, image: "path/to/image5" },
+    { id: 6, name: "Product 6", price: 600, image: "path/to/image6" },
+    { id: 7, name: "Product 7", price: 550, image: "path/to/image7" },
+    { id: 8, name: "Product 8", price: 1000, image: "path/to/image8" },
+    { id: 9, name: "Product 9", price: 350, image: "path/to/image9" },
+    { id: 10, name: "Product 10", price: 750, image: "path/to/image10" },
+    { id: 11, name: "Product 11", price: 900, image: "path/to/image11" },
+    { id: 12, name: "Product 12", price: 650, image: "path/to/image12" },
+    { id: 13, name: "Product 13", price: 300, image: "path/to/image13" },
+    { id: 14, name: "Product 14", price: 500, image: "path/to/image14" },
+    { id: 15, name: "Product 15", price: 850, image: "path/to/image15" },
+    { id: 16, name: "Product 16", price: 400, image: "path/to/image16" },
+    { id: 17, name: "Product 17", price: 700, image: "path/to/image17" },
+    { id: 18, name: "Product 18", price: 250, image: "path/to/image18" },
+    { id: 19, name: "Product 19", price: 950, image: "path/to/image19" },
+    { id: 20, name: "Product 20", price: 550, image: "path/to/image20" },
+    { id: 21, name: "Product 21", price: 300, image: "path/to/image21" },
+    { id: 22, name: "Product 22", price: 450, image: "path/to/image22" },
+    { id: 23, name: "Product 23", price: 600, image: "path/to/image23" },
+    { id: 24, name: "Product 24", price: 750, image: "path/to/image24" },
+    { id: 25, name: "Product 25", price: 500, image: "path/to/image25" },
+    { id: 26, name: "Product 26", price: 800, image: "path/to/image26" },
+    { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
+  ];
+
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -43,8 +74,13 @@ const PageLayout = () => {
   // Function to get items for the current page
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
-    return items.slice(startIndex, startIndex + itemsPerPage);
+    const endIndex = startIndex + itemsPerPage;
+    return items.slice(startIndex, endIndex);
   };
+
+  const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
+  const endItemIndex = Math.min(currentPage * itemsPerPage, items.length);
+
 
 
   // State to toggle the dropdown
@@ -56,8 +92,27 @@ const PageLayout = () => {
   };
 
 
+  // Calculating the indices for slicing the product array
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Function to add a product to the cart
   const handleAddToCart = (product) => {
-    setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
+    setCart((prevCart) => {
+      // Check if the product already exists in the cart
+      const existingItem = prevCart.find(item => item.id === product.id);
+
+      if (existingItem) {
+        // If it exists, update the quantity
+        return prevCart.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        // If it doesn't exist, add it with quantity 1
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
   };
 
   const handleDelete = (id) => {
@@ -83,6 +138,7 @@ const PageLayout = () => {
   return (
     <div className="page-wrap">
       <header>
+
         <nav>
           <div className="menu-toggle" onClick={toggleMenu}>
             {isOpen ? <FaTimes /> : <FaBars />}
@@ -93,13 +149,17 @@ const PageLayout = () => {
             <li><a href="#services">Services</a></li>
             <li><a href="#contact">Contact</a></li>
             <li> <div className="search-container">
-              <input type="text" placeholder="Search..." className="search-input" />
+              <input type="text" placeholder="What are you looking for?" className="search-input" />
             </div></li>
             <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
             <li className="cart-icon-container">
               <div className="cart-icon" onClick={toggleDropdown}>
                 <FaShoppingCart />
-                {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+                {cart.length > 0 && (
+                  <span className="cart-count">
+                    {cart.reduce((total, item) => total + item.quantity, 0)}
+                  </span>
+                )}
               </div>
 
               {/* Dropdown for cart items */}
@@ -115,8 +175,8 @@ const PageLayout = () => {
                           <img src={item.image} alt={item.name} className="cart-item-image" />
                           <div className="cart-item-details">
                             <h4>{item.name}</h4>
-                            <p>Price: Ksh{item.price}</p>
-                            <p>Quantity: {item.quantity}</p>
+                            <p><b>{item.quantity} * Ksh{item.price} </b></p>
+                            <p><b>Total: Ksh{item.price * item.quantity}</b></p>
                           </div>
                           <button
                             onClick={() => handleDelete(item.id)} // Delete item
@@ -135,6 +195,7 @@ const PageLayout = () => {
                       {/* Checkout Button */}
                       <button className="checkout-button">Checkout</button>
                     </div>
+
                   )}
                 </div>
               )}
@@ -143,8 +204,24 @@ const PageLayout = () => {
           </ul>
         </nav>
       </header>
+      {isDropdownVisible && <div className="mask"></div>}
+      <div className='page-filter-showing'>
+        <div className='page-location'><h2>{location.pathname}</h2></div>
+        <div className='filter-showing'>
+          <div style={{ fontSize: '24px' }} className="filter-icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+            <IoFilterOutline /> Filter
+          </div>
 
-      <h2>{location.pathname}</h2>
+          {/* Vertical line and the text */}
+          <div className="showing-info">
+            <div className="showing-ico">Filter< IoFilterOutline /></div>
+            <span className="vertical-line"></span>
+            <p>Showing {startItemIndex} -- {endItemIndex} of {items.length}</p>
+          </div>
+        </div>
+
+      </div>
+
 
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -175,10 +252,13 @@ const PageLayout = () => {
             <Slider
               range
               min={0}
-              max={1000}
-              defaultValue={[0, 1000]}
+              max={10000}
+              defaultValue={[0, 10000]}
               value={priceRange}
               onChange={handlePriceChange}
+              trackStyle={{ backgroundColor: 'black' }}
+              handleStyle={{ borderColor: 'black', backgroundColor: 'black' }}
+              railStyle={{ backgroundColor: '#ccc' }}
             />
             <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
           </div>
@@ -196,9 +276,8 @@ const PageLayout = () => {
         </aside>
 
         <section className="grid-section">
-
           <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
-            < IoFilterOutline /> Filter
+            Filter< IoFilterOutline />
           </div>
           {getCurrentPageItems().map((item, index) => (
             <div key={index} className="grid-item">
@@ -258,6 +337,8 @@ const PageLayout = () => {
             <p>Dedicated support</p></div>
         </div>
       </div>
+
+
       <footer>
         <Footer />
       </footer>
