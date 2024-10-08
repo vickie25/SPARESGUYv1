@@ -16,7 +16,7 @@ const Header = () => {
       <div className="header-inner container">
 
         <div className="logo">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo"  style={{height: '40px'}}/>
         </div>
 
         <nav className="nav-links">
