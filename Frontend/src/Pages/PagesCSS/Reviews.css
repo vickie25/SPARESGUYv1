@@ -1,0 +1,88 @@
+.review-section {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .reviews-list .review {
+    border-bottom: 1px solid #ccc;
+    padding: 20px 0;
+  }
+  
+  .review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #000;
+    margin-right: 10px;
+  }
+  
+  .profile-name {
+    font-weight: bold;
+  }
+  
+  .rating {
+    display: flex;
+  }
+  
+  .review-footer {
+    margin-top: 10px;
+    font-size: 0.8em;
+    color: #666;
+  }
+  
+  .add-review {
+    margin-top: 40px;
+  }
+  
+  .add-review h3 {
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    margin-bottom: 20px;
+  }
+  
+  .input-field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-field input, .input-field textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  textarea {
+    height: 100px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #333;
+  }
+  
+  .stars {
+    display: flex;
+  }
+  
