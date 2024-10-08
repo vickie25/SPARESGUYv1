@@ -13,10 +13,10 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Perform login logic here
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Perform login logic here
+  // };
 
   return (
     <div className="login-container">
@@ -30,7 +30,7 @@ const LoginPage = () => {
       <div className="login-form">
         <h1>Welcome Back!</h1>
         <p>Please enter your details below</p>
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}> */}
           <input 
             type="text"
             name="emailOrPhone"
@@ -46,8 +46,8 @@ const LoginPage = () => {
             onChange={handleChange}
           />
           <br></br>       
-            <button type="submit">Login</button>
-        </form>
+            <button type="submit" >Login</button>
+        {/* </form> */}
         <button className="forgot-password">Forgot Password?</button>
         <div className="signup-link">
           <p>Don't have an account? <a href="/registration"><b>Sign up</b></a></p>
