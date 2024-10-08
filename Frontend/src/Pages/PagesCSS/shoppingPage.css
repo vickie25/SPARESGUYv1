@@ -115,9 +115,35 @@ main {
 .add-to-cart-button:hover {
   background-color: #000;
 }
+
+/* Base styles */
+.page-wrap {
+  position: relative;
+  overflow: hidden; /* Prevents content from scrolling when the overlay is active */
+}
+
+/* Overlay that appears when cart dropdown is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(100, 100, 100, 0.2); /* Semi-transparent background */
+  z-index: 90; /* Make sure it appears above the content but below the cart */
+  backdrop-filter: blur(2px); /* Apply the blur effect */
+  pointer-events: none; /* Disable interactions with the overlay */
+}
+
+/* Cart Icon and Count */
 .cart-icon-container {
   position: relative;
-  display: inline-block;
+  cursor: pointer;
+}
+
+.cart-icon {
+  position: relative;
+  color: #fff;
 }
 
 .cart-count {
@@ -129,6 +155,87 @@ main {
   position: absolute;
   top: -10px;
   right: -10px;
+  z-index: 10;
+}
+
+/* Dropdown for Cart Items */
+.cart-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  z-index: 100;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Cart Item Styles */
+.cart-dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.delete-button {
+  color: red;
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.delete-button:hover {
+  color: darkred;
+}
+
+/* Subtotal */
+.cart-subtotal {
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+/* Checkout Button */
+.checkout-button {
+  background-color: #000;
+  color: white;
+  padding: 10px 15px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Blurring the main content when cart dropdown is visible */
+.blur {
+  filter: blur(2px);
+  pointer-events: none; /* Prevents interaction with blurred content */
+}
+
+/* Ensure the cart dropdown is not blurred */
+.cart-icon-container,
+.cart-dropdown {
+  filter: none !important;
+  pointer-events: auto;
 }
 
 .grid-pagination {
