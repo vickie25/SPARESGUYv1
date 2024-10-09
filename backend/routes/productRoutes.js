@@ -1,9 +1,11 @@
 import express from "express";
 import productController from "../Controllers/productController.js";
+import authMiddleware from "../Middleware/AuthMiddleware.js";
+import roleMiddleware from "../Middleware/roleMiddleware.js";
 
 
 const router = express.Router();
-
+// authMiddleware.authMiddleware, roleMiddleware.requireAdmin,
 // Create a new product
 router.post('/', productController.createProduct);
 
