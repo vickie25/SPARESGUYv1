@@ -25,6 +25,7 @@ export const uploadImage = (req, res) => {
   };
 // Create a new product
 export const createProduct = async (req, res) => {
+  console.log("product added successfully")
     try {
       const product = new Product(req.body);
       await product.save();
