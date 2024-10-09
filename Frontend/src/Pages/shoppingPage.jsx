@@ -56,6 +56,7 @@ const PageLayout = () => {
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -71,11 +72,19 @@ const PageLayout = () => {
 
   const totalPages = Math.ceil(items.length / itemsPerPage);
 
-  // Function to get items for the current page
+  // Handle search input changes
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+
+  // Function to get items for the current page and apply search filter
   const getCurrentPageItems = () => {
+    const filteredItems = items.filter(item =>
+      item.name.toLowerCase().includes(searchQuery) // Search by name (you can adjust to search by other fields)
+    );
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return items.slice(startIndex, endIndex);
+    return filteredItems.slice(startIndex, endIndex);
   };
 
   const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
@@ -125,15 +134,12 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-
-
-
-  // Handle page change
-  const handlePageChange = (page) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
     }
   };
+
 
   return (
     <div className="page-wrap">
@@ -148,8 +154,13 @@ const PageLayout = () => {
             <li><Link to="/about">About</Link></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li> <div className="search-container">
-              <input type="text" placeholder="What are you looking for?" className="search-input" />
+            <li> <div className="search-container"> <input
+              type="text"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={searchQuery}
+              onChange={handleSearch} // Update search query on input change
+            />
             </div></li>
             <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
             <li className="cart-icon-container">
@@ -208,19 +219,23 @@ const PageLayout = () => {
       <div className='page-filter-showing'>
         <div className='page-location'><h2>{location.pathname}</h2></div>
         <div className='filter-showing'>
-          <div style={{ fontSize: '24px' }} className="filter-icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <IoFilterOutline /> Filter
-          </div>
 
-          {/* Vertical line and the text */}
+
           <div className="showing-info">
-            <div className="showing-ico">Filter< IoFilterOutline /></div>
+            {/* Filter text with an icon */}
+            <div className="showing-ico" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              Filter <IoFilterOutline />
+            </div>
+
+            {/* Vertical line */}
             <span className="vertical-line"></span>
+
+            {/* Showing text */}
             <p>Showing {startItemIndex} -- {endItemIndex} of {items.length}</p>
           </div>
         </div>
-
       </div>
+
 
 
       <main className={isDropdownVisible ? 'blur' : ''}>
@@ -279,6 +294,7 @@ const PageLayout = () => {
           <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
             Filter< IoFilterOutline />
           </div>
+
           {getCurrentPageItems().map((item, index) => (
             <div key={index} className="grid-item">
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
@@ -288,8 +304,8 @@ const PageLayout = () => {
                   <span className="image-placeholder">Image not available</span>
                 )}
               </div>
-              <p className="product-name">{item.name || 'Product Name'}</p>
-              <p className="product-cost">Ksh{item.cost || '0.00'}</p>
+              <p className="product-name">{item.name}</p>
+              <p className="product-cost">Ksh{item.price}</p>
               <button className="add-to-cart-button" onClick={() => handleAddToCart(item)}>Add to Cart</button>
             </div>
           ))}
