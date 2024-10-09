@@ -56,6 +56,7 @@ const PageLayout = () => {
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -125,15 +126,14 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-
-
-
   // Handle page change
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
+
+
 
   return (
     <div className="page-wrap">
