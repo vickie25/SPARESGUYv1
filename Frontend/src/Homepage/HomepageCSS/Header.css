@@ -1,11 +1,7 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ececec;
-  padding: 15px 20px;
+  height: 60px; /* adjust the height to your liking */
+  padding: 10px 0; /* add some padding to maintain a decent layout */
 }
-
 .header-inner {
   display: flex;
   width: 100%;
@@ -57,15 +53,21 @@
 }
 
 .icon {
-  position: relative;
-  font-size: 20px;
-  cursor: pointer;
+  font-size: 24px; /* increase the icon size */
+  color: #333; /* adjust the color to contrast with the background */
+  margin: 0 10px; /* add some margin to separate icons */
 }
 
 .user-icon:hover .dropdown {
   display: block;
 }
 
+.icon.user-icon {
+  position: relative; /* add this to position the dropdown correctly */
+}
+.icon.cart-icon {
+  font-size: 28px; /* make the cart icon slightly larger */
+}
 .dropdown {
   position: absolute;
   top: 100%;
