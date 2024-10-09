@@ -2,7 +2,8 @@ import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/UserRoutes.js';
 import productRoutes from './routes/productRoutes.js'
-import { authMiddleware } from './Middleware/AuthMiddleware.js';
+import  authMiddleware  from './Middleware/AuthMiddleware.js';
+import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -33,6 +34,11 @@ app.use('/api/products', productRoutes);
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
     res.json({ message: `Welcome, ${req.user.userId}!` });
+});
+
+// Protect the admin dashboard route
+app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
+    res.json({ message: "Welcome to the admin dashboard" });
 });
 
 // Start the server
