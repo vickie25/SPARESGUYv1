@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import "./PagesCSS/shoppingPage.css";
-import { FaHeart, FaShoppingCart, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
 import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
 import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
@@ -22,7 +24,14 @@ const PageLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
   const productsPerPage = 9;
+  const itemsPerPage = 9;
+
   const items = [
     { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
     { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
@@ -53,10 +62,10 @@ const PageLayout = () => {
     { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
   ];
 
-  const itemsPerPage = 9;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [searchQuery, setSearchQuery] = useState('');
+  // Filter items based on the search query
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchQuery)
+  );
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -69,8 +78,6 @@ const PageLayout = () => {
   };
 
   const handlePriceChange = (value) => setPriceRange(value);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Handle search input changes
   const handleSearch = (event) => {
@@ -88,18 +95,14 @@ const PageLayout = () => {
   };
 
   const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
-  const endItemIndex = Math.min(currentPage * itemsPerPage, items.length);
+  const endItemIndex = Math.min(currentPage * itemsPerPage, filteredItems.length);
 
-
-
-  // State to toggle the dropdown
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
-
 
   // Calculating the indices for slicing the product array
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -151,9 +154,9 @@ const PageLayout = () => {
           </div>
           <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
             <li><a href="#home">Home</a></li>
-            <li><Link to="/about">About</Link></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><Link to="/shop">Shop</Link></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact Us</a></li>
             <li> <div className="search-container"> <input
               type="text"
               placeholder="What are you looking for?"
@@ -162,10 +165,10 @@ const PageLayout = () => {
               onChange={handleSearch} // Update search query on input change
             />
             </div></li>
-            <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
+            <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
             <li className="cart-icon-container">
               <div className="cart-icon" onClick={toggleDropdown}>
-                <FaShoppingCart />
+                <BsCart3 />
                 {cart.length > 0 && (
                   <span className="cart-count">
                     {cart.reduce((total, item) => total + item.quantity, 0)}
@@ -211,7 +214,7 @@ const PageLayout = () => {
                 </div>
               )}
             </li>
-            <li><Link to="/profile"><FaUser /></Link></li>
+            <li><Link to="/profile"><FaRegUser className='header-icon' /></Link></li>
           </ul>
         </nav>
       </header>
@@ -224,14 +227,15 @@ const PageLayout = () => {
           <div className="showing-info">
             {/* Filter text with an icon */}
             <div className="showing-ico" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              Filter <IoFilterOutline />
+              <IoFilterOutline />  Filter
             </div>
 
             {/* Vertical line */}
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            <p>Showing {startItemIndex} -- {endItemIndex} of {items.length}</p>
+            <p>Showing {startItemIndex} -- {endItemIndex} of {filteredItems.length}</p>
+
           </div>
         </div>
       </div>

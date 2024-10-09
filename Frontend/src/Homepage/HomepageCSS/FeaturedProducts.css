@@ -1,26 +1,25 @@
 .promotional-section {
   padding: 0px;
-  background-color:#aa9f9f;
+  background-color: #aa9f9f;
   margin-top: 20px;
 }
 
 .promotion-banner {
-  text-align: left ; 
-  background-color:#4e0538;/* Dark background */
+  text-align: left;
+
   color: #fff;
   padding: 10px;
   margin-bottom: 20px;
-  margin-left:0px;
-  
+  margin-left: 0px;
 }
 .h1 {
-  margin-left:10px;
+  margin-left: 10px;
 }
 
 .explore-more-btn {
   background-color: #ff9900;
   color: #fff;
-  border-radius: 20px;  
+  border-radius: 20px;
   padding: 10px 20px;
   cursor: pointer;
 }
@@ -31,7 +30,7 @@
   width: 100%; /* Ensure the image takes up the full width */
   height: 50%; /* Maintain the aspect ratio */
   object-fit: cover; /* Ensure the image covers the container */
-  border-radius:20px;
+  border-radius: 20px;
 }
 
 .product-item {
@@ -39,8 +38,7 @@
   padding: 10px;
   border: px solid;
   text-align: center;
-  border-radius:20px;
-  
+  border-radius: 20px;
 }
 
 .product-details {
@@ -72,5 +70,4 @@
 
 .rating {
   color: #ff9900;
-
 }

@@ -179,7 +179,6 @@ main {
 
 .cart-icon {
   position: relative;
-  color: #fff;
 }
 
 .cart-count {
@@ -551,7 +550,7 @@ aside li {
 /* header.css */
 
 header {
-  background-color: #333;
+  background: linear-gradient(to bottom, #e6e6e6, #f0f0f0);
   padding: 2rem;
   position: fixed;
   top: 0;
@@ -583,7 +582,7 @@ header {
 }
 
 .nav-list li a {
-  color: white;
+  color: #000;
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.3s ease;
@@ -593,8 +592,8 @@ header {
   color: #ddd;
 }
 
-.icon {
-  color: #fff;
+.header-icon {
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {
