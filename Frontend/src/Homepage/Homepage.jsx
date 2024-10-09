@@ -1,6 +1,6 @@
 import React from 'react'
 import Banner from './Banner'
-import BrandLogos from './Brandlogos'
+import BrandLogos from './BrandLogos'
 import FeaturedProducts from './FeaturedProducts'
 import Header from './Header'
 // import Testimonials from './Testimonials'

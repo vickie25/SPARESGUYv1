@@ -1,8 +1,5 @@
 .product-section {
   padding: 20px;
-  background-color: #4e0538;
- 
-  
 }
 
 .tabs {
@@ -13,7 +10,7 @@
 
 .tabs button {
   padding: 10px 20px;
-  border-radius:20px;
+  border-radius: 20px;
   background-color: #f0f0f0;
   cursor: pointer;
 }
@@ -28,9 +25,7 @@
   justify-content: space-around;
   flex-wrap: wrap;
   border-radius: 10px;
-  
 }
-
 
 .product-card {
   background-color: #f9f9f9;
@@ -39,13 +34,13 @@
   border: 1px solid #ddd;
   text-align: center;
   width: 200px;
-  border-radius :20px;
+  border-radius: 20px;
 }
 
 .product-card img {
   max-width: 100%;
   height: auto;
-  border-radius : 20px; 
+  border-radius: 20px;
 }
 
 .product-card h3 {
