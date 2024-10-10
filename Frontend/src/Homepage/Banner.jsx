@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 const Banner = () => {
   const navigate = useNavigate();
   const [direction, setDirection] = useState('forward');
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
   const images = [image1, image2];
 
@@ -48,8 +49,8 @@ const Banner = () => {
             {images.map((_, index) => (
               <span
                 key={index}
-                className={`dot ${index === currentImage ? 'active' : ''}`}
-                onClick={() => handleDotClick(index)}
+                className={`dot ${index === currentIndex ? 'active' : ''}`}
+                onClick={() => setCurrentIndex(index)}
               />
             ))}
           </div>
