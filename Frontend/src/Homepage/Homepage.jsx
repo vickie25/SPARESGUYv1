@@ -18,8 +18,8 @@ const Homepage = () => {
       <Banner />
       <BrandLogos />
       <FeaturedProducts />
-      <ProductListing />
       <StatisticsBar />
+      <ProductListing />
       <Footer />
     </>
   )
