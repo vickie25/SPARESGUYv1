@@ -1,22 +1,31 @@
 .statistics-bar {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .statistic-item {
-    text-align: center;
-  }
-  
-  .statistic-item h1 {
-    font-size: 2em;
-    margin: 0;
-  }
-  
-  .statistic-item p {
-    margin: 5px 0 0;
-    font-size: 1em;
-    color: #666;
-  }
-  
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  background-color: #1e1e1e;
+}
+
+.statistic-item {
+  display: flex;
+  flex-direction: row; /* Arrange h1 and p in a column */
+  align-items: center;
+  text-align: left;
+}
+
+.statistic-item h1 {
+  color: #fff;
+  font-size: 2em;
+  margin: 0 20px 0 0; /* Add space below the number */
+}
+
+.statistic-item p {
+  margin: 0;
+  font-size: 1em;
+  color: #b8860b;
+  display: flex;
+  flex-direction: column; /* Arrange spans in a column */
+}
+
+.statistic-item p span {
+  display: block;
+}
