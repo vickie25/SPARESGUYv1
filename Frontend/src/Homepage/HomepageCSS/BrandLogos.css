@@ -7,12 +7,13 @@
   justify-content: center;
   align-items: center;
   height: 150px; /* Adjust height as necessary */
+  padding: 0 20px; /* Add padding to prevent cutting off */
 }
 
 /* Flexbox container for images */
 .brand-carousel {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Center items */
   align-items: center;
   transition: transform 0.5s ease-in-out; /* Smooth scrolling effect */
   width: 100%;
@@ -23,6 +24,9 @@
   flex: 0 0 calc(100% / 4); /* Show 4 items at a time */
   padding: 10px;
   transition: all 0.5s ease-in-out;
+  box-sizing: border-box; /* Include padding in the width calculation */
+  display: flex; /* Ensure the item can use flex properties */
+  justify-content: center; /* Center the content inside each item */
 }
 
 /* Style for the images */
@@ -33,14 +37,29 @@
   max-height: 100px; /* Adjust based on your needs */
 }
 
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 1024px) {
+  .brand-carousel-item {
+    flex: 0 0 calc(100% / 3); /* Show 3 items on medium screens */
+  }
+}
+
 @media screen and (max-width: 768px) {
   .brand-carousel-item {
-    flex: 0 0 50%; /* Show 2 items on smaller screens */
+    flex: 0 0 calc(100% / 2); /* Show 2 items on smaller screens */
+  }
+
+  .brand-carousel {
+    justify-content: center; /* Center the carousel container */
   }
 }
 
 @media screen and (max-width: 480px) {
   .brand-carousel-item {
     flex: 0 0 100%; /* Show 1 item on mobile screens */
+  }
+
+  .brand-carousel {
+    justify-content: center; /* Center the carousel container */
   }
 }

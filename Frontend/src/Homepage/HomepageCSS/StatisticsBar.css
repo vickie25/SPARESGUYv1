@@ -3,19 +3,25 @@
   justify-content: space-around;
   padding: 20px;
   background-color: #1e1e1e;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 
 .statistic-item {
   display: flex;
-  flex-direction: row; /* Arrange h1 and p in a column */
-  align-items: center;
-  text-align: left;
+  flex-direction: row; /* Keep the default horizontal layout */
+  align-items: center; /* Align items vertically */
+  justify-content: center; /* Center the items horizontally */
+  text-align: center; /* Center text within the item */
+  margin: 10px; /* Add some margin between items */
+  flex: 1 1 auto; /* Allow items to grow and shrink */
+  min-width: 200px; /* Set a minimum width for each item */
 }
 
 .statistic-item h1 {
   color: #fff;
   font-size: 2em;
-  margin: 0 20px 0 0; /* Add space below the number */
+  margin: 0 20px 0 0; /* Space to the right of the number */
+  white-space: nowrap; /* Prevent number from wrapping */
 }
 
 .statistic-item p {
@@ -23,9 +29,48 @@
   font-size: 1em;
   color: #b8860b;
   display: flex;
-  flex-direction: column; /* Arrange spans in a column */
+  flex-direction: column; /* Stack span elements */
 }
 
 .statistic-item p span {
-  display: block;
+  display: block; /* Ensure each span is on a new line */
+}
+
+/* Media query for tablets */
+@media screen and (max-width: 768px) {
+  .statistics-bar {
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items */
+  }
+
+  .statistic-item {
+    width: 100%; /* Full width for items */
+    justify-content: center; /* Center content */
+    margin: 15px 0; /* Space between items */
+  }
+
+  .statistic-item h1 {
+    font-size: 1.8em; /* Adjust font size */
+  }
+
+  .statistic-item p {
+    font-size: 0.9em; /* Adjust font size */
+  }
+}
+
+/* Media query for mobile phones */
+@media screen and (max-width: 480px) {
+  .statistic-item {
+    flex-direction: column; /* Stack items vertically */
+    text-align: center; /* Center text */
+  }
+
+  .statistic-item h1 {
+    margin: 0 0 10px 0; /* Space below the number */
+    font-size: 1.6em; /* Adjust font size */
+  }
+
+  .statistic-item p {
+    align-items: center; /* Center alignment */
+  }
 }
