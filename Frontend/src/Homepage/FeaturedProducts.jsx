@@ -1,53 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import React from 'react';
 import './HomepageCSS/FeaturedProducts.css';
-import plugs from './HomepageImages/plugs.svg'
-import rearlights from './HomepageImages/rearlights.svg'
+
+const items = [
+  { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
+  { id: 2, name: "Product 2", price: 700, image: "path/to/image2" }
+];
 
 const FeaturedProducts = () => {
-  const products = [
-    {
-      name: 'Air filter',
-      imageUrl: './HomepageImages/plugs.svg',
-      discountPercentage: 20,
-      originalPrice: 295,
-      discountedPrice: 235,
-      rating: 4
-    },
-    {
-      name: 'Tail light',
-      imageUrl: './HomepageImages/rearlights.svg',
-      discountPercentage: 20,
-      originalPrice: 295,
-      discountedPrice: 235,
-      rating: 4
-    }
-  ];
-
   return (
     <div className="promotional-section">
       <div className="promotion-banner">
-        <h1 className="h1">HURRY UP</h1>
-        <p  className="h1">20% OFF ANY TOYOTA PRODUCT</p>
-        <p  className="h1">THIS WEEK ONLY SHOPPING DAYS</p>
-        <h2  className="h1">73 HOURS TO GO!</h2>
+        <h2 className="h2">HURRY UP</h2>
+        <h1 className="number">20% OFF </h1>
+        <h2 className="h2">ANY TOYOTA PRODUCT</h2>
+        <h2 className="h2">THIS WEEK ONLY SHOPPING DAYS</h2>
+        <h1 className="number">73 HOURS TO GO!</h1> {/* Updated class to h2 */}
         <button className="explore-more-btn">Explore More</button>
       </div>
       <div className="products">
-        {products.map((product, index) => (
-          <div key={index} className="product-item">
-            <img src={product.imageUrl} alt={product.name} />
-            <div className="product-details">
-              <span className="discount-badge">-{product.discountPercentage}%</span>
-              <h3>{product.name}</h3>
-              <p className="price">
-                <span className="discounted-price">KSh{product.discountedPrice}</span>
-                <span className="original-price">KSh{product.originalPrice}</span>
-              </p>
-              <div className="rating">
-                {'★'.repeat(product.rating)}{'☆'.repeat(5 - product.rating)}
-              </div>
-            </div>
+        {items.map(item => (
+          <div key={item.id} className="product-item">
+            <img src={item.image} alt={item.name} />
+            <p >{item.name}</p> {/* Updated class to number */}
+            <p>Price: Ksh{item.price}</p>
           </div>
         ))}
       </div>
