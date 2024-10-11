@@ -1,16 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import './HomepageCSS/ProductListing.css';
-import rearlights from './Homepageimages/rearlights.svg'
+
 
 const ProductListing = () => {
   const [selectedTab, setSelectedTab] = useState('Latest');
 
-  const products = [
-    { id: 1, name: 'Air Filter', price: '$235.00', imageUrl: '/path-to-air-filter-image.jpg' },
-    { id: 2, name: 'Tail Light', price: '$235.00', imageUrl: '/path-to-tail-light-image.jpg' },
-    // Add more products as needed
+  const items = [
+    { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
+    { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
+    { id: 3, name: "Product 3", price: 800, image: "path/to/image3" },
+    { id: 4, name: "Product 4", price: 900, image: "path/to/image4" }
   ];
 
   const tabs = ['Latest', 'Best Sellers', 'Featured'];
@@ -28,12 +28,12 @@ const ProductListing = () => {
           </button>
         ))}
       </div>
-      <div className="products">
-        {products.map(product => (
-          <div key={product.id} className="product-card">
-            <img src={product.imageUrl} alt={product.name} />
-            <h3>{product.name}</h3>
-            <p>{product.price}</p>
+      <div className="products-example">
+        {items.map(item => (
+          <div key={item.id} className="product-item-example">
+            <img src={item.image} alt={item.name} />
+            <p>{item.name}</p>
+            <p>Price: Ksh{item.price}</p>
             <button>Add to cart</button>
           </div>
         ))}
