@@ -1,73 +1,70 @@
 .promotional-section {
+  height: 80vh;
   padding: 0px;
-  background-color: #aa9f9f;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Space the items evenly */
+  align-items: center; /* Center items vertically */
 }
 
 .promotion-banner {
-  text-align: left;
-
-  color: #fff;
+  text-align: center;
+  color: #3b3b3d;
   padding: 10px;
   margin-bottom: 20px;
-  margin-left: 0px;
-}
-.h1 {
-  margin-left: 10px;
+  margin-left: 5%;
+  flex: 1; /* Allow the banner to take up available space */
 }
 
-.explore-more-btn {
-  background-color: #ff9900;
-  color: #fff;
-  border-radius: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
+.h2 {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
+  line-height: 40px;
+}
+
+.number {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 300;
+  font-size: 50px;
+  color: #b8860b;
 }
 
 .products {
   display: flex;
-  justify-content: space-around;
-  width: 100%; /* Ensure the image takes up the full width */
-  height: 50%; /* Maintain the aspect ratio */
+  align-items: center;
+  justify-content: space-between; /* Space the product items evenly */
+  margin-right: 5%;
+  height: 90%; /* Maintain the aspect ratio */
   object-fit: cover; /* Ensure the image covers the container */
-  border-radius: 20px;
+  border-radius: 10px;
+  flex: 1; /* Allow the products to take up available space */
+  border: 2px solid rgba(0, 0, 0, 0.2); /* Add a border with 30% opacity */
+  padding: 10px; /* Add padding to ensure content doesn't touch the border */
 }
 
 .product-item {
   background-color: #fff;
-  padding: 10px;
-  border: px solid;
-  text-align: center;
-  border-radius: 20px;
+  height: 90%;
+  flex: 0 0 45%; /* Each product item takes up 48% of the width */
+  margin: 2%; /* Add margin between product items */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px; /* Optional: Add rounded corners */
 }
 
-.product-details {
-  margin-top: 10px;
+.product-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px; /* Optional: Add rounded corners to the image */
+  margin-bottom: 30px; /* Add space below the image */
 }
 
-.discount-badge {
-  background-color: #ff0000;
-  color: #a19090;
-  padding: 5px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.price {
-  margin: 10px 0;
-}
-
-.discounted-price {
-  font-weight: bold;
-  color: #ff0000;
-}
-
-.original-price {
-  text-decoration: line-through;
-  margin-left: 10px;
-}
-
-.rating {
-  color: #ff9900;
+.product-item p {
+  margin: 5px 0;
 }
