@@ -47,7 +47,7 @@
 .product-item {
   background-color: #fff;
   height: 90%;
-  flex: 0 0 45%; /* Each product item takes up 48% of the width */
+  flex: 0 0 45%; /* Each product item takes up 45% of the width */
   margin: 2%; /* Add margin between product items */
   display: flex;
   justify-content: center;
@@ -67,4 +67,52 @@
 
 .product-item p {
   margin: 5px 0;
+}
+
+/* Media queries for responsiveness */
+
+/* For tablets and smaller screens */
+@media screen and (max-width: 768px) {
+  .promotional-section {
+    flex-direction: column; /* Stack items vertically */
+    height: auto; /* Adjust height */
+  }
+
+  .promotion-banner {
+    margin-left: 0;
+    margin-bottom: 20px;
+    width: 100%; /* Full width */
+  }
+
+  .products {
+    margin-right: 0;
+    width: 100%; /* Full width */
+    height: auto; /* Adjust height */
+    flex-direction: row; /* Ensure products are side by side */
+  }
+
+  .product-item {
+    flex: 0 0 45%; /* Each product item takes up 45% of the width */
+    margin: 2%; /* Add margin between product items */
+  }
+
+  .h2,
+  .number {
+    font-size: 30px; /* Adjust font size */
+    font-weight: 300; /* Adjust font weight */
+  }
+}
+
+/* For mobile phones */
+@media screen and (max-width: 480px) {
+  .h2,
+  .number {
+    font-size: 20px; /* Adjust font size */
+    font-weight: 200; /* Adjust font weight */
+  }
+
+  .product-item {
+    flex: 0 0 100%; /* Each product item takes up 100% of the width */
+    margin: 10px 0; /* Add margin between product items */
+  }
 }
