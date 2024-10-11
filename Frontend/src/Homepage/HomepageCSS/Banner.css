@@ -44,21 +44,30 @@
   z-index: 2;
   color: white;
   padding: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   flex: 1; /* Allow the element to grow */
   max-width: 30%; /* Limit the maximum width of the welcome text */
 }
 
 .welcome h1 {
-  font-size: 48px; /* Adjust the size as needed */
-  line-height: 1.5; /* Increase line height for better readability */
+  font-family: "Asset", serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 2.5; /* Increase line height for better readability */
   text-align: center; /* Center the text horizontally */
   margin: 0; /* Remove margin for better control */
-  padding: 0;
+  padding: 5;
   display: inline-block; /* Keep it inline to avoid block-level behavior */
   color: #fff; /* Set text color */
   max-width: 100%; /* Prevent overflow */
+}
+
+.shop-button {
+  margin-top: 30px;
+  background-color: #c0c0c0;
+  color: #000;
+  border-radius: 10px;
+  padding: 10 20px;
 }
 
 .carousel {
