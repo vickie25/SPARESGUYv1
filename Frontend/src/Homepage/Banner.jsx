@@ -32,7 +32,7 @@ const Banner = () => {
       <div className="banner-content">
         <div className="welcome">
           <h1>Get The Quality At Your Doorstep</h1>
-          <Link to="/shop"> <button>Shop Now</button></Link>
+          <Link to="/shop"> <button className='shop-button' >Shop Now</button></Link>
 
         </div>
         <div className="carousel">
