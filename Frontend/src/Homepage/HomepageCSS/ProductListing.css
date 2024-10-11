@@ -1,4 +1,5 @@
 .product-section {
+  height: 70vh;
   padding: 20px;
   max-width: 100%;
   margin: 0 auto;
@@ -6,7 +7,7 @@
 
 .tabs {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
@@ -16,26 +17,27 @@
   padding: 10px 20px;
   border: none;
   background-color: #f0f0f0;
+  color: #000;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .tabs button.active {
   background-color: #daa520;
-  color: #fff;
 }
 
 .products-example {
+  height: 60vh;
   display: flex;
-  justify-content: space-evenly; /* Space the product items evenly */
-  gap: 20px; /* Add gap between items */
-  flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
+  justify-content: space-evenly;
+  gap: 20px;
+  flex-wrap: nowrap;
 }
 
 .product-item-example {
   background-color: #fff;
-  flex: 1; /* Each product item takes up an equal portion of the width */
-  margin: 10px; /* Add margin between product items */
+  flex: 1;
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,21 +76,56 @@
 }
 
 .product-item-example button:hover {
-  background-color: #000;
+  background-color: #333;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .product-section {
+    height: auto;
+    min-height: 70vh;
+  }
+
   .products-example {
-    flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+    height: auto;
+    flex-wrap: wrap;
   }
 
   .product-item-example {
-    flex: 0 1 45%; /* Each product item takes up 45% of the width */
+    flex: 0 1 calc(50% - 20px);
+    margin: 10px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-section {
+    min-height: 80vh;
+  }
+
+  .tabs {
+    justify-content: center;
+  }
+
+  .products-example {
+    gap: 15px;
+  }
+
+  .product-item-example {
+    flex: 0 1 calc(50% - 15px);
   }
 }
 
 @media (max-width: 480px) {
+  .product-section {
+    min-height: 90vh;
+  }
+
+  .products-example {
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .product-item-example {
-    flex: 0 1 100%; /* Each product item takes up 100% of the width */
+    flex: 0 1 100%;
+    margin: 0;
   }
 }
