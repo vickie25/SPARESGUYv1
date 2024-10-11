@@ -1,10 +1,10 @@
 .promotional-section {
-  height: 80vh;
+  height: 90vh; /* Increased vertical space */
   padding: 0px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between; /* Space the items evenly */
-  align-items: center; /* Center items vertically */
+  justify-content: space-between;
+  align-items: center;
 }
 
 .promotion-banner {
@@ -13,7 +13,7 @@
   padding: 10px;
   margin-bottom: 20px;
   margin-left: 5%;
-  flex: 1; /* Allow the banner to take up available space */
+  flex: 1;
 }
 
 .h2 {
@@ -34,85 +34,100 @@
 .products {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space the product items evenly */
+  justify-content: space-between;
   margin-right: 5%;
-  height: 90%; /* Maintain the aspect ratio */
-  object-fit: cover; /* Ensure the image covers the container */
+  height: 80%; /* Increased vertical height for product section */
+  object-fit: cover;
   border-radius: 10px;
-  flex: 1; /* Allow the products to take up available space */
-  border: 2px solid rgba(0, 0, 0, 0.2); /* Add a border with 30% opacity */
-  padding: 10px; /* Add padding to ensure content doesn't touch the border */
+  flex: 1;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }
 
 .product-item {
   background-color: #fff;
-  height: 90%;
-  flex: 0 0 45%; /* Each product item takes up 45% of the width */
-  margin: 2%; /* Add margin between product items */
+  height: 95%; /* Increased item height */
+  flex: 0 0 48%; /* Increased from 45% to 48% to make items wider */
+  margin: 1%; /* Reduced margin to accommodate larger items */
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   text-align: left;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  border-radius: 10px; /* Optional: Add rounded corners */
+  border-radius: 10px;
 }
 
 .product-item img {
   max-width: 100%;
   height: auto;
-  border-radius: 10px; /* Optional: Add rounded corners to the image */
-  margin-bottom: 30px; /* Add space below the image */
+  max-height: 70%; /* Ensure image doesn't take up too much vertical space */
+  object-fit: cover; /* Keeps image aspect ratio intact */
+  border-radius: 10px;
+  margin-bottom: 15px; /* Reduced margin for better vertical space management */
 }
 
 .product-item p {
   margin: 5px 0;
 }
 
-/* Media queries for responsiveness */
-
 /* For tablets and smaller screens */
 @media screen and (max-width: 768px) {
   .promotional-section {
-    flex-direction: column; /* Stack items vertically */
-    height: auto; /* Adjust height */
+    flex-direction: column;
+    height: auto; /* Adjust height for smaller screens */
   }
 
   .promotion-banner {
     margin-left: 0;
     margin-bottom: 20px;
-    width: 100%; /* Full width */
+    width: 100%; /* Full width for banner */
   }
 
   .products {
+    flex-direction: row; /* Keep products side by side */
     margin-right: 0;
-    width: 100%; /* Full width */
-    height: auto; /* Adjust height */
-    flex-direction: row; /* Ensure products are side by side */
+    width: 100%;
+    height: auto;
+    justify-content: space-around; /* Center products with space around */
+    flex-wrap: wrap; /* Wrap products to the next row if needed */
   }
 
   .product-item {
-    flex: 0 0 45%; /* Each product item takes up 45% of the width */
-    margin: 2%; /* Add margin between product items */
-  }
-
-  .h2,
-  .number {
-    font-size: 30px; /* Adjust font size */
-    font-weight: 300; /* Adjust font weight */
+    flex: 0 0 48%; /* Slightly smaller on tablets for better fit */
+    margin: 2% 0; /* Increased margin for better spacing on smaller screens */
+    height: 70vh; /* Increase height of each product item */
   }
 }
 
 /* For mobile phones */
 @media screen and (max-width: 480px) {
-  .h2,
+  .promotional-section {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Adjust height for smaller screens */
+  }
+
+  .h2 {
+    font-size: 30px;
+    line-height: 30px;
+  }
+
   .number {
-    font-size: 20px; /* Adjust font size */
-    font-weight: 200; /* Adjust font weight */
+    font-size: 40px;
+  }
+
+  .products {
+    flex-direction: column; /* Stack products vertically on mobile */
+    margin: 10px;
+    width: 100%;
+    height: auto;
+    align-items: center;
   }
 
   .product-item {
-    flex: 0 0 100%; /* Each product item takes up 100% of the width */
-    margin: 10px 0; /* Add margin between product items */
+    flex: 0 0 100%; /* Full width for each product */
+    margin: 10px 0; /* Spacing between stacked products */
+    height: 70vh; /* Increase height of each product item */
   }
 }
