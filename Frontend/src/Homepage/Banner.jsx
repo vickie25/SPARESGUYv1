@@ -9,7 +9,8 @@ import plugs from './Homepageimages/plugs.svg';
 import { useNavigate } from 'react-router-dom';
 import herosImage from './HomepageImages/heros.jpg';
 import image1 from './HomepageImages/carousel.png'
-import image2 from './HomepageImages/heros.jpg';
+import image2 from './HomepageImages/carousel2.png'
+import image3 from './HomepageImages/carousel3.png'
 import { Link } from 'react-router-dom';
 
 const Banner = () => {
@@ -17,7 +18,7 @@ const Banner = () => {
   const [direction, setDirection] = useState('forward');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImage, setCurrentImage] = useState(0);
-  const images = [image1, image2];
+  const images = [image1, image2, image3];
 
   useEffect(() => {
     const timer = setInterval(() => {
