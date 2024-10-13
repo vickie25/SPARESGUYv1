@@ -36,7 +36,7 @@ const PageLayout = () => {
           {isOpen ? <FaTimes /> : <FaBars />}
         </div>
         <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
-          <li><a href="#home">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><Link to="/shop">Shop</Link></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact Us</a></li>
