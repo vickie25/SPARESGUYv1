@@ -6,24 +6,20 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import rearlights from '../Homepage/HomepageImages/rearlights.svg'
 
-
 const ProductDetails = () => {
-
   const [productDetails, setProductDetails] = useState({
     productName: '',
     price: '',
     description: '',
     quantity: 1,
   });
-
-  useEffect(() => {
+useEffect(() => {
     const savedDetails = localStorage.getItem('productDetails');
     if (savedDetails) {
       setProductDetails(JSON.parse(savedDetails));
     }
   }, []);
-
-  useEffect(() => {
+useEffect(() => {
     localStorage.setItem('productDetails', JSON.stringify(productDetails));
   }, [productDetails]);
 
@@ -34,23 +30,20 @@ const ProductDetails = () => {
       [name]: value,
     }));
   };
-
-  return (
+return (
     <>
     <Header/>
     <Container style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
       <div>
-
-      <Row>
-        
-        <Col xs={6} md={4}>
+ <Row>
+      <Col xs={6} md={4}>
           <img src={rearlights} alt='rectangle' />
         </Col>
-        <Col xs={6} md={4}>
+      <Col xs={6} md={4}>
           <p>hello, how are you doing this afternoon?</p>
           <p>this week , we shall handle our e-commerce website, mysparesguy </p>
         </Col>
-      </Row>
+  </Row>
       <h2>Product Details</h2>
       <label>Product Name:</label>
         <input
@@ -60,10 +53,7 @@ const ProductDetails = () => {
           onChange={handleInputChange}
           style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
         />
-   
-      
-     
-        <label>Price:</label>
+    <label>Price:</label>
         <input
           type="number"
           name="price"
