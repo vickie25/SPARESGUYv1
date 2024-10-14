@@ -1,107 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../Homepage/Header';
-import Footer from '../Homepage/Footer'
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import rearlights from '../Homepage/HomepageImages/rearlights.svg'
+import React, { useState } from 'react';
+import { Row, Col, Nav } from 'react-bootstrap';
+import '../Pages/PagesCSS/ProductDetail.css';
+import Header from '../Homepage/Header.jsx';
+import rearlights from '../Homepage/HomepageImages/rearlights.svg';
+import airfilter from '../Homepage/HomepageImages/airfilters.svg';
+import plugs from '../Homepage/HomepageImages/plugs.svg';
+import Footer from '../Homepage/Footer.jsx';
+import { GrTrophy } from "react-icons/gr";
+import { VscVerified } from "react-icons/vsc";
+import { PiHeadsetDuotone, PiShoppingBagOpenBold } from "react-icons/pi";
 
-const ProductDetails = () => {
-  const [productDetails, setProductDetails] = useState({
-    productName: '',
-    price: '',
-    description: '',
-    quantity: 1,
-  });
-useEffect(() => {
-    const savedDetails = localStorage.getItem('productDetails');
-    if (savedDetails) {
-      setProductDetails(JSON.parse(savedDetails));
-    }
-  }, []);
-useEffect(() => {
-    localStorage.setItem('productDetails', JSON.stringify(productDetails));
-  }, [productDetails]);
+const productDetail = () => {
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProductDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
-return (
+  const relatedProducts = [
+    { id: 1, name: 'airfilter', price: '$235.00', image: airfilter },
+    { id: 2, name: 'plugs', price: '$235.00', image: plugs },
+    { id: 3, name: 'airfilter', price: '$235.00', image: airfilter },
+    { id: 4, name: 'plugs', price: '$235.00', image: plugs },
+  ];
+
+  // State for tabs
+  const [activeTab, setActiveTab] = useState('description');
+
+  return (
     <>
-    <Header/>
-    <Container style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+      <Header />
+      <div className="container mt-4">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item"><a href="/">Home</a></li>
+            <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
+            <li className="breadcrumb-item active" aria-current="page">Toyota Headlights</li>
+          </ol>
+        </nav>
       <div>
- <Row>
-      <Col xs={6} md={4}>
-          <img src={rearlights} alt='rectangle' />
-        </Col>
-      <Col xs={6} md={4}>
-          <p>hello, how are you doing this afternoon?</p>
-          <p>this week , we shall handle our e-commerce website, mysparesguy </p>
-        </Col>
-  </Row>
-      <h2>Product Details</h2>
-      <label>Product Name:</label>
-        <input
-          type="text"
-          name="productName"
-          value={productDetails.productName}
-          onChange={handleInputChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-        />
-    <label>Price:</label>
-        <input
-          type="number"
-          name="price"
-          value={productDetails.price}
-          onChange={handleInputChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-        />
-     </div>
-      
-      <div style={{ marginBottom: '10px' }}>
-        <label>Description:</label>
-        <textarea
-          name="description"
-          value={productDetails.description}
-          onChange={handleInputChange}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-        />
-      </div>
-      
-      <div style={{ marginBottom: '10px' }}>
-        <label>Quantity:</label>
-        <input
-          type="number"
-          name="quantity"
-          value={productDetails.quantity}
-          onChange={handleInputChange}
-          min="1"
-          style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-        />
-      </div>
 
-      <button
-        onClick={() => alert('Product added to cart')}
-        style={{
-          padding: '10px 20px',
-          backgroundColor: '#28a745',
-          color: '#fff',
-          border: 'none',
-          cursor: 'pointer',
-          borderRadius: '4px',
-        }}
-      >
-        Add to Cart
-      </button>
-    </Container>
-    <Footer/>
+
+      <Row >
+      <Col md={2}>
+        <img 
+          src={rearlights} 
+          alt="Toyota Taillight" 
+          className="img-fluid"  
+          style={{ maxHeight: '300px', width: 'auto' }} // Adjusted for better visibility
+        />
+      </Col>
+      <Col>
+        <h1>TOYOTA</h1>
+        <p>Taillight car LED system</p>
+        <p><strong>$235.00</strong></p>
+        <p><span className="badge bg-success">In Stock</span></p>
+        <div className="rating">
+          ★★★★★ <span>(12 Reviews)</span>
+        </div>
+        <p>Enhance your driving visibility with our premium Car Headlight, designed for optimal 
+          performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road 
+          visibility even in low-light or harsh weather conditions.</p>
+
+        <div className="quantity-control d-flex align-items-center mb-3">
+          <button className="btn btn-outline-secondary">-</button>
+          <input type="text" className="form-control w-25 text-center mx-2" value="1" readOnly />
+          <button className="btn btn-outline-secondary">+</button>
+        </div>
+        <button className="btn btn-dark">Add to cart</button>
+      </Col>
+    </Row>
+
+        </div>
+        <div>
+        <Nav variant="tabs" defaultActiveKey="description" className="mt-4">
+          <Nav.Item>
+            <Nav.Link eventKey="description" onClick={() => setActiveTab('description')}>
+              Description
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="additional-info" onClick={() => setActiveTab('additional-info')}>
+              Additional Information
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="reviews" onClick={() => setActiveTab('reviews')}>
+              Reviews
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        </div>
+
+        {/* Tab Content */}
+        <div className="tab-content mt-3">
+          {activeTab === 'description' && (
+            <div className="tab-pane active">
+              <p>
+              Enhance your driving visibility with our premium Car Headlight, designed for optimal performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road visibility even in low-light or harsh weather conditions
+              </p>
+            </div>
+          )}
+          {activeTab === 'additional-info' && (
+            <div className="tab-pane">
+              <p>Additional Information about the product goes here...</p>
+            </div>
+          )}
+          {activeTab === 'reviews ' && (
+            <div className="tab-pane">
+              <p>Reviews about the product goes here...</p>
+            </div>
+          )}
+        </div>
+
+        <div>
+        <h3 className="mt-5">Related Products</h3>
+        <Row className="mt-3">
+          {relatedProducts.map((product) => (
+            <Col md={3} key={product.id} style={{justifyContent: 'space-between', alignContent: 'flex-end'}}>
+              <div className="product-card text-center">
+                <img src={product.image} alt={product.name} className="img-fluid mb-2" />
+                <p>{product.name}</p>
+                <p><strong>{product.price}</strong></p>
+              </div>
+            </Col>
+          ))}
+        </Row>
+        </div>
+        <Footer />
+      </div>
     </>
   );
 };
 
-export default ProductDetails;
+export default productDetail;
