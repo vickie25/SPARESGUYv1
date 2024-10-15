@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import airfilters from '../Homepage/HomepageImages/airfilters.svg'
+import Header from '../Homepage/Header';
+import Footer from '../Homepage/Footer';
 
 const Checkout = () => {
   const [cartItems, setCartItems] = useState([
@@ -48,6 +50,8 @@ const Checkout = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="checkout-container" style={{ padding: '20px' }}>
       <h1>Checkout</h1>
 
@@ -106,6 +110,8 @@ const Checkout = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-// models/Discount.js
+
 const mongoose = require('mongoose');
 
 const discountSchema = new mongoose.Schema({
@@ -13,7 +13,6 @@ const discountSchema = new mongoose.Schema({
 });
 
 discountSchema.methods.isValid = function () {
-    // Check if discount is still valid (active, not expired, not overused)
     const currentDate = new Date();
     return this.isActive && currentDate < this.expirationDate && this.timesUsed < this.maxUsage;
 };
