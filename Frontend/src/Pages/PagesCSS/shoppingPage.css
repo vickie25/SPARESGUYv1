@@ -14,6 +14,17 @@ body {
   padding: 10px;
 }
 
+.page-location {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add space between the h2 and p elements */
+}
+
+.page-location h2,
+.page-location p {
+  margin: 0; /* Remove default margins */
+}
+
 .filter-showing {
   margin-left: 20%;
   display: flex;
@@ -31,16 +42,27 @@ body {
   gap: 10px; /* Add space between the filter text, icon, and the vertical line */
 }
 
-.vertical-line {
-  border-left: 1px solid #000;
-  height: 24px;
-  margin-left: 10px; /* Add space between the vertical line and text */
-}
-
 .showing-ico {
   display: flex;
   align-items: center;
-  gap: 5px; /* Space between text and icon */
+  gap: 10px; /* Add space between the icon and the text */
+}
+
+.showing-ico svg {
+  margin: 0; /* Reset margin for the icon */
+  padding: 0; /* Reset padding for the icon */
+}
+
+.showing-info p {
+  margin: 0; /* Reset margin for the paragraph */
+  padding: 0; /* Reset padding for the paragraph */
+}
+
+.vertical-line {
+  height: 24px; /* Adjust height as needed */
+  width: 1px;
+  background-color: #000; /* Adjust color as needed */
+  margin: 0 10px; /* Add space around the vertical line */
 }
 
 .page-wrap {
@@ -89,8 +111,11 @@ main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
-  gap: 20px;
+  gap: 10px;
   width: 75%;
+  min-height: 500px; /* Ensure the section has a minimum height */
+  position: relative; /* Make sure the pagination sticks within this section */
+  padding-bottom: 100px; /* Adds space so pagination doesn't overlap content */
 }
 
 .grid-item {
@@ -287,14 +312,6 @@ main {
   pointer-events: auto;
 }
 
-.grid-pagination {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  width: 100%;
-  padding-right: 20px;
-}
-
 .grid-number {
   cursor: pointer;
   margin: 0 10px;
@@ -303,11 +320,16 @@ main {
 }
 
 .grid-pagination {
+  position: absolute;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  width: 100%;
+  align-items: flex-end;
+  bottom: 0;
+  right: 0;
   padding-right: 20px;
+  background-color: white; /* Ensures it has a background and doesn't overlap with content */
+  z-index: 10; /* Brings it above the other content */
+  padding: 10px 20px; /* Adds padding for spacing */
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow to make it stand out */
 }
 
 .grid-number {

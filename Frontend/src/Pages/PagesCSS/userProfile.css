@@ -1,0 +1,110 @@
+main {
+  display: flex;
+  margin: 2% 5%;
+  height: 70vh;
+  justify-content: space-between;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  background-color: #f9f9f9;
+  padding: 20px 0; /* Add some vertical padding */
+}
+
+.display-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px; /* Add space below the image */
+}
+
+.display-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #f9f9f9;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.sidebar ul li {
+  padding: 20px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background-color: #000000;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.sidebar ul li.active {
+  background-color: #000000;
+}
+
+.sidebar ul li.active a {
+  color: #000;
+}
+.icon {
+  left: 10px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.display-image-container-top {
+  flex: 1;
+}
+
+.display-image-top {
+  max-width: 80px;
+  height: auto;
+  border-radius: 50%;
+}
+.userdetails {
+  width: 80%;
+}
+.details {
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  grid-gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 20px;
+}
+
+.details > div:nth-child(5) {
+  grid-column: span 2; /* Make the fifth item span both columns */
+}
+
+.details > div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+label {
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+.edit-button {
+  border-radius: 10px;
+}
