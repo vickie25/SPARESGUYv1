@@ -38,7 +38,7 @@ const productDetail = () => {
               src={rearlights} 
               alt="Toyota Taillight" 
               className="img-fluid"  
-              style={{ maxHeight: '250px', width: 'auto' }} // Adjusted for better visibility
+              style={{ maxHeight: '250px', width: 'auto' }}
             />
           </Col>
           <Col>
@@ -91,16 +91,11 @@ const productDetail = () => {
             </div>
           )}
           {activeTab === 'reviews' && (
-            <div className="tab-pane active">
-              {/* Render the Reviews component when reviews tab is active */}
-
-              
+            <div className="tab-pane active"> 
               <Reviews />
             </div>
           )}
         </div>
-
-        {/* Related Products Section */}
         <h3 className="mt-5">Related Products</h3>
         <Row className="mt-3">
           {relatedProducts.map((product) => (
