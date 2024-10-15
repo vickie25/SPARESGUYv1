@@ -15,6 +15,7 @@ import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -28,10 +29,10 @@ const PageLayout = () => {
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
+  const navigate = useNavigate();
   const productsPerPage = 9;
   const itemsPerPage = 9;
-
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
   const items = [
     { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
     { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
@@ -64,7 +65,7 @@ const PageLayout = () => {
 
   // Filter items based on the search query
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery)
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -87,7 +88,7 @@ const PageLayout = () => {
   // Function to get items for the current page and apply search filter
   const getCurrentPageItems = () => {
     const filteredItems = items.filter(item =>
-      item.name.toLowerCase().includes(searchQuery) // Search by name (you can adjust to search by other fields)
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) // Ensure case-insensitive search
     );
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -141,6 +142,14 @@ const PageLayout = () => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
+  };
+
+  const handleProductClick = (item) => {
+    navigate(`/details`, { state: { product: item } });
+  };
+
+  const handleCheckout = () => {
+    navigate('/checkout');
   };
 
 
@@ -207,20 +216,23 @@ const PageLayout = () => {
                       </div>
 
                       {/* Checkout Button */}
-                      <button className="checkout-button">Checkout</button>
+                      <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
                     </div>
 
                   )}
                 </div>
               )}
             </li>
-            <li><Link to="/profile"><FaRegUser className='header-icon' /></Link></li>
+            <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
           </ul>
         </nav>
       </header>
       {isDropdownVisible && <div className="mask"></div>}
       <div className='page-filter-showing'>
-        <div className='page-location'><h2>{location.pathname}</h2></div>
+        <div className='page-location'>
+          <h2>{location.pathname}</h2>
+          {!isFilterApplied && searchQuery === '' && <p>All products</p>}
+        </div>
         <div className='filter-showing'>
 
 
@@ -300,7 +312,7 @@ const PageLayout = () => {
           </div>
 
           {getCurrentPageItems().map((item, index) => (
-            <div key={index} className="grid-item">
+            <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
                 {item.image ? (
                   <img src={item.image} alt={item.name} className="product-image" />
@@ -310,7 +322,7 @@ const PageLayout = () => {
               </div>
               <p className="product-name">{item.name}</p>
               <p className="product-cost">Ksh{item.price}</p>
-              <button className="add-to-cart-button" onClick={() => handleAddToCart(item)}>Add to Cart</button>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
             </div>
           ))}
 
