@@ -11,8 +11,8 @@ const Footer = () => {
 
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="footer">
-      <div className="footer-top">
+    <footer className="footer" style={{marginTop: '50px'}}>
+      <div className="footer-top" >
         <div className="footer-section logo">
           {/* <img src={logo} alt="Logo" className="footer-logo" /> */}
           <h3>MY SPARES GUY</h3>
