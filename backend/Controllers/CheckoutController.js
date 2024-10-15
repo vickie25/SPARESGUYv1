@@ -1,40 +1,51 @@
-const Order = require('../Models/OrderModel');
-const Discount = require('../Models/Discount');
+const Customer = require('../models/Customer');
+const Cart = require('../models/Cart');
+const Order = require('../models/Order');
 
-const applyDiscount = async (req, res) => {
-    const { discountCode } = req.body;
+exports.createOrder = async (req, res) => {
+  const { name, email, address, phone, cartProducts, totalAmount } = req.body;
 
-    try {
-        const discount = await Discount.findOne({ code: discountCode });
-        if (!discount) {
-            return res.status(400).json({ message: 'Invalid discount code' });
-        }
-
-        return res.json({ discountAmount: discount.amount });
-    } catch (error) {
-        return res.status(500).json({ message: 'Server Error' });
+  try {
+  
+    let customer = await Customer.findOne({ email });
+    if (!customer) {
+      customer = new Customer({ name, email, address, phone });
+      await customer.save();
     }
+
+  
+    const cart = new Cart({
+      products: cartProducts,
+      totalAmount,
+    });
+    await cart.save();
+
+  
+    const order = new Order({
+      customerId: customer._id,
+      cartId: cart._id,
+    });
+    await order.save();
+
+    res.status(201).json({ success: true, message: 'Order placed successfully', order });
+  } catch (error) {
+    console.error('Error placing order', error.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };
 
-const createOrder = async (req, res) => {
-    const { cartItems, totalAmount, discountApplied, customerId } = req.body;
-
-    try {
-        const order = new Order({
-            customerId,
-            cartItems,
-            totalAmount,
-            discountApplied
-        });
-
-        await order.save();
-        return res.status(201).json({ message: 'Order successfully created', order });
-    } catch (error) {
-        return res.status(500).json({ message: 'Server Error' });
+exports.getOrderDetails = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.orderId)
+      .populate('customerId')
+      .populate('cartId');
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
     }
-};
 
-module.exports = {
-    applyDiscount,
-    createOrder
+    res.json(order);
+  } catch (error) {
+    console.error('Error fetching order details', error.message);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
 };
