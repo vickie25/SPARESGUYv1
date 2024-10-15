@@ -1,12 +1,57 @@
-.brand-logos-container {
+/* Container to hold the carousel */
+.brand-carousel-container {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 100%;
+  overflow: hidden;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  padding: 20px;
-  background-color: #aa9f9f; /* Light background */
+  height: 150px; /* Adjust height as necessary */
 }
 
-.brand-logos-container img {
-  max-height: 50px; /* Adjust size as needed */
-  margin: 0 10px;
+/* Flexbox container for images */
+.brand-carousel {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start */
+  align-items: center;
+  transition: transform 0.5s ease-in-out; /* Smooth scrolling effect */
+  width: 100%;
+}
+
+/* Each carousel item */
+.brand-carousel-item {
+  flex: 0 0 25%; /* Show 4 items at a time */
+  padding: 10px;
+  transition: all 0.5s ease-in-out;
+  box-sizing: border-box; /* Include padding in the width calculation */
+  display: flex; /* Ensure the item can use flex properties */
+  justify-content: center; /* Center the content inside each item */
+}
+
+/* Style for the images */
+.brand-carousel img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 100px; /* Adjust based on your needs */
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 1024px) {
+  .brand-carousel-item {
+    flex: 0 0 33.33%; /* Show 3 items on medium screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .brand-carousel-item {
+    flex: 0 0 50%; /* Show 2 items on smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .brand-carousel-item {
+    flex: 0 0 100%; /* Show 1 item on mobile screens */
+  }
 }

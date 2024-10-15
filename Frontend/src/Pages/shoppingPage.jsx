@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import "./PagesCSS/shoppingPage.css";
-import { FaHeart, FaShoppingCart, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
 import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
 import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
@@ -22,7 +24,14 @@ const PageLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
   const productsPerPage = 9;
+  const itemsPerPage = 9;
+
   const items = [
     { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
     { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
@@ -53,9 +62,10 @@ const PageLayout = () => {
     { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
   ];
 
-  const itemsPerPage = 9;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  // Filter items based on the search query
+  const filteredItems = items.filter(item =>
+    item.name.toLowerCase().includes(searchQuery)
+  );
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -69,28 +79,30 @@ const PageLayout = () => {
 
   const handlePriceChange = (value) => setPriceRange(value);
 
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  // Handle search input changes
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
 
-  // Function to get items for the current page
+  // Function to get items for the current page and apply search filter
   const getCurrentPageItems = () => {
+    const filteredItems = items.filter(item =>
+      item.name.toLowerCase().includes(searchQuery) // Search by name (you can adjust to search by other fields)
+    );
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return items.slice(startIndex, endIndex);
+    return filteredItems.slice(startIndex, endIndex);
   };
 
   const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
-  const endItemIndex = Math.min(currentPage * itemsPerPage, items.length);
+  const endItemIndex = Math.min(currentPage * itemsPerPage, filteredItems.length);
 
-
-
-  // State to toggle the dropdown
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
-
 
   // Calculating the indices for slicing the product array
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -125,15 +137,12 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-
-
-
-  // Handle page change
-  const handlePageChange = (page) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
     }
   };
+
 
   return (
     <div className="page-wrap">
@@ -144,17 +153,22 @@ const PageLayout = () => {
             {isOpen ? <FaTimes /> : <FaBars />}
           </div>
           <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
-            <li><a href="#home">Home</a></li>
-            <li><Link to="/about">About</Link></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li> <div className="search-container">
-              <input type="text" placeholder="What are you looking for?" className="search-input" />
+            <li><a href="/">Home</a></li>
+            <li><Link to="/shop">Shop</Link></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li> <div className="search-container"> <input
+              type="text"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={searchQuery}
+              onChange={handleSearch} // Update search query on input change
+            />
             </div></li>
-            <li><Link to="/wishlist" className='icon'><FaHeart /></Link></li>
+            <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
             <li className="cart-icon-container">
               <div className="cart-icon" onClick={toggleDropdown}>
-                <FaShoppingCart />
+                <BsCart3 />
                 {cart.length > 0 && (
                   <span className="cart-count">
                     {cart.reduce((total, item) => total + item.quantity, 0)}
@@ -200,7 +214,7 @@ const PageLayout = () => {
                 </div>
               )}
             </li>
-            <li><Link to="/profile"><FaUser /></Link></li>
+            <li><Link to="/profile"><FaRegUser className='header-icon' /></Link></li>
           </ul>
         </nav>
       </header>
@@ -208,19 +222,24 @@ const PageLayout = () => {
       <div className='page-filter-showing'>
         <div className='page-location'><h2>{location.pathname}</h2></div>
         <div className='filter-showing'>
-          <div style={{ fontSize: '24px' }} className="filter-icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <IoFilterOutline /> Filter
-          </div>
 
-          {/* Vertical line and the text */}
+
           <div className="showing-info">
-            <div className="showing-ico">Filter< IoFilterOutline /></div>
+            {/* Filter text with an icon */}
+            <div className="showing-ico" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <IoFilterOutline />  Filter
+            </div>
+
+            {/* Vertical line */}
             <span className="vertical-line"></span>
-            <p>Showing {startItemIndex} -- {endItemIndex} of {items.length}</p>
+
+            {/* Showing text */}
+            <p>Showing {startItemIndex} -- {endItemIndex} of {filteredItems.length}</p>
+
           </div>
         </div>
-
       </div>
+
 
 
       <main className={isDropdownVisible ? 'blur' : ''}>
@@ -279,6 +298,7 @@ const PageLayout = () => {
           <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
             Filter< IoFilterOutline />
           </div>
+
           {getCurrentPageItems().map((item, index) => (
             <div key={index} className="grid-item">
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
@@ -288,8 +308,8 @@ const PageLayout = () => {
                   <span className="image-placeholder">Image not available</span>
                 )}
               </div>
-              <p className="product-name">{item.name || 'Product Name'}</p>
-              <p className="product-cost">Ksh{item.cost || '0.00'}</p>
+              <p className="product-name">{item.name}</p>
+              <p className="product-cost">Ksh{item.price}</p>
               <button className="add-to-cart-button" onClick={() => handleAddToCart(item)}>Add to Cart</button>
             </div>
           ))}

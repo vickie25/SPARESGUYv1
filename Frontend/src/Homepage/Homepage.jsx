@@ -1,11 +1,11 @@
 import React from 'react'
 import Banner from './Banner'
-import BrandLogos from './Brandlogos'
+import BrandLogos from './BrandLogos'
 import FeaturedProducts from './FeaturedProducts'
 import Header from './Header'
 // import Testimonials from './Testimonials'
 // import Statistics from './Statistics'
-import ProductListing from './Productlisting'
+import ProductListing from './productListing'
 import Footer from '../Homepage/Footer'
 import StatisticsBar from './StatisticsBar'
 
@@ -18,8 +18,8 @@ const Homepage = () => {
       <Banner />
       <BrandLogos />
       <FeaturedProducts />
-      <ProductListing />
       <StatisticsBar />
+      <ProductListing />
       <Footer />
     </>
   )

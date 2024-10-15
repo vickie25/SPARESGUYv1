@@ -1,76 +1,133 @@
 .promotional-section {
+  height: 90vh; /* Increased vertical space */
   padding: 0px;
-  background-color:#aa9f9f;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .promotion-banner {
-  text-align: left ; 
-  background-color:#4e0538;/* Dark background */
-  color: #fff;
+  text-align: center;
+  color: #3b3b3d;
   padding: 10px;
   margin-bottom: 20px;
-  margin-left:0px;
-  
-}
-.h1 {
-  margin-left:10px;
+  margin-left: 5%;
+  flex: 1;
 }
 
-.explore-more-btn {
-  background-color: #ff9900;
-  color: #fff;
-  border-radius: 20px;  
-  padding: 10px 20px;
-  cursor: pointer;
+.h2 {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
+  line-height: 40px;
+}
+
+.number {
+  font-family: "Abhaya Libre", serif;
+  font-weight: 300;
+  font-size: 50px;
+  color: #b8860b;
 }
 
 .products {
   display: flex;
-  justify-content: space-around;
-  width: 100%; /* Ensure the image takes up the full width */
-  height: 50%; /* Maintain the aspect ratio */
-  object-fit: cover; /* Ensure the image covers the container */
-  border-radius:20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 5%;
+  height: 80%; /* Increased vertical height for product section */
+  object-fit: cover;
+  border-radius: 10px;
+  flex: 1;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 10px;
 }
 
 .product-item {
   background-color: #fff;
-  padding: 10px;
-  border: px solid;
-  text-align: center;
-  border-radius:20px;
-  
+  height: 95%; /* Increased item height */
+  flex: 0 0 48%; /* Increased from 45% to 48% to make items wider */
+  margin: 1%; /* Reduced margin to accommodate larger items */
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 }
 
-.product-details {
-  margin-top: 10px;
+.product-item img {
+  max-width: 100%;
+  height: auto;
+  max-height: 70%; /* Ensure image doesn't take up too much vertical space */
+  object-fit: cover; /* Keeps image aspect ratio intact */
+  border-radius: 10px;
+  margin-bottom: 15px; /* Reduced margin for better vertical space management */
 }
 
-.discount-badge {
-  background-color: #ff0000;
-  color: #a19090;
-  padding: 5px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.product-item p {
+  margin: 5px 0;
 }
 
-.price {
-  margin: 10px 0;
+/* For tablets and smaller screens */
+@media screen and (max-width: 768px) {
+  .promotional-section {
+    flex-direction: column;
+    height: auto; /* Adjust height for smaller screens */
+  }
+
+  .promotion-banner {
+    margin-left: 0;
+    margin-bottom: 20px;
+    width: 100%; /* Full width for banner */
+  }
+
+  .products {
+    flex-direction: row; /* Keep products side by side */
+    margin-right: 0;
+    width: 100%;
+    height: auto;
+    justify-content: space-around; /* Center products with space around */
+    flex-wrap: wrap; /* Wrap products to the next row if needed */
+  }
+
+  .product-item {
+    flex: 0 0 48%; /* Slightly smaller on tablets for better fit */
+    margin: 2% 0; /* Increased margin for better spacing on smaller screens */
+    height: 70vh; /* Increase height of each product item */
+  }
 }
 
-.discounted-price {
-  font-weight: bold;
-  color: #ff0000;
-}
+/* For mobile phones */
+@media screen and (max-width: 480px) {
+  .promotional-section {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Adjust height for smaller screens */
+  }
 
-.original-price {
-  text-decoration: line-through;
-  margin-left: 10px;
-}
+  .h2 {
+    font-size: 30px;
+    line-height: 30px;
+  }
 
-.rating {
-  color: #ff9900;
+  .number {
+    font-size: 40px;
+  }
 
+  .products {
+    flex-direction: column; /* Stack products vertically on mobile */
+    margin: 10px;
+    width: 100%;
+    height: auto;
+    align-items: center;
+  }
+
+  .product-item {
+    flex: 0 0 100%; /* Full width for each product */
+    margin: 10px 0; /* Spacing between stacked products */
+    height: 70vh; /* Increase height of each product item */
+  }
 }

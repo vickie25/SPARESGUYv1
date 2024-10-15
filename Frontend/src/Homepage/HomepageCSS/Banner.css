@@ -1,41 +1,190 @@
 .banner {
+  position: relative;
+  height: 85vh;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between; /* Spread out the content to far left and far right */
+  color: white;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    url("./HomepageImages/heros.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-evenly; /* Align items to the far left and right */
+  width: 100%; /* Full width of the banner */
+  padding: 0 20px; /* Add horizontal padding to the content */
+}
+
+.welcome {
+  display: flex; /* Use flexbox to center content */
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  position: relative;
+  z-index: 2;
+  color: white;
   padding: 20px;
-  height: 400px; /* Increase the height of the banner */
-  background-color: #4e0538; /* Dark background */
-  background-image: url('./Homepage/HomepageImages/Bg-Banner.svg'); /* Add your background image */
-  background-size: cover; /* Ensure the image covers the entire banner */
-  background-position: center; /* Center the background image */
-  color: #fff; /* White text */
+  border-radius: 10px;
+  flex: 1; /* Allow the element to grow */
+  max-width: 30%; /* Limit the maximum width of the welcome text */
 }
 
-.banner-text {
-  max-width: 50%;
+.welcome h1 {
+  font-family: "Asset", serif;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 2.5; /* Increase line height for better readability */
+  text-align: center; /* Center the text horizontally */
+  margin: 0; /* Remove margin for better control */
+  padding: 5;
+  display: inline-block; /* Keep it inline to avoid block-level behavior */
+  color: #fff; /* Set text color */
+  max-width: 100%; /* Prevent overflow */
 }
 
-.shop-now-btn {
+.shop-button {
+  margin-top: 30px;
+  background-color: #c0c0c0;
+  color: #000;
+  border-radius: 10px;
+  padding: 10 20px;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* This is for a 16:9 aspect ratio */
+  border-radius: 10px;
+  flex: 1;
+  max-width: 40%;
+  margin-left: 20px;
+  overflow: hidden;
+}
+
+.carousel img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+/* Transition styles for swipe effect */
+.swipe-enter {
+  transform: translateX(100%);
+}
+
+.swipe-enter-active {
+  transform: translateX(0%);
+  transition: transform 500ms ease-in-out;
+}
+
+.swipe-exit {
+  transform: translateX(0%);
+}
+
+.swipe-exit-active {
+  transform: translateX(-100%);
+  transition: transform 500ms ease-in-out;
+}
+
+/* Reverse swipe direction */
+.swipe-reverse-enter {
+  transform: translateX(-100%);
+}
+
+.swipe-reverse-enter-active {
+  transform: translateX(0%);
+  transition: transform 500ms ease-in-out;
+}
+
+.swipe-reverse-exit {
+  transform: translateX(0%);
+}
+
+.swipe-reverse-exit-active {
+  transform: translateX(100%);
+  transition: transform 500ms ease-in-out;
+}
+
+.pagination-dots {
+  display: flex;
+  justify-content: center;
   margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #ff9900; /* Button color */
-  border-radius: 20px;
-  color: #998b8b;
+  z-index: 3;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.banner-image img {
-  max-width: 100%;
-  height: auto;
+.dot.active {
+  background-color: #717171;
 }
 
-.banner-image {
-  width: 50%; /* Adjust width as needed */
-  height: auto; /* Maintain aspect ratio */
+* Media Queries for Responsiveness */ @media screen and (max-width: 1024px) {
+  .welcome h1 {
+    font-size: 36px;
+  }
 }
-.part1 {
-  width: 20%; /* Ensure the image takes up the full width */
-    height: 20%; /* Maintain the aspect ratio */
-    object-fit: cover; /* Ensure the image covers the container */
-    border-radius: 20px
+
+@media screen and (max-width: 768px) {
+  .banner-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .welcome,
+  .carousel {
+    max-width: 90%;
+    margin: 10px 0;
+  }
+
+  .welcome h1 {
+    font-size: 28px;
+  }
+
+  .carousel {
+    padding-top: 75%; /* Adjust aspect ratio for smaller screens */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .banner {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .welcome h1 {
+    font-size: 24px;
+  }
 }

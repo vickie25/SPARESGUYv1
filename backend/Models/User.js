@@ -7,6 +7,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    
     email: {
         type: String,
         required: true,
@@ -15,7 +16,13 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    role: {
+        type: String,
+        enum: ['customer', 'admin'], // Define roles: customer or admin
+        default: 'customer'     // Default role is customer
     }
+
 });
 
 const User = model('User', userSchema);

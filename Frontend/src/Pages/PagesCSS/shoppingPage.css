@@ -9,23 +9,38 @@ body {
 
 .page-filter-showing {
   display: flex;
+  justify-content: flex-start; /* Align items to the left */
+  align-items: center;
+  padding: 10px;
 }
+
 .filter-showing {
   margin-left: 20%;
   display: flex;
   align-items: center;
+  gap: 20px; /* Add space between the filter and showing info */
+}
+
+.filter-icon {
+  cursor: pointer;
 }
 
 .showing-info {
   display: flex;
   align-items: center;
-  margin-left: 20px; /* Space between Filter and Showing */
+  gap: 10px; /* Add space between the filter text, icon, and the vertical line */
 }
 
 .vertical-line {
-  border-left: 1px solid #000; /* The vertical line */
-  height: 24px; /* Height of the line */
-  margin-right: 10px; /* Space between the line and the text */
+  border-left: 1px solid #000;
+  height: 24px;
+  margin-left: 10px; /* Add space between the vertical line and text */
+}
+
+.showing-ico {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between text and icon */
 }
 
 .page-wrap {
@@ -164,7 +179,6 @@ main {
 
 .cart-icon {
   position: relative;
-  color: #fff;
 }
 
 .cart-count {
@@ -536,7 +550,7 @@ aside li {
 /* header.css */
 
 header {
-  background-color: #333;
+  background: linear-gradient(to bottom, #e6e6e6, #f0f0f0);
   padding: 2rem;
   position: fixed;
   top: 0;
@@ -568,7 +582,7 @@ header {
 }
 
 .nav-list li a {
-  color: white;
+  color: #000;
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.3s ease;
@@ -578,8 +592,8 @@ header {
   color: #ddd;
 }
 
-.icon {
-  color: #fff;
+.header-icon {
+  font-size: 1rem;
 }
 
 @media screen and (max-width: 768px) {

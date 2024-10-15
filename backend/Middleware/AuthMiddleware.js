@@ -3,8 +3,9 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export const authMiddleware = (req, res, next) => {
+ const authMiddleware = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
+    console.log (token, "This is the token")
     
     const key = "mySuperSecretKey123!";
     console.log(key, "This isthe key")
@@ -19,3 +20,5 @@ export const authMiddleware = (req, res, next) => {
         res.status(401).json({ message: "Invalid token." });
     }
 };
+
+export default authMiddleware;
