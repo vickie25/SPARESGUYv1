@@ -17,7 +17,7 @@ import {Provider} from 'react-redux';
 import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx'
-
+import Payement from './Pages/Payement.jsx'
 
 
 const routes = createBrowserRouter( createRoutesFromElements(
@@ -31,6 +31,7 @@ const routes = createBrowserRouter( createRoutesFromElements(
   <Route path='/cart' element={<CartPage />} />
   <Route path='/revew' element={<Review />} />
   <Route path='/checkout' element={<Checkout />} />
+  <Route path='/payement' element={<Payement />} />
   </>
  
 ))
