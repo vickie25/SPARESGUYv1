@@ -15,6 +15,8 @@ import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} fr
 import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
 import store from './store.js'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 const routes = createBrowserRouter( createRoutesFromElements(
