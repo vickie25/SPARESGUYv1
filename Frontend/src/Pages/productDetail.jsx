@@ -61,8 +61,6 @@ const productDetail = () => {
             <button className="btn btn-dark">Add to cart</button>
           </Col>
         </Row>
-
-        {/* Nav Tabs for switching content */}
         <Nav variant="tabs" activeKey={activeTab} className="mt-4">
           <Nav.Item>
             <Nav.Link eventKey="description" onClick={() => setActiveTab('description')}>
@@ -105,7 +103,7 @@ const productDetail = () => {
                   src={product.image} 
                   alt={product.name} 
                   className="img-fluid mb-2" 
-                  style={{ height: '150px', objectFit: 'cover', marginBottom: '4px' }} // Adjust height as needed
+                  style={{ height: '150px', objectFit: 'cover', marginBottom: '4px' }} 
                 />
                 <p>{product.name}</p>
                 <p><strong>{product.price}</strong></p>
