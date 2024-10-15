@@ -9,27 +9,44 @@ dotenv.config()
 //register a user
 
 export const registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
-    const userExists = await User.findOne({
-        email
-    });
-    if (userExists) {
-        res.status(400).json({
-            message: "User already exists"
+    try {
+        const { name, email, password, role } = req.body;
+        console.log("This is the role:", role);
+
+        // Check if the user already exists
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({
+                message: "User already exists"
+            });
+        }
+
+        // Create a new user
+        const user = new User({
+            name,
+            email,
+            password,
+            role: role || 'customer' // Assign role or default to 'customer'
+        });
+
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        // Save the user to the database
+        await user.save();
+
+        // Send success response
+        res.status(201).json({
+            message: "User registered successfully"
+        });
+    } catch (error) {
+        console.error(error); // Log the error for debugging purposes
+        res.status(500).json({
+            message: "Server error" // Generic error message for the client
         });
     }
-    const user = new User({
-        name,
-        email,
-        password
-    });
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-    await user.save();
-    res.status(201).json({
-        message: "User registered successfully"
-    });
-}
+};
 
 //login a user
 
@@ -51,11 +68,22 @@ export const loginUser = async (req, res) => {
 
         // Generate a JWT token
 
-        console.log("JWT_SECRET:", process.env.JWT_SECRET);
-        const token = jwt.sign({ userId: user._id,  }, 'mySuperSecretKey123!', {
-            expiresIn: '1h',
-        });
-        console.log()
+        // console.log("JWT_SECRET:", process.env.JWT_SECRET);
+        // const token = jwt.sign({ userId: user._id,  }, 'mySuperSecretKey123!', {
+        //     expiresIn: '1h',
+        // });
+        // console.log()
+        // res.json({ token });
+
+        const token = jwt.sign(
+            {
+                userId: user._id,
+                role: user.role,
+            },
+            'mySuperSecretKey123!',
+            { expiresIn: '1h' }
+        )
+
         res.json({ token });
 
 
@@ -64,5 +92,6 @@ export const loginUser = async (req, res) => {
         res.status(500).json({ message: "Internal server error." });
     }
 };
-//get user profile
+
+
 
