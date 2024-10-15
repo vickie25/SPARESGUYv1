@@ -16,6 +16,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
 import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Checkout from './Pages/Checkout.jsx'
 
 
 
@@ -26,9 +27,10 @@ const routes = createBrowserRouter( createRoutesFromElements(
   <Route path='/login' element={<Login />}/>
   <Route path='/registration' element={<Registration />}/>
   <Route path='/shop' element={<Shop />}/>
-  <Route path='/prd' element={<ProductDetail />} />
+  <Route path='/details' element={<ProductDetail />} />
   <Route path='/cart' element={<CartPage />} />
-  <Route path='/rev' element={<Review />} />
+  <Route path='/revew' element={<Review />} />
+  <Route path='/checkout' element={<Checkout />} />
   </>
  
 ))
