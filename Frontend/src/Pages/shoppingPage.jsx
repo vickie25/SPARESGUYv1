@@ -17,7 +17,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-
+import axios from 'axios'
 
 const PageLayout = () => {
   const [products, setProducts] = useState([]);
