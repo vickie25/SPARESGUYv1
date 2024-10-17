@@ -10,7 +10,10 @@ dotenv.config()
 
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password } = req.body;
+        const role = "customer"; // Default role is 'customer'
+        
+        console.log("This is the name:", name);
         console.log("This is the role:", role);
 
         // Check if the user already exists
@@ -26,7 +29,7 @@ export const registerUser = async (req, res) => {
             name,
             email,
             password,
-            role: role || 'customer' // Assign role or default to 'customer'
+            role // Assign role or default to 'customer'
         });
 
         // Hash the password
@@ -40,6 +43,7 @@ export const registerUser = async (req, res) => {
         res.status(201).json({
             message: "User registered successfully"
         });
+
     } catch (error) {
         console.error(error); // Log the error for debugging purposes
         res.status(500).json({
@@ -54,6 +58,8 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        console.log("This is the email:", email);
+        console.log("This is the password:", password);
         // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
