@@ -15,10 +15,11 @@ import UserProfile from './Pages/UserProfile.jsx'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
-import store from './store.js'
+// import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx'
 import Payement from './Pages/Payement.jsx'
+import PaymentConfirmation from './Pages/PaymentConfirmation.jsx'
 
 
 const routes = createBrowserRouter( createRoutesFromElements(
@@ -34,6 +35,7 @@ const routes = createBrowserRouter( createRoutesFromElements(
   <Route path='/checkout' element={<Checkout />} />
   <Route path='/payement' element={<Payement />} />
   <Route path='/UserProf' element={<UserProfile />} />
+  <Route path='/confirmation' element={<PaymentConfirmation />} />
   </>
  
 ))
