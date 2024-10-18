@@ -51,6 +51,7 @@ main {
 .sidebar ul li.active a {
   color: #000;
 }
+
 .icon {
   left: 10px;
 }
@@ -72,9 +73,11 @@ main {
   height: auto;
   border-radius: 50%;
 }
+
 .userdetails {
   width: 80%;
 }
+
 .details {
   width: 90%;
   display: grid;
@@ -105,6 +108,59 @@ input {
   border: 1px solid #000;
   border-radius: 4px;
 }
+
 .edit-button {
   border-radius: 10px;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 25%;
+  }
+
+  .details {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .details {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .display-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .details {
+    grid-gap: 10px;
+  }
+
+  label {
+    margin-top: 20px;
+  }
+
+  input {
+    padding: 6px;
+  }
 }
