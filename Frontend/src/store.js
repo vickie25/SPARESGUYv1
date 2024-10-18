@@ -1,14 +1,16 @@
-// store.js
-import { configureStore } from '@reduxjs/toolkit';
+// import { configureStore } from '@reduxjs/toolkit';
+// // Import your reducers
+// import todosReducer from './reducers/todosReducer';
+// import filtersReducer from './reducers/filtersReducer';
 
+// // Configure store with your reducers
+// const store = configureStore({
+//     reducer: {
+//         // Define a top-level state field named `todos`, handled by `todosReducer`
+//         todos: todosReducer,
+//         // Define a top-level state field named `filters`, handled by `filtersReducer`
+//         filters: filtersReducer
+//     }
+// });
 
-const store = configureStore({
-    reducer: {
-        // Define a top-level state field named `todos`, handled by `todosReducer`
-       
-        // Define a top-level state field named `filters`, handled by `filtersReducer`
-       
-    }
-});
-
-export default store;
+// export default store;
