@@ -15,7 +15,7 @@ import UserProfile from './Pages/UserProfile.jsx'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
-// import store from './store.js'
+ import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx'
 import Payement from './Pages/Payement.jsx'

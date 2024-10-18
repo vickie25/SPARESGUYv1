@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 // import { configureStore } from '@reduxjs/toolkit';
 // // Import your reducers
 // import todosReducer from './reducers/todosReducer';
@@ -15,7 +15,7 @@
 // });
 
 // export default store;
-=======
+
 import { configureStore } from '@reduxjs/toolkit';
 import { usersApiSlice } from './slices/usersApiSlice'; // Import your API slice
 
@@ -32,4 +32,4 @@ const store = configureStore({
 });
 
 export default store;
->>>>>>> 5bfd338761a2119d656fc56cda1e4ad082b86b46
+
