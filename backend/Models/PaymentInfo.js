@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const PaymentInfoSchema = new mongoose.Schema({
   cardName: { type: String },
@@ -8,4 +8,6 @@ const PaymentInfoSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('PaymentInfo', PaymentInfoSchema);
+const PaymentInfo = mongoose.model('PaymentInfo', PaymentInfoSchema);
+export default PaymentInfo;
+
