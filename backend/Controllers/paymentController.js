@@ -1,5 +1,5 @@
 // controllers/paymentController.js
-const Payment = require('../Models/Payment');
+import Payment from '../Models/Payment';
 
 exports.createPayment = async (req, res) => {
   try {

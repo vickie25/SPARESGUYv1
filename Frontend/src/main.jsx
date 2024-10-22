@@ -18,13 +18,15 @@ import { HelmetProvider } from 'react-helmet-async';
 import {Provider} from 'react-redux';
  import store from './store.js'
 
+
 import { Provider } from 'react-redux';
-<<<<<<< HEAD
+
 import store from './store.js';
-=======
+
 import store from './store.js'
 
->>>>>>> 311e967ef9c8a61f664ea37f36021c412c9e47f7
+
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';
