@@ -28,8 +28,13 @@ app.get('/', (req, res) => {
 // User routes
 app.use('/api/users', userRoutes);
 
+
 // Product routes
 app.use('/api/products', productRoutes);
+
+// payment routes
+
+app.use('api/payments', paymentRoutes);
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
