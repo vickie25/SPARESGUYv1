@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./PagesCSS/shoppingPage.css";
 import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
@@ -63,10 +63,27 @@ const PageLayout = () => {
     { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
   ];
 
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('/api/products');
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+
+
   // Filter items based on the search query
   const filteredItems = items.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -148,8 +165,20 @@ const PageLayout = () => {
     navigate(`/details`, { state: { product: item } });
   };
 
+  const isLoggedIn = false; // Replace this with your actual login check
+
+
   const handleCheckout = () => {
-    navigate('/checkout');
+    if (!isLoggedIn) {
+      // Store the intended destination
+      localStorage.setItem('redirectAfterLogin', '/checkout');
+      // Redirect to login page
+      navigate('/login'); // Adjust the path according to your routing
+    } else {
+      // Proceed with checkout logic
+      console.log('Proceeding to checkout...');
+      navigate('/checkout'); // Redirect to checkout page
+    }
   };
 
 
@@ -214,8 +243,6 @@ const PageLayout = () => {
                       <div className="cart-subtotal">
                         <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
                       </div>
-
-                      {/* Checkout Button */}
                       <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
                     </div>
 
@@ -311,11 +338,11 @@ const PageLayout = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {getCurrentPageItems().map((item, index) => (
+          {products.map((item, index) => (
             <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
                 {item.image ? (
-                  <img src={item.image} alt={item.name} className="product-image" />
+                  <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
                 ) : (
                   <span className="image-placeholder">Image not available</span>
                 )}
@@ -323,6 +350,7 @@ const PageLayout = () => {
               <p className="product-name">{item.name}</p>
               <p className="product-cost">Ksh{item.price}</p>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
+
             </div>
           ))}
 

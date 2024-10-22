@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaBars, FaTimes, FaSearch, FaRegHeart, FaRegUser } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -91,7 +91,11 @@ const PageLayout = () => {
             onChange={handleSearch} // Update search query on input change
           />
           </div></li>
-          <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
+          <li>
+            <Link to={{ pathname: "/UserProf", state: { section: 'wishlist' } }}>
+              <FaRegHeart className='header-icon' />
+            </Link>
+          </li>
           <li className="cart-icon-container">
             <div className="cart-icon" onClick={toggleDropdown}>
               <BsCart3 />
