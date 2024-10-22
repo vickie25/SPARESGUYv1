@@ -7,6 +7,7 @@ import airfilter from '../Homepage/HomepageImages/airfilters.svg';
 import plugs from '../Homepage/HomepageImages/plugs.svg';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
+import axios from 'axios';
 
 const productDetail = () => {
 
@@ -34,10 +35,10 @@ const productDetail = () => {
 
         <Row>
           <Col md={2}>
-            <img 
-              src={rearlights} 
-              alt="Toyota Taillight" 
-              className="img-fluid"  
+            <img
+              src={rearlights}
+              alt="Toyota Taillight"
+              className="img-fluid"
               style={{ maxHeight: '250px', width: 'auto' }}
             />
           </Col>
@@ -49,8 +50,8 @@ const productDetail = () => {
             <div className="rating">
               ★★★★★ <span>(12 Reviews)</span>
             </div>
-            <p>Enhance your driving visibility with our premium Car Headlight, designed for optimal 
-              performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road 
+            <p>Enhance your driving visibility with our premium Car Headlight, designed for optimal
+              performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road
               visibility even in low-light or harsh weather conditions.</p>
 
             <div className="quantity-control d-flex align-items-center mb-3">
@@ -89,7 +90,7 @@ const productDetail = () => {
             </div>
           )}
           {activeTab === 'reviews' && (
-            <div className="tab-pane active"> 
+            <div className="tab-pane active">
               <Reviews />
             </div>
           )}
@@ -99,11 +100,11 @@ const productDetail = () => {
           {relatedProducts.map((product) => (
             <Col md={3} key={product.id} style={{ justifyContent: 'space-between', alignContent: 'flex-end' }}>
               <div className="product-card text-center">
-                <img 
-                  src={product.image} 
-                  alt={product.name} 
-                  className="img-fluid mb-2" 
-                  style={{ height: '150px', objectFit: 'cover', marginBottom: '4px' }} 
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="img-fluid mb-2"
+                  style={{ height: '150px', objectFit: 'cover', marginBottom: '4px' }}
                 />
                 <p>{product.name}</p>
                 <p><strong>{product.price}</strong></p>
