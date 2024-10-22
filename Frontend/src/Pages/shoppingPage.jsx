@@ -72,10 +72,21 @@ const PageLayout = () => {
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const toggleCategory = (category) => {
-    setCheckedCategories((prev) =>
-      prev.includes(category) ? prev.filter((item) => item !== category) : [...prev, category]
-    );
+
+  const toggleCategory = async (condition) => {
+    const newCheckedCategories = checkedCategories.includes(condition)
+      ? checkedCategories.filter((cat) => cat !== condition)
+      : [...checkedCategories, condition];
+
+    setCheckedCategories(newCheckedCategories);
+
+    // Fetch items based on the selected condition
+    if (newCheckedCategories.includes(condition)) {
+      const response = await axios.get('/api/items', { params: { condition } });
+      setFilteredItems(response.data);
+    } else {
+      setFilteredItems([]);
+    }
   };
 
   const handlePriceChange = (value) => setPriceRange(value);
@@ -256,7 +267,6 @@ const PageLayout = () => {
       </div>
 
 
-
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
           <div className="categories-container">
@@ -296,7 +306,6 @@ const PageLayout = () => {
             />
             <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
           </div>
-
           <div className="categories-container">
             <h3>Filter by condition</h3>
             <ul>
@@ -306,6 +315,11 @@ const PageLayout = () => {
                 </li>
               ))}
             </ul>
+            <div className="filtered-items">
+              {filteredItems.map((item) => (
+                <div key={item.id}>{item.name}</div>
+              ))}
+            </div>
           </div>
         </aside>
 
