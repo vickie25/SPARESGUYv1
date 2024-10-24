@@ -50,6 +50,8 @@ export const registerUser = async (req, res) => {
             message: "Server error" // Generic error message for the client
         });
     }
+
+    
 };
 
 //login a user
