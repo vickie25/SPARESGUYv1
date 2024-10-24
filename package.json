@@ -13,11 +13,15 @@
   "author": "apbc africa",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
+    "bcrypt": "^5.1.1",
+=======
 
     "axios": "^1.7.7",
 
     "bcrypt": "^5.1.1",
 
+>>>>>>> 48bf8c8eb5a6898f3856b8b8942fa6700658c39f
     "body-parser": "^1.20.3",
     "concurrent": "^0.3.2",
     "concurrently": "^9.0.1",
