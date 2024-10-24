@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './PagesCSS/Login.css';
-import LoginFrame from '../Homepage/HomepageImages/LoginFrame.svg';
+import LoginFrame from '../Homepage/HomepageImages/gears.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUserMutation } from '../slices/usersApiSlice';
 
@@ -65,6 +65,7 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
+          <br></br>
           <input 
             type="password"
             name="password"
