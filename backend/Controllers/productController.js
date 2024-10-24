@@ -24,6 +24,8 @@ export const uploadImage = (req, res) => {
   res.status(200).json({ imageUrl: `/uploads/${req.file.filename}` });
 };
 // Create a new product
+//route POST /api/products
+//access private/admin
 export const createProduct = async (req, res) => {
   console.log("product added successfully")
   try {
