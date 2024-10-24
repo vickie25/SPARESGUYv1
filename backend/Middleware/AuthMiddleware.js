@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 dotenv.config()
 
  const authMiddleware = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.cookies.token;
     console.log (token, "This is the token")
     
     const key = "mySuperSecretKey123!";
