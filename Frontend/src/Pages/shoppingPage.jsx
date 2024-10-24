@@ -106,10 +106,6 @@ const PageLayout = () => {
     return filteredItems.slice(startIndex, endIndex);
   };
 
-  const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
-  const endItemIndex = Math.min(currentPage * itemsPerPage, filteredItems.length);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
@@ -149,11 +145,16 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
   const handleProductClick = (item) => {
     navigate(`/product`, { state: { product: item } });
@@ -260,7 +261,7 @@ const PageLayout = () => {
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            <p>Showing {startItemIndex} -- {endItemIndex} of {filteredItems.length}</p>
+            {/* <p>Showing {startIndex} -- {endItemIndex} of {filteredItems.length}</p> */}
 
           </div>
         </div>
@@ -328,7 +329,7 @@ const PageLayout = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {filteredProducts.map((item, index) => (
+          {currentItems.map((item, index) => (
             <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
               <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="product-image-container">
@@ -347,7 +348,6 @@ const PageLayout = () => {
               </button>
             </div>
           ))}
-
 
           {filteredProducts.length === 0 && searchQuery && (
             <div className="no-results">
