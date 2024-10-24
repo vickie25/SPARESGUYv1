@@ -24,7 +24,11 @@ import { useCart } from '../context/CartContext.jsx';
 const PageLayout = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    // Load cart from localStorage if available
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -96,21 +100,6 @@ const PageLayout = () => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  // Function to get items for the current page and apply search filter
-  const getCurrentPageItems = () => {
-    const filteredItems = items.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) // Ensure case-insensitive search
-    );
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredItems.slice(startIndex, endIndex);
-  };
-
-  const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
-  const endItemIndex = Math.min(currentPage * itemsPerPage, filteredItems.length);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
-
   // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -122,26 +111,61 @@ const PageLayout = () => {
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
   // Function to add a product to the cart
-  const handleAddToCart = (product) => {
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const handleAddToCart = async (product) => {
     setCart((prevCart) => {
       // Check if the product already exists in the cart
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const existingItem = prevCart.find(item => item.productId === product._id);
 
       if (existingItem) {
         // If it exists, update the quantity
         return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        // If it doesn't exist, add it with quantity 1
-        return [...prevCart, { ...product, quantity: 1 }];
+        // If it doesn't exist, add it as a new item
+        return [...prevCart, {
+          productId: product._id,  // Explicitly set productId
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        }];
       }
     });
+
+    // Rest of your code for backend communication...
+    const cartId = 'your-cart-id';
+    const productData = {
+      cartId,
+      productId: product._id,
+      quantity: 1,
+      totalAmount: calculateSubtotal(),
+    };
+
+    try {
+      await axios.post('http://localhost:8000/api/cart/add', productData);
+    } catch (error) {
+      console.error('Error adding product to cart in database', error);
+    }
   };
 
-  const handleDelete = (id) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
+  const handleDelete = async (productId) => {
+    try {
+      // Update frontend state
+      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
+
+      // Delete from backend
+      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
+    } catch (error) {
+      console.error('Error deleting product from cart:', error);
+      // Optionally revert the cart state if backend delete fails
+      // You might want to show an error message to the user
+    }
   };
 
   // Toggle dropdown visibility
@@ -149,14 +173,20 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
   const handleProductClick = (item) => {
-    navigate(`/details`, { state: { product: item } });
+    navigate(`/product`, { state: { product: item } });
   };
 
   const isLoggedIn = false; // Replace this with your actual login check
@@ -211,15 +241,16 @@ const PageLayout = () => {
                     <div>
                       <h2>Order Summary</h2>
                       {cart.map((item) => (
-                        <div key={item.id} className="cart-dropdown-item">
+                        <div key={item.productId} className="cart-dropdown-item"> {/* Use unique productId for key */}
                           <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                           <div className="cart-item-details">
                             <h4>{item.name}</h4>
                             <p><b>{item.quantity} * Ksh{item.price} </b></p>
-                            <p><b>Total: Ksh{item.price * item.quantity}</b></p>
+                            <p><b>Total: Ksh{item.price * item.quantity}</b></p> {/* Total price calculated based on quantity */}
                           </div>
+
                           <button
-                            onClick={() => removeFromCart(item.id)} // Delete item
+                            onClick={() => handleDelete(item.productId)}
                             className="delete-button"
                           >
                             <RiDeleteBin6Line />
@@ -235,6 +266,7 @@ const PageLayout = () => {
                     </div>
                   )}
                 </div>
+
               )}
             </li>
             <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
@@ -260,12 +292,11 @@ const PageLayout = () => {
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            <p>Showing {startItemIndex} -- {endItemIndex} of {filteredItems.length}</p>
+            <p>Showing {startIndex} -- {filteredProducts.length} of {filteredProducts.length}</p>
 
           </div>
         </div>
       </div>
-
 
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -328,19 +359,22 @@ const PageLayout = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {filteredProducts.map((item, index) => (
-            <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
-              <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
-                {item.image ? (
-                  <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
-                ) : (
-                  <span className="image-placeholder">Image not available</span>
-                )}
-              </div>
-              <p className="product-name">{item.name}</p>
-              <p className="product-cost">Ksh{item.price}</p>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
-
+          {currentItems.map((item, index) => (
+            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+              <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="product-image-container">
+                  {item.image ? (
+                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+                  ) : (
+                    <span className="image-placeholder">Image not available</span>
+                  )}
+                </div>
+                <p className="product-name">{item.name}</p>
+                <p className="product-cost">Ksh {item.price}</p>
+              </Link>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>
+                Add to Cart
+              </button>
             </div>
           ))}
 
@@ -349,7 +383,6 @@ const PageLayout = () => {
               <p>No products found matching "{searchQuery}"</p>
             </div>
           )}
-
           <div className="grid-pagination">
             <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
               {currentPage > 1 && <IoIosArrowRoundBack />}
