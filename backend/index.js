@@ -2,7 +2,9 @@ import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/UserRoutes.js';
 import productRoutes from './routes/productRoutes.js'
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import  authMiddleware  from './Middleware/AuthMiddleware.js';
+import cartRoutes from './routes/cartRoutes.js'
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
 
@@ -28,8 +30,17 @@ app.get('/', (req, res) => {
 // User routes
 app.use('/api/users', userRoutes);
 
+
 // Product routes
 app.use('/api/products', productRoutes);
+
+//Cart routes
+app.use('/api/cart', cartRoutes);
+
+
+// payment routes
+
+app.use('/api/payments', paymentInfoRoutes);
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {

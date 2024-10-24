@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import "./PagesCSS/shoppingPage.css";
 import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import { FaRegHeart, FaRegUser } from "react-icons/fa";
@@ -18,64 +18,75 @@ import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios'
+import { useCart } from '../context/CartContext.jsx';
+
 
 const PageLayout = () => {
   const [products, setProducts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState([]);
+  const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const navigate = useNavigate();
   const productsPerPage = 9;
   const itemsPerPage = 9;
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const items = [
-    { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
-    { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
-    { id: 3, name: "Product 3", price: 300, image: "path/to/image3" },
-    { id: 4, name: "Product 4", price: 450, image: "path/to/image4" },
-    { id: 5, name: "Product 5", price: 800, image: "path/to/image5" },
-    { id: 6, name: "Product 6", price: 600, image: "path/to/image6" },
-    { id: 7, name: "Product 7", price: 550, image: "path/to/image7" },
-    { id: 8, name: "Product 8", price: 1000, image: "path/to/image8" },
-    { id: 9, name: "Product 9", price: 350, image: "path/to/image9" },
-    { id: 10, name: "Product 10", price: 750, image: "path/to/image10" },
-    { id: 11, name: "Product 11", price: 900, image: "path/to/image11" },
-    { id: 12, name: "Product 12", price: 650, image: "path/to/image12" },
-    { id: 13, name: "Product 13", price: 300, image: "path/to/image13" },
-    { id: 14, name: "Product 14", price: 500, image: "path/to/image14" },
-    { id: 15, name: "Product 15", price: 850, image: "path/to/image15" },
-    { id: 16, name: "Product 16", price: 400, image: "path/to/image16" },
-    { id: 17, name: "Product 17", price: 700, image: "path/to/image17" },
-    { id: 18, name: "Product 18", price: 250, image: "path/to/image18" },
-    { id: 19, name: "Product 19", price: 950, image: "path/to/image19" },
-    { id: 20, name: "Product 20", price: 550, image: "path/to/image20" },
-    { id: 21, name: "Product 21", price: 300, image: "path/to/image21" },
-    { id: 22, name: "Product 22", price: 450, image: "path/to/image22" },
-    { id: 23, name: "Product 23", price: 600, image: "path/to/image23" },
-    { id: 24, name: "Product 24", price: 750, image: "path/to/image24" },
-    { id: 25, name: "Product 25", price: 500, image: "path/to/image25" },
-    { id: 26, name: "Product 26", price: 800, image: "path/to/image26" },
-    { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
   ];
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('/api/products');
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Filter products based on search query using useMemo for performance
+  const filteredProducts = useMemo(() => {
+    return products.filter((item) => {
+      const searchTerm = searchQuery.toLowerCase();
+      return (
+        item.name.toLowerCase().includes(searchTerm) ||
+        item.price.toString().includes(searchTerm)
+      );
+    });
+  }, [products, searchQuery]);
 
   // Filter items based on the search query
   const filteredItems = items.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const toggleMenu = () => setIsOpen(!isOpen);
 
+  const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const toggleCategory = (category) => {
-    setCheckedCategories((prev) =>
-      prev.includes(category) ? prev.filter((item) => item !== category) : [...prev, category]
-    );
+  const toggleCategory = async (condition) => {
+    const newCheckedCategories = checkedCategories.includes(condition)
+      ? checkedCategories.filter((cat) => cat !== condition)
+      : [...checkedCategories, condition];
+
+    setCheckedCategories(newCheckedCategories);
+
+    // Fetch items based on the selected condition
+    if (newCheckedCategories.includes(condition)) {
+      const response = await axios.get('/api/items', { params: { condition } });
+      setFilteredItems(response.data);
+    } else {
+      setFilteredItems([]);
+    }
   };
 
   const handlePriceChange = (value) => setPriceRange(value);
@@ -148,8 +159,13 @@ const PageLayout = () => {
     navigate(`/details`, { state: { product: item } });
   };
 
+  const isLoggedIn = false; // Replace this with your actual login check
+
+
   const handleCheckout = () => {
-    navigate('/checkout');
+    // Proceed with checkout logic
+    console.log('Proceeding to checkout...');
+    navigate('/checkout'); // Redirect to checkout page
   };
 
 
@@ -166,13 +182,14 @@ const PageLayout = () => {
             <li><Link to="/shop">Shop</Link></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact Us</a></li>
-            <li> <div className="search-container"> <input
-              type="text"
-              placeholder="What are you looking for?"
-              className="search-input"
-              value={searchQuery}
-              onChange={handleSearch} // Update search query on input change
-            />
+            <li> <div className="search-container">
+              <input
+                type="text"
+                placeholder="What are you looking for?"
+                className="search-input"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
             </div></li>
             <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
             <li className="cart-icon-container">
@@ -195,14 +212,14 @@ const PageLayout = () => {
                       <h2>Order Summary</h2>
                       {cart.map((item) => (
                         <div key={item.id} className="cart-dropdown-item">
-                          <img src={item.image} alt={item.name} className="cart-item-image" />
+                          <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                           <div className="cart-item-details">
                             <h4>{item.name}</h4>
                             <p><b>{item.quantity} * Ksh{item.price} </b></p>
                             <p><b>Total: Ksh{item.price * item.quantity}</b></p>
                           </div>
                           <button
-                            onClick={() => handleDelete(item.id)} // Delete item
+                            onClick={() => removeFromCart(item.id)} // Delete item
                             className="delete-button"
                           >
                             <RiDeleteBin6Line />
@@ -214,11 +231,8 @@ const PageLayout = () => {
                       <div className="cart-subtotal">
                         <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
                       </div>
-
-                      {/* Checkout Button */}
                       <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
                     </div>
-
                   )}
                 </div>
               )}
@@ -251,7 +265,6 @@ const PageLayout = () => {
           </div>
         </div>
       </div>
-
 
 
       <main className={isDropdownVisible ? 'blur' : ''}>
@@ -293,7 +306,6 @@ const PageLayout = () => {
             />
             <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
           </div>
-
           <div className="categories-container">
             <h3>Filter by condition</h3>
             <ul>
@@ -303,6 +315,11 @@ const PageLayout = () => {
                 </li>
               ))}
             </ul>
+            <div className="filtered-items">
+              {filteredItems.map((item) => (
+                <div key={item.id}>{item.name}</div>
+              ))}
+            </div>
           </div>
         </aside>
 
@@ -311,11 +328,11 @@ const PageLayout = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {getCurrentPageItems().map((item, index) => (
+          {filteredProducts.map((item, index) => (
             <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
               <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
                 {item.image ? (
-                  <img src={item.image} alt={item.name} className="product-image" />
+                  <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
                 ) : (
                   <span className="image-placeholder">Image not available</span>
                 )}
@@ -323,8 +340,15 @@ const PageLayout = () => {
               <p className="product-name">{item.name}</p>
               <p className="product-cost">Ksh{item.price}</p>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
+
             </div>
           ))}
+
+          {filteredProducts.length === 0 && searchQuery && (
+            <div className="no-results">
+              <p>No products found matching "{searchQuery}"</p>
+            </div>
+          )}
 
           <div className="grid-pagination">
             <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
