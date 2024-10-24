@@ -15,7 +15,7 @@ const LoginPage = () => {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name === 'email') {
       setEmail(value); // Update email state
     } else if (name === 'password') {
@@ -29,10 +29,10 @@ const LoginPage = () => {
 
     try {
       console.log(password); // Log password for debugging
-      
+
       // Create credentials object from email and password state
       const credentials = { email, password };
-      
+
       // Send login request to backend
       const res = await loginUser(credentials).unwrap();
       console.log('Login successful:', res);
@@ -47,17 +47,17 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-image">
-        <img 
-          src={LoginFrame} 
-          alt="Frame" 
-          className="img-fluid" 
+        <img
+          src={LoginFrame}
+          alt="Frame"
+          className="img-fluid"
         />
       </div>
       <div className="login-form">
         <h1>Welcome Back!</h1>
         <p>Please enter your details below</p>
         <form onSubmit={handleLogin}>
-          <input 
+          <input
             type="text"
             name="email"
             placeholder="Email"
@@ -65,8 +65,12 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
+<<<<<<< HEAD
           <br></br>
           <input 
+=======
+          <input
+>>>>>>> 48bf8c8eb5a6898f3856b8b8942fa6700658c39f
             type="password"
             name="password"
             placeholder="Password"
