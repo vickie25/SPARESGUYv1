@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './PagesCSS/Registration.css';
-import LoginFrame from '../Homepage/HomepageImages/LoginFrame.svg';
+import LoginFrame from '../Homepage/HomepageImages/gears.jpg';
 import { useRegisterUserMutation } from '../slices/usersApiSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -78,7 +78,11 @@ const RegistrationPage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-          <button type="submit" disabled={isLoading}>
+          <br></br>
+          <button 
+  type="submit" 
+  disabled={isLoading}  className="create-account"
+>
             {isLoading ? 'Registering...' : 'Create Account'}
           </button>
         </form>
@@ -88,7 +92,7 @@ const RegistrationPage = () => {
           <p>Already have an account? <a href="/login">Log in</a></p>
         </div>
       </div>
-    </div>
+    </div>              
   );
 };
 

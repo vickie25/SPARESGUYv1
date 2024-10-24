@@ -1,0 +1,302 @@
+main {
+  display: flex;
+  margin: 2% 5%;
+  height: 70vh;
+  justify-content: space-between;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20%;
+  background-color: #f9f9f9;
+  padding: 20px 0; /* Add some vertical padding */
+}
+
+.display-image-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 20px; /* Add space below the image */
+}
+
+.display-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #f9f9f9;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.sidebar ul li {
+  padding: 20px;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover {
+  background-color: #000000;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #333;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Styling for the active list item */
+.sidebar ul li.active {
+  background-color: #000; /* Blue background to indicate active */
+  color: white; /* White text for contrast */
+  font-weight: bold;
+  border-left: 4px solid #f0f0; /* Left border to emphasize the active state */
+}
+
+/* Icon styling */
+.sidebar ul li .icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+/* Change background on hover for inactive items */
+.sidebar ul li:hover:not(.active) {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.icon {
+  left: 10px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+}
+
+.display-image-container-top {
+  flex: 1;
+}
+
+.display-image-top {
+  max-width: 80px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.userdetails {
+  width: 80%;
+  justiify-content: center;
+}
+
+.details {
+  width: 90%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+  grid-gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin: 30px 20px;
+}
+
+.details > div:nth-child(5) {
+  grid-column: span 2; /* Make the fifth item span both columns */
+}
+
+.details > div {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+label {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #000;
+  border-radius: 4px;
+}
+
+.edit-button {
+  border-radius: 10px;
+}
+.save-button {
+  border-radius: 10px;
+}
+
+/* Container for the entire grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    minmax(250px, 1fr)
+  ); /* 3 equal columns, each with a minimum width of 250px */
+  gap: 20px; /* Space between grid items */
+  padding: 20px;
+  justify-items: center;
+  justify-content: space-evenly; /* Spread items evenly across the entire width */
+}
+
+.grid-item {
+  position: relative; /* Needed to position the remove button absolutely */
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.remove-wishlist-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* Large minus sign */
+  color: #ff4d4d; /* Red color for the minus sign */
+  cursor: pointer;
+  z-index: 10;
+}
+
+.remove-wishlist-item:hover {
+  color: #ff0000; /* Darker red on hover */
+}
+
+/* Other styles for product images, names, etc. remain the same */
+.product-image-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.product-cost {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.add-to-cart-button:hover {
+  background-color: #f0f0;
+}
+
+/* Pagination controls */
+.grid-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.grid-number {
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.grid-number.active {
+  font-weight: bold;
+  color: #000;
+}
+
+.pagination-arrows {
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.pagination-arrows:hover {
+  color: #fff;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 25%;
+  }
+
+  .details {
+    grid-template-columns: 1fr; /* Single column layout */
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .details {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .display-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .details {
+    grid-gap: 10px;
+  }
+
+  label {
+    margin-top: 20px;
+  }
+
+  input {
+    padding: 6px;
+  }
+}

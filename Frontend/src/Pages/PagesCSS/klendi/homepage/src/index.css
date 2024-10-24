@@ -1,0 +1,70 @@
+.navbar {
+  /* Navbar.css */
+
+  background-color: #140808; /* Dark background */
+  padding: 2px; /* Padding */
+  position: fixed; /* Fixed position */
+  top: 0; /* Align to the top */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+.navbar ul {
+  list-style: none; /* Remove default list styles */
+  margin: 0; /* Remove margin */
+  padding: 0; /* Remove padding */
+  display: flex; /* Flexbox layout */
+  justify-content: right; /* Space items evenly */
+}
+
+.navbar li {
+  display: inline; /* Inline list items */
+}
+
+.navbar a {
+  color: white; /* Text color */
+  text-decoration: none; /* Remove underline */
+  padding: 8px 16px; /* Padding for links */
+}
+
+.navbar a:hover {
+  background-color: #555; /* Change background on hover */
+}
+
+.crochet{
+  background-color: #3515a800; /* Dark background */
+  padding: 10px; /* Padding */
+  position: left ; /* Fixed position */
+  top: 34; /* Align to the top */
+  width: 50; /* Full width */
+  z-index: 10; /* Ensure it stays above other content */
+  height: 200px;
+}
+.h1{
+  color: rgb(20, 8, 8); /* Text color */
+  text-decoration:rgb(3, 31, 15); /* Remove underline */
+  text-wrap: 10px; /* Padding for links */
+  padding: 8px 16px; /* Padding for links */
+  
+}
+.cro{
+  background-color: #3515a800; /* Dark background */
+  padding: 10px; /* Padding */
+  position: left ; /* Fixed position */
+  top: 34; /* Align to the top */
+  width: 50; /* Full width */
+  z-index: 10; /* Ensure it stays above other content */
+  height: 200px;
+}
+.p1{
+  color: rgb(20, 8, 8); /* Text color */
+  text-decoration:rgb(3, 31, 15); /* Remove underline */
+  text-wrap: 10px; /* Padding for links */
+  padding: 8px 16px; /* Padding for links */
+  font-size:30px;
+  font-style: italic;
+  
+}
+.body{
+  background-color: rgb(199, 198, 201);
+}
