@@ -156,7 +156,7 @@ const PageLayout = () => {
   };
 
   const handleProductClick = (item) => {
-    navigate(`/details`, { state: { product: item } });
+    navigate(`/product`, { state: { product: item } });
   };
 
   const isLoggedIn = false; // Replace this with your actual login check
@@ -329,20 +329,25 @@ const PageLayout = () => {
           </div>
 
           {filteredProducts.map((item, index) => (
-            <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
-              <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
-                {item.image ? (
-                  <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
-                ) : (
-                  <span className="image-placeholder">Image not available</span>
-                )}
-              </div>
-              <p className="product-name">{item.name}</p>
-              <p className="product-cost">Ksh{item.price}</p>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
-
+            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+              <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="product-image-container">
+                  {item.image ? (
+                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+                  ) : (
+                    <span className="image-placeholder">Image not available</span>
+                  )}
+                </div>
+                <p className="product-name">{item.name}</p>
+                <p className="product-cost">Ksh {item.price}</p>
+                <p className="product-id">ID: {item._id}</p>
+              </Link>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>
+                Add to Cart
+              </button>
             </div>
           ))}
+
 
           {filteredProducts.length === 0 && searchQuery && (
             <div className="no-results">
