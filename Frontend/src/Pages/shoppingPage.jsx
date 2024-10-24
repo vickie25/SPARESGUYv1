@@ -24,7 +24,11 @@ import { useCart } from '../context/CartContext.jsx';
 const PageLayout = () => {
   const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    // Load cart from localStorage if available
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -118,26 +122,61 @@ const PageLayout = () => {
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
   // Function to add a product to the cart
-  const handleAddToCart = (product) => {
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const handleAddToCart = async (product) => {
     setCart((prevCart) => {
       // Check if the product already exists in the cart
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const existingItem = prevCart.find(item => item.productId === product._id);
 
       if (existingItem) {
         // If it exists, update the quantity
         return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        // If it doesn't exist, add it with quantity 1
-        return [...prevCart, { ...product, quantity: 1 }];
+        // If it doesn't exist, add it as a new item
+        return [...prevCart, {
+          productId: product._id,  // Explicitly set productId
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        }];
       }
     });
+
+    // Rest of your code for backend communication...
+    const cartId = 'your-cart-id';
+    const productData = {
+      cartId,
+      productId: product._id,
+      quantity: 1,
+      totalAmount: calculateSubtotal(),
+    };
+
+    try {
+      await axios.post('http://localhost:8000/api/cart/add', productData);
+    } catch (error) {
+      console.error('Error adding product to cart in database', error);
+    }
   };
 
-  const handleDelete = (id) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
+  const handleDelete = async (productId) => {
+    try {
+      // Update frontend state
+      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
+
+      // Delete from backend
+      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
+    } catch (error) {
+      console.error('Error deleting product from cart:', error);
+      // Optionally revert the cart state if backend delete fails
+      // You might want to show an error message to the user
+    }
   };
 
   // Toggle dropdown visibility
@@ -154,6 +193,7 @@ const PageLayout = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
   const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
   const handleProductClick = (item) => {
@@ -212,15 +252,16 @@ const PageLayout = () => {
                     <div>
                       <h2>Order Summary</h2>
                       {cart.map((item) => (
-                        <div key={item.id} className="cart-dropdown-item">
+                        <div key={item.productId} className="cart-dropdown-item"> {/* Use unique productId for key */}
                           <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                           <div className="cart-item-details">
                             <h4>{item.name}</h4>
                             <p><b>{item.quantity} * Ksh{item.price} </b></p>
-                            <p><b>Total: Ksh{item.price * item.quantity}</b></p>
+                            <p><b>Total: Ksh{item.price * item.quantity}</b></p> {/* Total price calculated based on quantity */}
                           </div>
+
                           <button
-                            onClick={() => removeFromCart(item.id)} // Delete item
+                            onClick={() => handleDelete(item.productId)}
                             className="delete-button"
                           >
                             <RiDeleteBin6Line />
@@ -236,6 +277,7 @@ const PageLayout = () => {
                     </div>
                   )}
                 </div>
+
               )}
             </li>
             <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
@@ -261,7 +303,7 @@ const PageLayout = () => {
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            {/* <p>Showing {startIndex} -- {endItemIndex} of {filteredItems.length}</p> */}
+            <p>Showing {startIndex} -- {filteredProducts.length} of {filteredProducts.length}</p>
 
           </div>
         </div>
@@ -341,7 +383,6 @@ const PageLayout = () => {
                 </div>
                 <p className="product-name">{item.name}</p>
                 <p className="product-cost">Ksh {item.price}</p>
-                <p className="product-id">ID: {item._id}</p>
               </Link>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>
                 Add to Cart
@@ -354,7 +395,6 @@ const PageLayout = () => {
               <p>No products found matching "{searchQuery}"</p>
             </div>
           )}
-
           <div className="grid-pagination">
             <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
               {currentPage > 1 && <IoIosArrowRoundBack />}
