@@ -100,17 +100,6 @@ const PageLayout = () => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  // Function to get items for the current page and apply search filter
-  const getCurrentPageItems = () => {
-    const filteredItems = items.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) // Ensure case-insensitive search
-    );
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredItems.slice(startIndex, endIndex);
-  };
-
-
   // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -308,7 +297,6 @@ const PageLayout = () => {
           </div>
         </div>
       </div>
-
 
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
