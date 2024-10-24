@@ -2,6 +2,7 @@ import User from "../Models/User.js";
 import bcrypt from 'bcrypt';
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken'
+import generateToken from "../Utils/generateToken.js";
 
 
 dotenv.config()
@@ -39,6 +40,8 @@ export const registerUser = async (req, res) => {
         // Save the user to the database
         await user.save();
 
+        generateToken(res, email)
+        console.log("Tkn created!")
         // Send success response
         res.status(201).json({
             message: "User registered successfully"

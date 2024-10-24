@@ -7,6 +7,7 @@ import  authMiddleware  from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js'
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 
 // Serve files in the uploads directory
 app.use('/uploads', express.static('uploads'));
