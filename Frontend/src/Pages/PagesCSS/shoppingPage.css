@@ -112,7 +112,6 @@ main {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
   gap: 10px;
-  width: 75%;
   min-height: 500px; /* Ensure the section has a minimum height */
   position: relative; /* Make sure the pagination sticks within this section */
   padding-bottom: 100px; /* Adds space so pagination doesn't overlap content */
@@ -325,7 +324,6 @@ main {
   align-items: flex-end;
   bottom: 0;
   right: 0;
-  padding-right: 20px;
   background-color: white; /* Ensures it has a background and doesn't overlap with content */
   z-index: 10; /* Brings it above the other content */
   padding: 10px 20px; /* Adds padding for spacing */
@@ -334,13 +332,13 @@ main {
 
 .grid-number {
   cursor: pointer;
-  margin: 0 10px;
+  margin: 0 5px;
   font-size: 24px;
   color: #333;
 }
 
 .grid-number.active {
-  color: #daa520;
+  color: #b8860b;
   font-weight: bold;
   transform: scale(1.2);
 }
@@ -407,7 +405,7 @@ aside {
   flex-direction: column;
   align-items: flex-start;
   overflow-y: auto;
-  padding: 10px;
+  padding: 20px;
 }
 
 .categories-container {

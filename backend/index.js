@@ -1,9 +1,10 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+import cors from 'cors';
 import userRoutes from './routes/UserRoutes.js';
 import productRoutes from './routes/productRoutes.js'
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
-import  authMiddleware  from './Middleware/AuthMiddleware.js';
+import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js'
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
@@ -13,6 +14,10 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+// Middleware
+app.use(cors()); // Enable CORS for all routes
+app.use(express.json());
 
 // Middleware
 app.use(express.json());

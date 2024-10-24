@@ -15,15 +15,11 @@ import UserProfile from './Pages/UserProfile.jsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-import {Provider} from 'react-redux';
- import store from './store.js'
-
-
 import { Provider } from 'react-redux';
-
-import store from './store.js';
-
 import store from './store.js'
+
+
+
 
 
 
@@ -40,7 +36,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path='/login' element={<Login />} />
     <Route path='/registration' element={<Registration />} />
     <Route path='/shop' element={<Shop />} />
-    <Route path='/details' element={<ProductDetail />} />
+    <Route path="/product/:id" element={<ProductDetail />} />
     <Route path='/cart' element={<CartPage />} />
     <Route path='/revew' element={<Review />} />
     <Route path='/checkout' element={<Checkout />} />
