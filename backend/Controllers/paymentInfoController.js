@@ -22,9 +22,10 @@ export const createPaymentInfo = async (req, res) => {
 
     // Save the paymentInfo to the database
     await paymentInfo.save();
-
+    console.log(res, "respomse ")
     // Return success response
     return res.status(201).json({ message: "Payment information saved successfully", paymentInfo });
+
   } catch (error) {
     // Return error response if something goes wrong
     return res.status(500).json({ message: "Error saving payment information", error: error.message });
