@@ -1,21 +1,21 @@
 // routes/deliveryInfoRoutes.js
-const express = require('express');
+import express from 'express'
 const router = express.Router();
-const deliveryInfoController = require('../Controllers/deliveryInfoController');
+import {createDeliveryInfo, getAllDeliveryInfo, getDeliveryInfoById, updateDeliveryInfo,deleteDeliveryInfo} from '../Controllers/deliveryInfoController.js';
 
 // Route to create a new delivery information entry
-router.post('/delivery-info', deliveryInfoController.createDeliveryInfo);
+router.post('/delivery-info', createDeliveryInfo);
 
 // Route to retrieve all delivery information entries
-router.get('/delivery-info', deliveryInfoController.getAllDeliveryInfo);
+router.get('/delivery-info/all', getAllDeliveryInfo);
 
-// Route to retrieve a single delivery information entry by ID
-router.get('/delivery-info/:id', deliveryInfoController.getDeliveryInfoById);
+// // Route to retrieve a single delivery information entry by ID
+ router.get('/delivery-info/:id', getDeliveryInfoById);
 
-// Route to update delivery information entry by ID
-router.put('/delivery-info/:id', deliveryInfoController.updateDeliveryInfo);
+// // Route to update delivery information entry by ID
+ router.put('/delivery-info/:id', updateDeliveryInfo);
 
-// Route to delete delivery information entry by ID
-router.delete('/delivery-info/:id', deliveryInfoController.deleteDeliveryInfo);
+// // Route to delete delivery information entry by ID
+ router.delete('/delivery-info/:id',deleteDeliveryInfo);
 
-module.exports = router;
+export default router
