@@ -430,8 +430,8 @@ const PageLayout = () => {
 
       <footer>
         <Footer />
-      </footer>
-    </div>
+      </footer>  
+      </div>
 
   );
 };
