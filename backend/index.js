@@ -5,6 +5,7 @@ import productRoutes from './routes/productRoutes.js'
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import  authMiddleware  from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js'
+import deliveryInfoRoutes from './routes/deliveryInfoRoute.js'
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
 
@@ -41,6 +42,9 @@ app.use('/api/cart', cartRoutes);
 // payment routes
 
 app.use('/api/payments', paymentInfoRoutes);
+// deliveryInfo routes
+
+app.use('/api/deliveryInfo', deliveryInfoRoutes);
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
