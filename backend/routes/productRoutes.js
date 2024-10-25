@@ -1,13 +1,8 @@
 import express from "express";
 import productController from "../Controllers/productController.js";
 import authMiddleware from "../Middleware/AuthMiddleware.js";
-<<<<<<< HEAD
 import roleMiddleware from "../Middleware/roleMiddleware.js";
 import mongoose from 'mongoose'; // Import mongoose for ObjectId validation
-=======
-
-
->>>>>>> 01b0cb9f6b1643dc44b633c5884748d78136a897
 
 const router = express.Router();
 

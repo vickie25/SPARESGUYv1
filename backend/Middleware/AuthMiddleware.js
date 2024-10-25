@@ -3,10 +3,10 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
- const authMiddleware = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
-    console.log (token, "This is the token")
-    
+    console.log(token, "This is the token")
+
     const key = "mySuperSecretKey123!";
     console.log(key, "This isthe key")
 
@@ -22,3 +22,4 @@ dotenv.config()
 };
 
 export default authMiddleware;
+
