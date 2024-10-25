@@ -57,6 +57,12 @@ const PageLayout = () => {
     fetchProducts();
   }, []);
 
+
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   // Filter products based on search query using useMemo for performance
   const filteredProducts = useMemo(() => {
     return products.filter((item) => {
@@ -191,13 +197,24 @@ const PageLayout = () => {
 
   const isLoggedIn = false; // Replace this with your actual login check
 
+  const handleCheckout = async () => {
+    const cartData = {
+      products: cart.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      totalAmount: calculateSubtotal(),
+    };
 
-  const handleCheckout = () => {
-    // Proceed with checkout logic
-    console.log('Proceeding to checkout...');
-    navigate('/checkout'); // Redirect to checkout page
+    try {
+      await axios.post('http://localhost:8000/api/cart/save', cartData);
+      console.log('Cart saved successfully!');
+      navigate('/checkout'); // Redirect to checkout page
+    } catch (error) {
+      console.error('Error saving cart to database', error);
+      alert('Error saving cart. Please try again.');
+    }
   };
-
 
   return (
     <div className="page-wrap">
@@ -241,24 +258,19 @@ const PageLayout = () => {
                     <div>
                       <h2>Order Summary</h2>
                       {cart.map((item) => (
-                        <div key={item.productId} className="cart-dropdown-item"> {/* Use unique productId for key */}
+                        <div key={item.productId} className="cart-dropdown-item">
                           <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                           <div className="cart-item-details">
                             <h4>{item.name}</h4>
                             <p><b>{item.quantity} * Ksh{item.price} </b></p>
-                            <p><b>Total: Ksh{item.price * item.quantity}</b></p> {/* Total price calculated based on quantity */}
+                            <p><b>Total: Ksh{item.price * item.quantity}</b></p>
                           </div>
-
-                          <button
-                            onClick={() => handleDelete(item.productId)}
-                            className="delete-button"
-                          >
+                          <button onClick={() => handleDelete(item.productId)} className="delete-button">
                             <RiDeleteBin6Line />
                           </button>
                         </div>
                       ))}
 
-                      {/* Subtotal Calculation */}
                       <div className="cart-subtotal">
                         <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
                       </div>
