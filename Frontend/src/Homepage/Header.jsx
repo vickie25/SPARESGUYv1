@@ -1,79 +1,225 @@
-import React, { useState, useContext } from 'react';
-import { FaBars, FaTimes, FaSearch, FaRegHeart, FaRegUser } from 'react-icons/fa';
-import { BsCart3 } from 'react-icons/bs';
+import React, { useEffect, useState, useMemo } from 'react';
+// import "./PagesCSS/shoppingPage.css";
+import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaRegHeart, FaRegUser } from "react-icons/fa";
+import { BsCart3 } from "react-icons/bs";
+import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
+import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
+import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+import Slider from 'rc-slider';
+import { HiOutlineTrophy } from "react-icons/hi2";
+import { HiOutlineCheckBadge } from "react-icons/hi2";
+import { BiSupport } from "react-icons/bi";
+import { RiHandCoinFill } from "react-icons/ri";
+import 'rc-slider/assets/index.css';
+import Footer from '../Homepage/Footer'
 import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios'
+import { useCart } from '../context/CartContext.jsx';
+
 
 const PageLayout = () => {
-  const [cart, setCart] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [products, setProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [cart, setCart] = useState(() => {
+    // Load cart from localStorage if available
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+  const { cartItems, removeItem } = useCart();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const navigate = useNavigate();
+  const productsPerPage = 9;
+  const itemsPerPage = 9;
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
   const items = [
-    { id: 1, name: "Product 1", price: 500, image: "path/to/image1" },
-    { id: 2, name: "Product 2", price: 700, image: "path/to/image2" },
-    { id: 3, name: "Product 3", price: 300, image: "path/to/image3" },
-    { id: 4, name: "Product 4", price: 450, image: "path/to/image4" },
-    { id: 5, name: "Product 5", price: 800, image: "path/to/image5" },
-    { id: 6, name: "Product 6", price: 600, image: "path/to/image6" },
-    { id: 7, name: "Product 7", price: 550, image: "path/to/image7" },
-    { id: 8, name: "Product 8", price: 1000, image: "path/to/image8" },
-    { id: 9, name: "Product 9", price: 350, image: "path/to/image9" },
-    { id: 10, name: "Product 10", price: 750, image: "path/to/image10" },
-    { id: 11, name: "Product 11", price: 900, image: "path/to/image11" },
-    { id: 12, name: "Product 12", price: 650, image: "path/to/image12" },
-    { id: 13, name: "Product 13", price: 300, image: "path/to/image13" },
-    { id: 14, name: "Product 14", price: 500, image: "path/to/image14" },
-    { id: 15, name: "Product 15", price: 850, image: "path/to/image15" },
-    { id: 16, name: "Product 16", price: 400, image: "path/to/image16" },
-    { id: 17, name: "Product 17", price: 700, image: "path/to/image17" },
-    { id: 18, name: "Product 18", price: 250, image: "path/to/image18" },
-    { id: 19, name: "Product 19", price: 950, image: "path/to/image19" },
-    { id: 20, name: "Product 20", price: 550, image: "path/to/image20" },
-    { id: 21, name: "Product 21", price: 300, image: "path/to/image21" },
-    { id: 22, name: "Product 22", price: 450, image: "path/to/image22" },
-    { id: 23, name: "Product 23", price: 600, image: "path/to/image23" },
-    { id: 24, name: "Product 24", price: 750, image: "path/to/image24" },
-    { id: 25, name: "Product 25", price: 500, image: "path/to/image25" },
-    { id: 26, name: "Product 26", price: 800, image: "path/to/image26" },
-    { id: 27, name: "Product 27", price: 950, image: "path/to/image27" }
   ];
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('/api/products');
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  // Filter products based on search query using useMemo for performance
+  const filteredProducts = useMemo(() => {
+    return products.filter((item) => {
+      const searchTerm = searchQuery.toLowerCase();
+      return (
+        item.name.toLowerCase().includes(searchTerm) ||
+        item.price.toString().includes(searchTerm)
+      );
+    });
+  }, [products, searchQuery]);
 
   // Filter items based on the search query
   const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery)
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const toggleCategory = async (condition) => {
+    const newCheckedCategories = checkedCategories.includes(condition)
+      ? checkedCategories.filter((cat) => cat !== condition)
+      : [...checkedCategories, condition];
+
+    setCheckedCategories(newCheckedCategories);
+
+    // Fetch items based on the selected condition
+    if (newCheckedCategories.includes(condition)) {
+      const response = await axios.get('/api/items', { params: { condition } });
+      setFilteredItems(response.data);
+    } else {
+      setFilteredItems([]);
+    }
+  };
+
+  const handlePriceChange = (value) => setPriceRange(value);
 
   // Handle search input changes
   const handleSearch = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  // Function to get items for the current page and apply search filter
-  const getCurrentPageItems = () => {
-    const filteredItems = items.filter(item =>
-      item.name.toLowerCase().includes(searchQuery) // Search by name (you can adjust to search by other fields)
-    );
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredItems.slice(startIndex, endIndex);
-  };
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
-
-  const handleDelete = (id) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
-  };
-
+  // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
+  // Calculating the indices for slicing the product array
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Function to add a product to the cart
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
+  const handleAddToCart = async (product) => {
+    setCart((prevCart) => {
+      // Check if the product already exists in the cart
+      const existingItem = prevCart.find(item => item.productId === product._id);
+
+      if (existingItem) {
+        // If it exists, update the quantity
+        return prevCart.map(item =>
+          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        // If it doesn't exist, add it as a new item
+        return [...prevCart, {
+          productId: product._id,  // Explicitly set productId
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        }];
+      }
+    });
+
+    // Prepare product data to send to backend
+    const cartId = 'your-cart-id'; // Replace with actual cart ID, if applicable
+    const productData = {
+      cartId,
+      productId: product._id,
+      quantity: 1, // Assuming adding one item at a time
+      totalAmount: calculateSubtotal(), // Assuming you have a function to calculate the total amount
+    };
+
+    try {
+      await axios.post('http://localhost:8000/api/cart/add', productData);
+      console.log('Product added to cart and saved to database successfully!');
+    } catch (error) {
+      console.error('Error adding product to cart in database', error);
+    }
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      // Update frontend state
+      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
+
+      // Delete from backend
+      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
+    } catch (error) {
+      console.error('Error deleting product from cart:', error);
+      // Optionally revert the cart state if backend delete fails
+      // You might want to show an error message to the user
+    }
+  };
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownVisible(!isDropdownVisible);
+  };
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleProductClick = (item) => {
+    navigate(`/product`, { state: { product: item } });
+  };
+
+  const isLoggedIn = false; // Replace this with your actual login check
+
+  const handleCheckout = async () => {
+    const cartData = {
+      products: cart.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      totalAmount: calculateSubtotal(),
+    };
+
+    try {
+      await axios.post('http://localhost:8000/api/cart/save', cartData);
+      console.log('Cart saved successfully!');
+      navigate('/checkout'); // Redirect to checkout page
+    } catch (error) {
+      console.error('Error saving cart to database', error);
+      alert('Error saving cart. Please try again.');
+    }
+  };
+
   return (
     <header>
+
       <nav>
         <div className="menu-toggle" onClick={toggleMenu}>
           {isOpen ? <FaTimes /> : <FaBars />}
@@ -83,19 +229,16 @@ const PageLayout = () => {
           <li><Link to="/shop">Shop</Link></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact Us</a></li>
-          <li> <div className="search-container"> <input
-            type="text"
-            placeholder="What are you looking for?"
-            className="search-input"
-            value={searchQuery}
-            onChange={handleSearch} // Update search query on input change
-          />
+          <li> <div className="search-container">
+            <input
+              type="text"
+              placeholder="What are you looking for?"
+              className="search-input"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
           </div></li>
-          <li>
-            <Link to={{ pathname: "/UserProf", state: { section: 'wishlist' } }}>
-              <FaRegHeart className='header-icon' />
-            </Link>
-          </li>
+          <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
           <li className="cart-icon-container">
             <div className="cart-icon" onClick={toggleDropdown}>
               <BsCart3 />
@@ -115,36 +258,32 @@ const PageLayout = () => {
                   <div>
                     <h2>Order Summary</h2>
                     {cart.map((item) => (
-                      <div key={item.id} className="cart-dropdown-item">
-                        <img src={item.image} alt={item.name} className="cart-item-image" />
+                      <div key={item.productId} className="cart-dropdown-item">
+                        <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                         <div className="cart-item-details">
                           <h4>{item.name}</h4>
                           <p><b>{item.quantity} * Ksh{item.price} </b></p>
                           <p><b>Total: Ksh{item.price * item.quantity}</b></p>
                         </div>
-                        <button
-                          onClick={() => handleDelete(item.id)} // Delete item
-                          className="delete-button"
-                        >
+                        <button onClick={() => handleDelete(item.productId)} className="delete-button">
                           <RiDeleteBin6Line />
                         </button>
                       </div>
                     ))}
 
-                    {/* Subtotal Calculation */}
                     <div className="cart-subtotal">
                       <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
                     </div>
-
-                    {/* Checkout Button */}
-                    <button className="checkout-button">Checkout</button>
+                    <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
                   </div>
-
                 )}
               </div>
+
             )}
           </li>
+          <li>Notification</li>
           <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
+          <li>Login</li>
         </ul>
       </nav>
     </header>

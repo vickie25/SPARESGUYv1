@@ -15,20 +15,9 @@ import UserProfile from './Pages/UserProfile.jsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
-<<<<<<< HEAD
-import {Provider} from 'react-redux';
- import store from './store.js'
 
-
-
-=======
 import { Provider } from 'react-redux';
 import store from './store.js'
->>>>>>> 55dc415f51f388686387eb3669e10b42751be40b
-
-
-
-
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
