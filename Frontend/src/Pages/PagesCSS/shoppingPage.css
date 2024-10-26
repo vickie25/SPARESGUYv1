@@ -7,6 +7,16 @@ body {
   padding-top: calc(2rem * 2 + 1em + 2rem);
 }
 
+.rc-slider {
+  margin: 20px 0;
+}
+
+.filter-icon {
+  display: none;
+  font-size: 24px;
+  margin: 10px;
+}
+
 .page-filter-showing {
   display: flex;
   justify-content: flex-start; /* Align items to the left */
@@ -169,7 +179,6 @@ main {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .add-to-cart-button:hover {
@@ -393,47 +402,6 @@ main {
   margin: 0;
   margin-top: 5px;
   line-height: 1.5;
-}
-
-aside {
-  height: 70vh;
-  margin: 10px;
-  background-color: #fff;
-  flex: 1;
-  color: #000;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.categories-container {
-  margin-right: 20px;
-}
-
-aside ul {
-  display: flex;
-  flex-direction: column;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-aside li {
-  padding: 20px 0;
-  cursor: pointer;
-  text-align: left;
-}
-
-.rc-slider {
-  margin: 20px 0;
-}
-
-.filter-icon {
-  display: none;
-  font-size: 24px;
-  margin: 10px;
 }
 
 /* Media Queries */
