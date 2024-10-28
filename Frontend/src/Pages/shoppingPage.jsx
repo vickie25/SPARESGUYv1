@@ -13,6 +13,7 @@ import { BiSupport } from "react-icons/bi";
 import { RiHandCoinFill } from "react-icons/ri";
 import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer'
+import Header from '../Homepage/Header'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -56,6 +57,12 @@ const PageLayout = () => {
 
     fetchProducts();
   }, []);
+
+
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   // Filter products based on search query using useMemo for performance
   const filteredProducts = useMemo(() => {
@@ -138,17 +145,18 @@ const PageLayout = () => {
       }
     });
 
-    // Rest of your code for backend communication...
-    const cartId = 'your-cart-id';
+    // Prepare product data to send to backend
+    const cartId = 'your-cart-id'; // Replace with actual cart ID, if applicable
     const productData = {
       cartId,
       productId: product._id,
-      quantity: 1,
-      totalAmount: calculateSubtotal(),
+      quantity: 1, // Assuming adding one item at a time
+      totalAmount: calculateSubtotal(), // Assuming you have a function to calculate the total amount
     };
 
     try {
       await axios.post('http://localhost:8000/api/cart/add', productData);
+      console.log('Product added to cart and saved to database successfully!');
     } catch (error) {
       console.error('Error adding product to cart in database', error);
     }
@@ -191,87 +199,30 @@ const PageLayout = () => {
 
   const isLoggedIn = false; // Replace this with your actual login check
 
+  const handleCheckout = async () => {
+    const cartData = {
+      products: cart.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      totalAmount: calculateSubtotal(),
+    };
 
-  const handleCheckout = () => {
-    // Proceed with checkout logic
-    console.log('Proceeding to checkout...');
-    navigate('/checkout'); // Redirect to checkout page
+    try {
+      await axios.post('http://localhost:8000/api/cart/save', cartData);
+      console.log('Cart saved successfully!');
+      navigate('/checkout'); // Redirect to checkout page
+    } catch (error) {
+      console.error('Error saving cart to database', error);
+      alert('Error saving cart. Please try again.');
+    }
   };
-
 
   return (
     <div className="page-wrap">
       <header>
 
-        <nav>
-          <div className="menu-toggle" onClick={toggleMenu}>
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </div>
-          <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
-            <li><a href="/">Home</a></li>
-            <li><Link to="/shop">Shop</Link></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li> <div className="search-container">
-              <input
-                type="text"
-                placeholder="What are you looking for?"
-                className="search-input"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div></li>
-            <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
-            <li className="cart-icon-container">
-              <div className="cart-icon" onClick={toggleDropdown}>
-                <BsCart3 />
-                {cart.length > 0 && (
-                  <span className="cart-count">
-                    {cart.reduce((total, item) => total + item.quantity, 0)}
-                  </span>
-                )}
-              </div>
-
-              {/* Dropdown for cart items */}
-              {isDropdownVisible && (
-                <div className="cart-dropdown">
-                  {cart.length === 0 ? (
-                    <p>Your cart is empty.</p>
-                  ) : (
-                    <div>
-                      <h2>Order Summary</h2>
-                      {cart.map((item) => (
-                        <div key={item.productId} className="cart-dropdown-item"> {/* Use unique productId for key */}
-                          <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
-                          <div className="cart-item-details">
-                            <h4>{item.name}</h4>
-                            <p><b>{item.quantity} * Ksh{item.price} </b></p>
-                            <p><b>Total: Ksh{item.price * item.quantity}</b></p> {/* Total price calculated based on quantity */}
-                          </div>
-
-                          <button
-                            onClick={() => handleDelete(item.productId)}
-                            className="delete-button"
-                          >
-                            <RiDeleteBin6Line />
-                          </button>
-                        </div>
-                      ))}
-
-                      {/* Subtotal Calculation */}
-                      <div className="cart-subtotal">
-                        <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
-                      </div>
-                      <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
-                    </div>
-                  )}
-                </div>
-
-              )}
-            </li>
-            <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
-          </ul>
-        </nav>
+        <Header />
       </header>
       {isDropdownVisible && <div className="mask"></div>}
       <div className='page-filter-showing'>
@@ -430,8 +381,8 @@ const PageLayout = () => {
 
       <footer>
         <Footer />
-      </footer>  
-      </div>
+      </footer>
+    </div>
 
   );
 };
