@@ -14,28 +14,26 @@ import Review from './Pages/Reviews.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-
-<<<<<<< HEAD
 import {Provider} from 'react-redux';
  import store from './store.js'
-
-
-
-=======
-import { Provider } from 'react-redux';
-import store from './store.js'
->>>>>>> 55dc415f51f388686387eb3669e10b42751be40b
-
-
-
-
-
-
-import 'bootstrap/dist/css/bootstrap.min.css';
+ import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';
 import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx'; // Correct import path
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <>

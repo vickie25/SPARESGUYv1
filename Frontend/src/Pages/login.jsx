@@ -65,12 +65,12 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
-<<<<<<< HEAD
+
           <br></br>
           <input 
-=======
-          <input
->>>>>>> 48bf8c8eb5a6898f3856b8b8942fa6700658c39f
+
+          
+
             type="password"
             name="password"
             placeholder="Password"
