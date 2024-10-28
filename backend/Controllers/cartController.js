@@ -5,26 +5,28 @@ export const createCart = async (req, res) => {
   try {
     const { products, totalAmount } = req.body;
 
+    // Log the request body for debugging
+    console.log('Request body:', req.body);
+
     // Check if the required fields are provided
     if (!products || !totalAmount) {
       return res.status(400).json({ message: "Products and totalAmount are required" });
     }
 
-    // Create a new cart instance
-    const cart = new Cart({
+    // Assuming you have a Cart model
+    const newCart = new Cart({
       products,
       totalAmount
     });
 
-    // Save the cart to the database
-    await cart.save();
+    await newCart.save();
 
-    return res.status(201).json({ message: "Cart created successfully", cart });
+    res.status(201).json(newCart);
   } catch (error) {
-    return res.status(500).json({ message: "Error creating cart", error: error.message });
+    console.error('Error creating cart:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
-
 // Get cart by ID
 export const getCartById = async (req, res) => {
   try {

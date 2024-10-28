@@ -1,5 +1,5 @@
 // controllers/deliveryScheController.js
-const DeliverySche = require('../Models/DeliverySche');
+import DeliverySche from '../Models/DeliverySche';
 
 // Create a new delivery schedule entry
 exports.createDeliverySche = async (req, res) => {

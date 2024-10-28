@@ -40,4 +40,5 @@ const mongoose = require('mongoose');
     }
 });
 
-module.exports = mongoose.model('Order', orderSchema);
+const OrderSchema = mongoose.model('Order', orderSchema);
+export default OrderSchema;
