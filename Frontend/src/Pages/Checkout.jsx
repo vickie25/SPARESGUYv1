@@ -1,30 +1,47 @@
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import airfilters from '../Homepage/HomepageImages/airfilters.svg';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/CartContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-  const {
-    cart,
-    removeFromCart,
-    updateCartItemQuantity,
-    calculateSubtotal,
-    calculateGrandTotal,
-    applyDiscount,
-    discount
-  } = useCart();
+  const { cart, addToCart, removeFromCart, calculateSubtotal } = useCart();
+  const navigate = useNavigate();
 
   const [discountCode, setDiscountCode] = useState('');
+  const [discountApplied, setDiscountApplied] = useState(0);
   const [discountError, setDiscountError] = useState('');
 
-  const handleApplyDiscount = () => {
-    const result = applyDiscount(discountCode);
-    if (!result.success) {
-      setDiscountError(result.message);
-    } else {
-      setDiscountError('');
+  const updateQuantity = (id, increment) => {
+    const product = cart.find(item => item.productId === id);
+    if (product) {
+      if (increment === -1 && product.quantity === 1) return;
+      addToCart({ ...product, quantity: product.quantity + increment });
     }
+  };
+
+  const removeItem = (id) => {
+    removeFromCart(id);
+  };
+
+  const applyDiscount = () => {
+    if (discountCode === 'SAVE35') {
+      setDiscountApplied(35);
+      setDiscountError('');
+    } else {
+      setDiscountError('Invalid discount code');
+      setDiscountApplied(0);
+    }
+  };
+
+  const calculateGrandTotal = () => {
+    return calculateSubtotal() - discountApplied;
+  };
+
+  const handleProceedToCheckout = () => {
+    navigate('/confirmation');
   };
 
   return (
@@ -46,31 +63,12 @@ const Checkout = () => {
                   </div>
                 </div>
                 <div className="item-quantity" style={{ display: 'flex', alignItems: 'center' }}>
-                  <button
-                    onClick={() => updateCartItemQuantity(item.productId, -1)}
-                    className="btn btn-outline-secondary"
-                    disabled={item.quantity === 1}
-                  >
-                    -
-                  </button>
-                  <input
-                    type="text"
-                    className="form-control w-25 text-center mx-2"
-                    value={item.quantity}
-                    readOnly
-                  />
-                  <button
-                    onClick={() => updateCartItemQuantity(item.productId, 1)}
-                    className="btn btn-outline-secondary"
-                  >
-                    +
-                  </button>
+                  <button onClick={() => updateQuantity(item.productId, -1)} className="btn btn-outline-secondary" disabled={item.quantity === 1}>-</button>
+                  <input type="text" className="form-control w-25 text-center mx-2" value={item.quantity} readOnly />
+                  <button onClick={() => updateQuantity(item.productId, 1)} className="btn btn-outline-secondary">+</button>
                 </div>
                 <p><strong>Ksh{(item.price * item.quantity).toFixed(2)}</strong></p>
-                <button
-                  onClick={() => removeFromCart(item.productId)}
-                  className="btn btn-danger"
-                >
+                <button onClick={() => removeItem(item.productId)} className="btn btn-danger">
                   <FaTrash />
                 </button>
               </div>
@@ -88,20 +86,15 @@ const Checkout = () => {
               onChange={(e) => setDiscountCode(e.target.value)}
               placeholder="Enter Discount Code"
             />
-            <button
-              onClick={handleApplyDiscount}
-              className="btn btn-dark mt-2"
-            >
-              Apply
-            </button>
+            <button onClick={applyDiscount} className="btn btn-dark mt-2">Apply</button>
             {discountError && <p style={{ color: 'red' }}>{discountError}</p>}
           </div>
 
           <div className="totals-section" style={{ width: '40%', border: '1px solid #ddd', padding: '20px' }}>
             <h4>Subtotal: <strong>Ksh{calculateSubtotal().toFixed(2)}</strong></h4>
-            <h4>Discount Applied: <strong>Ksh{discount.amount.toFixed(2)}</strong></h4>
+            <h4>Discount Applied: <strong>Ksh{discountApplied.toFixed(2)}</strong></h4>
             <h4>Grand Total: <strong>Ksh{calculateGrandTotal().toFixed(2)}</strong></h4>
-            <button className="btn btn-dark mt-3">Proceed to Checkout</button>
+            <button className="btn btn-dark mt-3" onClick={handleProceedToCheckout}>Proceed to Checkout</button>
           </div>
         </div>
       </div>
