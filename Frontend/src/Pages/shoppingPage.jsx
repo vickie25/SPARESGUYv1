@@ -9,6 +9,7 @@ import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { BiSupport } from "react-icons/bi";
 import { RiHandCoinFill } from "react-icons/ri";
 import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer';
 import Header from '../Homepage/Header';
@@ -21,7 +22,8 @@ import { useWishlist } from '../context/WishlistContext';
 
 const ShoppingPage = () => {
   const [products, setProducts] = useState([]);
-  const { addToWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const context = useContext(SearchContext);
   const searchQuery = context?.searchQuery || '';
   const [cart, setCart] = useState(() => {
@@ -135,6 +137,10 @@ const ShoppingPage = () => {
         }];
       }
     });
+  };
+
+  const isInWishlist = (itemId) => {
+    return wishlist.some(item => item.productId === itemId);
   };
 
   useEffect(() => {
@@ -312,23 +318,27 @@ const ShoppingPage = () => {
           </div>
 
           {filteredProducts.map((item, index) => (
-               <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
-          <MdFavoriteBorder onClick={() => addToWishlist(item)} />
-          <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <div className="product-image-container">
-              {item.image ? (
-                <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+              {isInWishlist(item._id) ? (
+                <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
               ) : (
-                <span className="image-placeholder">Image not available</span>
+                <MdFavoriteBorder onClick={() => addToWishlist(item)} />
               )}
+              <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="product-image-container">
+                  {item.image ? (
+                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+                  ) : (
+                    <span className="image-placeholder">Image not available</span>
+                  )}
+                </div>
+                <p className="product-name">{item.name}</p>
+                <p className="product-cost">Ksh {item.price}</p>
+              </Link>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
+                Add to Cart
+              </button>
             </div>
-            <p className="product-name">{item.name}</p>
-            <p className="product-cost">Ksh {item.price}</p>
-          </Link>
-          <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>
-            Add to Cart
-          </button>
-        </div>
           ))}
 
           {filteredProducts.length === 0 && searchQuery && (
