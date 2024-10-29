@@ -9,12 +9,39 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import carouselImage from '../Homepage/HomepageImages/defaultuser.png';
+import { useWishlist } from '../context/WishlistContext';
+import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
+
 
 // Update BASE_URL to your local API endpoint
 export const BASE_URL = 'http://localhost:8000'; // Change this to the port your API runs on
 export const USERS_URL = `${BASE_URL}/api/users`;
 
 const UserProfile = () => {
+  const { wishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const [quantities, setQuantities] = useState({});
+
+  const handleQuantityChange = (productId, change) => {
+    setQuantities(prev => ({
+      ...prev,
+      [productId]: Math.max(1, (prev[productId] || 1) + change)
+    }));
+  };
+
+  const handleAddToCart = (item) => {
+    // Create a modified item with the selected quantity
+    const itemWithQuantity = {
+      ...item,
+      quantity: quantities[item.productId] || 1,
+      _id: item.productId // Ensure _id is set correctly for CartContext
+    };
+
+    addToCart(itemWithQuantity);
+    // Optionally remove from wishlist after adding to cart
+    // removeFromWishlist(item.productId);
+  };
 
   // State to hold user details
   const [userDetails, setUserDetails] = useState({
@@ -177,30 +204,21 @@ const UserProfile = () => {
             <h2>My Wishlist</h2>
             <section className="grid-section">
               <div className="grid-container">
-                {getCurrentPageItems().map((item) => (
-                  <div key={item.id} className="grid-item">
-                    <button
-                      className="remove-wishlist-item"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveFromWishlist(item);
-                      }}
-                    >
-                      &minus;
-                    </button>
-                    <div className="product-image-container">
-                      {item.image ? (
-                        <img src={item.image} alt={item.name} className="product-image" />
-                      ) : (
-                        <span className="image-placeholder">Image not available</span>
-                      )}
-                    </div>
-                    <p className="product-name">{item.name}</p>
-                    <p className="product-cost">Ksh{item.price}</p>
-                    <button
-                      className="add-to-cart-button"
-                      onClick={() => handleAddToCart(item)}
-                    >
+                {wishlist.map((item, index) => (
+                  <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+                    <MdFavoriteBorder onClick={() => removeFromWishlist(item.productId)} />
+                    <Link to={`/product/${item.productId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <div className="product-image-container">
+                        {item.image ? (
+                          <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+                        ) : (
+                          <span className="image-placeholder">Image not available</span>
+                        )}
+                      </div>
+                      <p className="product-name">{item.name}</p>
+                      <p className="product-cost">Ksh {item.price}</p>
+                    </Link>
+                    <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>
                       Add to Cart
                     </button>
                   </div>
