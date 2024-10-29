@@ -30,9 +30,10 @@ export const CartProvider = ({ children }) => {
             const existingItem = prevCart.find(item => item.productId === product._id);
 
             if (existingItem) {
+                // Use the quantity passed from the product
                 return prevCart.map(item =>
                     item.productId === product._id
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: item.quantity + product.quantity } // Increment by selected quantity
                         : item
                 );
             } else {
@@ -41,11 +42,12 @@ export const CartProvider = ({ children }) => {
                     name: product.name,
                     price: product.price,
                     image: product.image,
-                    quantity: 1
+                    quantity: product.quantity // Use the quantity passed
                 }];
             }
         });
     };
+
 
     const removeFromCart = (productId) => {
         setCart(prevCart => prevCart.filter(item => item.productId !== productId));
