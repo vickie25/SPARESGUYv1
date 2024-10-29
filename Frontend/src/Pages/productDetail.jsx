@@ -121,9 +121,23 @@ const ProductDetail = () => {
               </button>
             </div>
 
-            <button className="btn btn-dark" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
+            <button
+              className="btn btn-dark"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart({
+                  _id: product._id, // Use product ID
+                  name: product.name,
+                  price: product.price,
+                  image: product.image,
+                  quantity // Pass the selected quantity
+                });
+              }}
+            >
               Add to Cart
             </button>
+
+
           </Col>
         </Row>
 
