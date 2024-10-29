@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { SearchContext } from '../context/SearchContext';
 import CartDropdown from '../Pages/CartDropdown';
+import { MdOutlineNotificationsNone } from "react-icons/md";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,14 @@ const Header = () => {
   const { searchQuery, setSearchQuery } = useContext(SearchContext);
   const { cart } = useCart();
   const navigate = useNavigate();
+
+  const handleWishlistClick = () => {
+    navigate('/UserProf', { state: { section: 'wishlist' } });
+  };
+
+  const handleNotificationsClick = () => {
+    navigate('/UserProf', { state: { section: 'notifications' } });
+  };
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDropdown = () => setIsDropdownVisible(!isDropdownVisible);
@@ -43,7 +52,12 @@ const Header = () => {
               />
             </div>
           </li>
-          <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
+          <li>
+            <a onClick={handleWishlistClick}>
+              <FaRegHeart className='header-icon' />
+            </a>
+          </li>
+
           <li className="cart-icon-container">
             <div className="cart-icon" onClick={toggleDropdown}>
               <BsCart3 />
@@ -55,7 +69,11 @@ const Header = () => {
             </div>
             <CartDropdown isDropdownVisible={isDropdownVisible} toggleDropdown={toggleDropdown} />
           </li>
-          <li>Notification</li>
+          <li>
+            <a onClick={handleNotificationsClick}>
+              <MdOutlineNotificationsNone className='header-icon' />
+            </a>
+          </li>
           <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
           <li>Login</li>
         </ul>
