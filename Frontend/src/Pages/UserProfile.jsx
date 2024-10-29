@@ -13,15 +13,11 @@ import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 
-
-// Update BASE_URL to your local API endpoint
-export const BASE_URL = 'http://localhost:8000'; // Change this to the port your API runs on
-export const USERS_URL = `${BASE_URL}/api/users`;
-
 const UserProfile = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [quantities, setQuantities] = useState({});
+  const location = useLocation();
 
   const handleQuantityChange = (productId, change) => {
     setQuantities(prev => ({
@@ -31,19 +27,15 @@ const UserProfile = () => {
   };
 
   const handleAddToCart = (item) => {
-    // Create a modified item with the selected quantity
     const itemWithQuantity = {
       ...item,
       quantity: quantities[item.productId] || 1,
-      _id: item.productId // Ensure _id is set correctly for CartContext
+      _id: item.productId
     };
 
     addToCart(itemWithQuantity);
-    // Optionally remove from wishlist after adding to cart
-    // removeFromWishlist(item.productId);
   };
 
-  // State to hold user details
   const [userDetails, setUserDetails] = useState({
     firstName: '',
     lastName: '',
@@ -52,33 +44,19 @@ const UserProfile = () => {
     address: ''
   });
 
-  // State to track whether the details have been saved
   const [isSaved, setIsSaved] = useState(false);
-
-  // State to manage which section is active
-  const location = useLocation();
   const [activeSection, setActiveSection] = useState('personalInformation');
+
   useEffect(() => {
     if (location.state && location.state.section) {
       setActiveSection(location.state.section);
     }
   }, [location.state]);
-  // State to hold wishlist items
-  const [wishlistItems, setWishlistItems] = useState([
-    { id: 1, name: "Product 1", price: 1200, image: "" },
-    { id: 2, name: "Product 2", price: 2500, image: "" },
-    { id: 3, name: "Product 3", price: 3000, image: "" },
-    { id: 4, name: "Product 4", price: 1800, image: "" },
-    { id: 5, name: "Product 5", price: 4200, image: "" },
-    { id: 6, name: "Product 6", price: 2800, image: "" },
-    // Add more items as needed
-  ]);
 
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(wishlistItems.length / itemsPerPage);
+  const totalPages = Math.ceil(wishlist.length / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails({
@@ -87,7 +65,6 @@ const UserProfile = () => {
     });
   };
 
-  // Handle form submission
   const handleSaveDetails = async (e) => {
     e.preventDefault();
     try {
@@ -117,7 +94,7 @@ const UserProfile = () => {
   const getCurrentPageItems = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return wishlistItems.slice(startIndex, endIndex);
+    return wishlist.slice(startIndex, endIndex);
   };
 
   const handlePageChange = (newPage) => {
@@ -126,13 +103,10 @@ const UserProfile = () => {
     }
   };
 
-  const handleRemoveFromWishlist = (itemToRemove) => {
-    setWishlistItems((prevItems) =>
-      prevItems.filter((item) => item.id !== itemToRemove.id)
-    );
+  const handleRemoveFromWishlist = (productId) => {
+    removeFromWishlist(productId);
   };
 
-  // Function to render the appropriate content based on active section
   const renderContent = () => {
     switch (activeSection) {
       case 'personalInformation':
@@ -200,13 +174,13 @@ const UserProfile = () => {
         );
       case 'wishlist':
         return (
-          <div className="wishlist-container">
+          <div id="wishlist" className="wishlist-container">
             <h2>My Wishlist</h2>
             <section className="grid-section">
               <div className="grid-container">
-                {wishlist.map((item, index) => (
+                {getCurrentPageItems().map((item, index) => (
                   <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
-                    <MdFavoriteBorder onClick={() => removeFromWishlist(item.productId)} />
+                    <MdFavoriteBorder onClick={() => handleRemoveFromWishlist(item.productId)} />
                     <Link to={`/product/${item.productId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <div className="product-image-container">
                         {item.image ? (
@@ -215,12 +189,16 @@ const UserProfile = () => {
                           <span className="image-placeholder">Image not available</span>
                         )}
                       </div>
-                      <p className="product-name">{item.name}</p>
-                      <p className="product-cost">Ksh {item.price}</p>
                     </Link>
-                    <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>
+                    <p className="product-name">{item.name}</p>
+                    <p className="product-cost">Ksh{item.price}</p>
+                    <button
+                      className="btn btn-dark"
+                      onClick={() => handleAddToCart(item)}
+                    >
                       Add to Cart
                     </button>
+
                   </div>
                 ))}
               </div>
