@@ -9,12 +9,38 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
 import carouselImage from '../Homepage/HomepageImages/defaultuser.png';
+import { useWishlist } from '../context/WishlistContext';
+import { useCart } from '../context/CartContext';
+
 
 // Update BASE_URL to your local API endpoint
 export const BASE_URL = 'http://localhost:8000'; // Change this to the port your API runs on
 export const USERS_URL = `${BASE_URL}/api/users`;
 
 const UserProfile = () => {
+  const { wishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const [quantities, setQuantities] = useState({});
+
+  const handleQuantityChange = (productId, change) => {
+    setQuantities(prev => ({
+      ...prev,
+      [productId]: Math.max(1, (prev[productId] || 1) + change)
+    }));
+  };
+
+  const handleAddToCart = (item) => {
+    // Create a modified item with the selected quantity
+    const itemWithQuantity = {
+      ...item,
+      quantity: quantities[item.productId] || 1,
+      _id: item.productId // Ensure _id is set correctly for CartContext
+    };
+
+    addToCart(itemWithQuantity);
+    // Optionally remove from wishlist after adding to cart
+    // removeFromWishlist(item.productId);
+  };
 
   // State to hold user details
   const [userDetails, setUserDetails] = useState({
@@ -177,13 +203,13 @@ const UserProfile = () => {
             <h2>My Wishlist</h2>
             <section className="grid-section">
               <div className="grid-container">
-                {getCurrentPageItems().map((item) => (
-                  <div key={item.id} className="grid-item">
+                {wishlist.map((item) => (
+                  <div key={item.productId} className="grid-item">
                     <button
                       className="remove-wishlist-item"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleRemoveFromWishlist(item);
+                        removeFromWishlist(item.productId);
                       }}
                     >
                       &minus;
@@ -198,7 +224,7 @@ const UserProfile = () => {
                     <p className="product-name">{item.name}</p>
                     <p className="product-cost">Ksh{item.price}</p>
                     <button
-                      className="add-to-cart-button"
+                      className="btn btn-dark"
                       onClick={() => handleAddToCart(item)}
                     >
                       Add to Cart
