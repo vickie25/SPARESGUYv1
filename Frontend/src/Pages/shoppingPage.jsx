@@ -19,13 +19,9 @@ import { SearchContext } from '../context/SearchContext';
 
 const ShoppingPage = () => {
   const [products, setProducts] = useState([]);
-  // Make sure SearchContext is imported and wrapped properly
   const context = useContext(SearchContext);
-
-  // Safely destructure searchQuery with a default value
   const searchQuery = context?.searchQuery || '';
   const [cart, setCart] = useState(() => {
-    // Load cart from localStorage if available
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
