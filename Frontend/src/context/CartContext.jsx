@@ -30,10 +30,10 @@ export const CartProvider = ({ children }) => {
             const existingItem = prevCart.find(item => item.productId === product._id);
 
             if (existingItem) {
-                // Use the quantity passed from the product
+                // Increment quantity by product's quantity
                 return prevCart.map(item =>
                     item.productId === product._id
-                        ? { ...item, quantity: item.quantity + product.quantity } // Increment by selected quantity
+                        ? { ...item, quantity: item.quantity + (product.quantity || 1) }
                         : item
                 );
             } else {
@@ -42,7 +42,7 @@ export const CartProvider = ({ children }) => {
                     name: product.name,
                     price: product.price,
                     image: product.image,
-                    quantity: product.quantity // Use the quantity passed
+                    quantity: product.quantity || 1 // Default to 1 if no quantity passed
                 }];
             }
         });

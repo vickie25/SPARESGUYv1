@@ -4,6 +4,7 @@ import Footer from '../Homepage/Footer';
 import "./PagesCSS/userProfile.css";
 import { useLocation } from 'react-router-dom';
 import { FiUser } from "react-icons/fi";
+import { CiSquareMinus } from "react-icons/ci";
 import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -180,7 +181,7 @@ const UserProfile = () => {
               <div className="grid-container">
                 {getCurrentPageItems().map((item, index) => (
                   <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
-                    <MdFavoriteBorder onClick={() => handleRemoveFromWishlist(item.productId)} />
+                    <CiSquareMinus onClick={() => handleRemoveFromWishlist(item.productId)} style={{ color: 'red' }} />
                     <Link to={`/product/${item.productId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <div className="product-image-container">
                         {item.image ? (
