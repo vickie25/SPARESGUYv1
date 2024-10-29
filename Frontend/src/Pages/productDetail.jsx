@@ -41,26 +41,6 @@ const ProductDetail = () => {
     setQuantity(prev => Math.max(1, prev + change));
   };
 
-
-  // Function to add a product to the cart
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => {
-      // Check if the product already exists in the cart
-      const existingItem = prevCart.find(item => item.id === product.id);
-
-      if (existingItem) {
-        // If it exists, update the quantity
-        return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        // If it doesn't exist, add it with quantity 1
-        return [...prevCart, { ...product, quantity: 1 }];
-      }
-    });
-  };
-
-
   if (error) {
     return (
       <>
@@ -141,7 +121,7 @@ const ProductDetail = () => {
               </button>
             </div>
 
-            <button className="btn btn-dark" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>
+            <button className="btn btn-dark" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>
               Add to Cart
             </button>
           </Col>
