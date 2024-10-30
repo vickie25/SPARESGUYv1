@@ -6,8 +6,9 @@ import productRoutes from './routes/productRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
-import OrderRoutes from './routes/OrderRoutes.js'; // Correct import
-import deliveryScheRoutes from './routes/deliveryScheRoutes.js'; // Correct import
+import ReviewRoutes from './routes/ReviewRoutes.js'; 
+import OrderRoutes from './routes/OrderRoutes.js'; 
+import deliveryScheRoutes from './routes/deliveryScheRoutes.js'; 
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
 
@@ -45,6 +46,9 @@ app.use('/api/payments', paymentInfoRoutes);
 
 // Order routes
 app.use('/api/order', OrderRoutes);
+
+// Review routes
+app.use('/api/review', ReviewRoutes);
 
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
