@@ -1,67 +1,98 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Create the CartContext
 const CartContext = createContext();
 
-// CartProvider to wrap the app and provide the cart state and functions
+export const useCart = () => {
+    return useContext(CartContext);
+};
+
 export const CartProvider = ({ children }) => {
-    // Retrieve the cart from localStorage if it exists, otherwise use an empty array
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    // Update localStorage whenever the cart state changes
+    const [discount, setDiscount] = useState(() => {
+        const savedDiscount = localStorage.getItem('discount');
+        return savedDiscount ? JSON.parse(savedDiscount) : { code: '', amount: 0 };
+    });
+
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    // Function to add items to the cart
+    useEffect(() => {
+        localStorage.setItem('discount', JSON.stringify(discount));
+    }, [discount]);
+
     const addToCart = (product) => {
         setCart((prevCart) => {
-            const existingItem = prevCart.find(item => item.id === product.id);
+            const existingItem = prevCart.find(item => item.productId === product._id);
+
             if (existingItem) {
-                // Update quantity if the item already exists
+                // Increment quantity by product's quantity
                 return prevCart.map(item =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    item.productId === product._id
+                        ? { ...item, quantity: item.quantity + (product.quantity || 1) }
+                        : item
                 );
             } else {
-                // Add new item if it doesn't exist
-                return [...prevCart, { ...product, quantity: 1 }];
+                return [...prevCart, {
+                    productId: product._id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: product.quantity || 1 // Default to 1 if no quantity passed
+                }];
             }
         });
     };
 
-    // Function to remove an item from the cart
-    const removeFromCart = (id) => {
-        setCart(prevCart => prevCart.filter(item => item.id !== id));
+
+    const removeFromCart = (productId) => {
+        setCart(prevCart => prevCart.filter(item => item.productId !== productId));
     };
 
-    // Function to update the quantity of a cart item
-    const updateQuantity = (id, quantity) => {
-        setCart((prevCart) =>
-            prevCart.map((item) =>
-                item.id === id ? { ...item, quantity: item.quantity + quantity } : item
+    const updateCartItemQuantity = (productId, change) => {
+        setCart(prevCart =>
+            prevCart.map(item =>
+                item.productId === productId
+                    ? { ...item, quantity: Math.max(1, item.quantity + change) }
+                    : item
             )
         );
     };
 
-    // Function to clear the cart after checkout
-    const clearCart = () => {
-        setCart([]);
-    };
-
-    // Function to calculate the subtotal
     const calculateSubtotal = () => {
         return cart.reduce((total, item) => total + item.price * item.quantity, 0);
     };
 
+    const applyDiscount = (code) => {
+        if (code === 'SAVE35') {
+            setDiscount({ code, amount: 35 });
+            return { success: true, message: 'Discount applied successfully!' };
+        }
+        setDiscount({ code: '', amount: 0 });
+        return { success: false, message: 'Invalid discount code' };
+    };
+
+    const calculateGrandTotal = () => {
+        const subtotal = calculateSubtotal();
+        return Math.max(0, subtotal - discount.amount);
+    };
+
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, calculateSubtotal }}>
+        <CartContext.Provider value={{
+            cart,
+            addToCart,
+            removeFromCart,
+            updateCartItemQuantity,
+            calculateSubtotal,
+            applyDiscount,
+            calculateGrandTotal,
+            discount
+        }}>
             {children}
         </CartContext.Provider>
     );
 };
-
-// Hook to use the CartContext in any component
-export const useCart = () => useContext(CartContext);

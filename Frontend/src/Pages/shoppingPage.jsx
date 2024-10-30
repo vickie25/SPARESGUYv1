@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import "./PagesCSS/shoppingPage.css";
-import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
-import { FaRegHeart, FaRegUser } from "react-icons/fa";
-import { BsCart3 } from "react-icons/bs";
 import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
 import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
@@ -11,22 +8,25 @@ import { HiOutlineTrophy } from "react-icons/hi2";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { BiSupport } from "react-icons/bi";
 import { RiHandCoinFill } from "react-icons/ri";
+import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import 'rc-slider/assets/index.css';
-import Footer from '../Homepage/Footer'
-import Header from '../Homepage/Header'
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link, useLocation } from 'react-router-dom';
+import Footer from '../Homepage/Footer';
+import Header from '../Homepage/Header';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios'
-import { useCart } from '../context/CartContext.jsx';
+import axios from 'axios';
+import { useCart } from '../context/CartContext';
+import { SearchContext } from '../context/SearchContext';
+import { useWishlist } from '../context/WishlistContext';
 
-
-const PageLayout = () => {
+const ShoppingPage = () => {
   const [products, setProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const { addToCart } = useCart();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const context = useContext(SearchContext);
+  const searchQuery = context?.searchQuery || '';
   const [cart, setCart] = useState(() => {
-    // Load cart from localStorage if available
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
@@ -65,20 +65,15 @@ const PageLayout = () => {
   }, [cart]);
 
   // Filter products based on search query using useMemo for performance
-  const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      const searchTerm = searchQuery.toLowerCase();
-      return (
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.price.toString().includes(searchTerm)
-      );
-    });
-  }, [products, searchQuery]);
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchQuery)
+  );
+
 
   // Filter items based on the search query
-  const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredItems = items.filter(item =>
+  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -107,6 +102,7 @@ const PageLayout = () => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
+
   // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -123,20 +119,17 @@ const PageLayout = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const handleAddToCart = async (product) => {
+  const handleAddToCart = (product) => {
     setCart((prevCart) => {
-      // Check if the product already exists in the cart
       const existingItem = prevCart.find(item => item.productId === product._id);
 
       if (existingItem) {
-        // If it exists, update the quantity
         return prevCart.map(item =>
           item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        // If it doesn't exist, add it as a new item
         return [...prevCart, {
-          productId: product._id,  // Explicitly set productId
+          productId: product._id,
           name: product.name,
           price: product.price,
           image: product.image,
@@ -144,23 +137,37 @@ const PageLayout = () => {
         }];
       }
     });
-
-    // Prepare product data to send to backend
-    const cartId = 'your-cart-id'; // Replace with actual cart ID, if applicable
-    const productData = {
-      cartId,
-      productId: product._id,
-      quantity: 1, // Assuming adding one item at a time
-      totalAmount: calculateSubtotal(), // Assuming you have a function to calculate the total amount
-    };
-
-    try {
-      await axios.post('http://localhost:8000/api/cart/add', productData);
-      console.log('Product added to cart and saved to database successfully!');
-    } catch (error) {
-      console.error('Error adding product to cart in database', error);
-    }
   };
+
+  const isInWishlist = (itemId) => {
+    return wishlist.some(item => item.productId === itemId);
+  };
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      const updateCartInDatabase = async () => {
+        const cartId = 'actual-cart-id'; // Ensure this is valid or dynamically fetched
+        const productData = {
+          cartId,
+          products: cart.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+          totalAmount: calculateSubtotal(),
+        };
+
+        try {
+          await axios.post('http://localhost:8000/api/cart/save', productData);
+          console.log('Cart updated and saved to database successfully!');
+        } catch (error) {
+          console.error('Error updating cart in database', error);
+        }
+      };
+
+      updateCartInDatabase();
+    }
+  }, [cart, calculateSubtotal]);
+
 
   const handleDelete = async (productId) => {
     try {
@@ -298,7 +305,7 @@ const PageLayout = () => {
               ))}
             </ul>
             <div className="filtered-items">
-              {filteredItems.map((item) => (
+              {filteredProducts.map((item) => (
                 <div key={item.id}>{item.name}</div>
               ))}
             </div>
@@ -310,8 +317,13 @@ const PageLayout = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {currentItems.map((item, index) => (
+          {filteredProducts.map((item, index) => (
             <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+              {isInWishlist(item._id) ? (
+                <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
+              ) : (
+                <MdFavoriteBorder onClick={() => addToWishlist(item)} />
+              )}
               <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div className="product-image-container">
                   {item.image ? (
@@ -323,7 +335,7 @@ const PageLayout = () => {
                 <p className="product-name">{item.name}</p>
                 <p className="product-cost">Ksh {item.price}</p>
               </Link>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
                 Add to Cart
               </button>
             </div>
@@ -387,4 +399,4 @@ const PageLayout = () => {
   );
 };
 
-export default PageLayout;
+export default ShoppingPage;
