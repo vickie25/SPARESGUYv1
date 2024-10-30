@@ -1,7 +1,7 @@
 // routes/deliveryScheRoutes.js
 import express from 'express';
 const router = express.Router();
-import {createDeliverySche, getAllDeliverySche, getDeliveryScheById, updateDeliverySche, deleteDeliverySche} from '../Controllers/deliveryScheController';
+import {createDeliverySche, getAllDeliverySche, getDeliveryScheById, updateDeliverySche, deleteDeliverySche} from '../Controllers/deliveryScheController.js';
 
 // Route to create a new delivery schedule entry
 router.post('/delivery-sche', createDeliverySche);
