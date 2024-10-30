@@ -1,122 +1,186 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Nav } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
-import rearlights from '../Homepage/HomepageImages/rearlights.svg';
-import airfilter from '../Homepage/HomepageImages/airfilters.svg';
-import plugs from '../Homepage/HomepageImages/plugs.svg';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
-import axios from 'axios';
+import { useCart } from '../context/CartContext.jsx';
 
-const productDetail = () => {
-
-  const relatedProducts = [
-    { id: 1, name: 'airfilter', price: '$235.00', image: airfilter },
-    { id: 2, name: 'plugs', price: '$235.00', image: plugs },
-    { id: 3, name: 'airfilter', price: '$235.00', image: airfilter },
-    { id: 4, name: 'plugs', price: '$235.00', image: plugs },
-  ];
-
-  // State for tabs
+const ProductDetail = () => {
+  const [product, setProduct] = useState(null);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('description');
+  const [quantity, setQuantity] = useState(1);
+  const { id } = useParams(); // Get the product ID from URL
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        // Make sure your backend URL is correct
+        const response = await axios.get(`http://localhost:8000/api/products/${id}/`);
+        setProduct(response.data);
+        setError(null);
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+        setError('Product not found');
+        // Optionally redirect to a 404 page or product listing
+        // navigate('/shop');
+      }
+    };
+
+    if (id) {
+      fetchProductDetails();
+    }
+  }, [id, navigate]);
+
+  const handleQuantityChange = (change) => {
+    setQuantity(prev => Math.max(1, prev + change));
+  };
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="container mt-4">
+          <div className="alert alert-danger">{error}</div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!product) {
+    return (
+      <>
+        <Header />
+        <div className="container mt-4">
+          <div className="text-center">Loading...</div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
-      <div className="container mt-4">
-        <nav aria-label="breadcrumb">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="/">Home</a></li>
-            <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
-            <li className="breadcrumb-item active" aria-current="page">Toyota Headlights</li>
-          </ol>
-        </nav>
+      <main>
+        <div className="container mt-4">
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item"><a href="/">Home</a></li>
+              <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
+              <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+            </ol>
+          </nav>
 
-        <Row>
-          <Col md={2}>
-            <img
-              src={rearlights}
-              alt="Toyota Taillight"
-              className="img-fluid"
-              style={{ maxHeight: '250px', width: 'auto' }}
-            />
-          </Col>
-          <Col>
-            <h1>TOYOTA</h1>
-            <p>Taillight car LED system</p>
-            <p><strong>$235.00</strong></p>
-            <p><span className="badge bg-success">In Stock</span></p>
-            <div className="rating">
-              ★★★★★ <span>(12 Reviews)</span>
-            </div>
-            <p>Enhance your driving visibility with our premium Car Headlight, designed for optimal
-              performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road
-              visibility even in low-light or harsh weather conditions.</p>
-
-            <div className="quantity-control d-flex align-items-center mb-3">
-              <button className="btn btn-outline-secondary">-</button>
-              <input type="text" className="form-control w-25 text-center mx-2" value="1" readOnly />
-              <button className="btn btn-outline-secondary">+</button>
-            </div>
-            <button className="btn btn-dark">Add to cart</button>
-          </Col>
-        </Row>
-        <Nav variant="tabs" activeKey={activeTab} className="mt-4">
-          <Nav.Item>
-            <Nav.Link eventKey="description" onClick={() => setActiveTab('description')}>
-              Description
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="additional-info" onClick={() => setActiveTab('additional-info')}>
-              Additional Information
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="reviews" onClick={() => setActiveTab('reviews')}>
-              Reviews
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-
-        {/* Tab Content */}
-        <div className="tab-content mt-3">
-          {activeTab === 'description' && (
-            <div className="tab-pane">
-              <p>
-                Enhance your driving visibility with our premium Car Headlight, designed for optimal performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road visibility even in low-light or harsh weather conditions.
-              </p>
-            </div>
-          )}
-          {activeTab === 'reviews' && (
-            <div className="tab-pane active">
-              <Reviews />
-            </div>
-          )}
-        </div>
-        <h3 className="mt-5">Related Products</h3>
-        <Row className="mt-3">
-          {relatedProducts.map((product) => (
-            <Col md={3} key={product.id} style={{ justifyContent: 'space-between', alignContent: 'flex-end' }}>
-              <div className="product-card text-center">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="img-fluid mb-2"
-                  style={{ height: '150px', objectFit: 'cover', marginBottom: '4px' }}
-                />
-                <p>{product.name}</p>
-                <p><strong>{product.price}</strong></p>
+          <Row>
+            <Col md={6}>
+              <div className="product-image-container">
+                {product.image ? (
+                  <img
+                    src={`http://localhost:8000${product.image}`}
+                    alt={product.name}
+                    className="img-fluid"
+                    style={{ maxHeight: '400px', width: 'auto' }}
+                  />
+                ) : (
+                  <div className="image-placeholder">Image not available</div>
+                )}
               </div>
             </Col>
-          ))}
-        </Row>
+            <Col md={6}>
+              <h1>{product.name}</h1>
+              <p className="text-muted">{product.description}</p>
+              <p className="price"><strong>Ksh{product.price}</strong></p>
+              <p>
+                <span className="badge bg-success">In Stock</span>
+              </p>
 
-        <Footer />
-      </div>
+              <div className="quantity-control d-flex align-items-center mb-3">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() => handleQuantityChange(-1)}
+                >
+                  -
+                </button>
+                <input
+                  type="text"
+                  className="form-control w-25 text-center mx-2"
+                  value={quantity}
+                  readOnly
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() => handleQuantityChange(1)}
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                className="btn btn-dark"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart({
+                    _id: product._id, // Use product ID
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity // Pass the selected quantity
+                  });
+                }}
+              >
+                Add to Cart
+              </button>
+
+
+            </Col>
+          </Row>
+
+          <Nav variant="tabs" activeKey={activeTab} className="mt-4">
+            <Nav.Item>
+              <Nav.Link
+                eventKey="description"
+                onClick={() => setActiveTab('description')}
+              >
+                Description
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                eventKey="reviews"
+                onClick={() => setActiveTab('reviews')}
+              >
+                Reviews
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+          {activeTab === 'description' && (
+            <p className="text-muted">{product.description}</p>
+          )}
+
+          <div className="tab-content mt-3">
+            {activeTab === 'description' && (
+              <div className="tab-pane">
+                <p>{product.description}</p>
+              </div>
+            )}
+            {activeTab === 'reviews' && (
+              <div className="tab-pane active">
+                <Reviews productId={product.id} />
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+      <Footer />
     </>
   );
 };
 
-export default productDetail;
+export default ProductDetail;
