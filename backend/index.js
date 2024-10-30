@@ -1,9 +1,18 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+
+import userRoutes from './routes/userRoutes.js';
+
 import cors from 'cors';
 import userRoutes from './routes/UserRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+
+import userRoutes from './routes/userRoutes.js';
+
+import productRoutes from './routes/productRoutes.js'
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
+
 import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js'; 
