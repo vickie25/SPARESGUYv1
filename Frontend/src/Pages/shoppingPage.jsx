@@ -1,8 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import "./PagesCSS/shoppingPage.css";
-import { FaBars, FaTimes, FaSearch } from 'react-icons/fa';
-import { FaRegHeart, FaRegUser } from "react-icons/fa";
-import { BsCart3 } from "react-icons/bs";
 import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
 import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
@@ -11,20 +8,28 @@ import { HiOutlineTrophy } from "react-icons/hi2";
 import { HiOutlineCheckBadge } from "react-icons/hi2";
 import { BiSupport } from "react-icons/bi";
 import { RiHandCoinFill } from "react-icons/ri";
+import { MdFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
 import 'rc-slider/assets/index.css';
-import Footer from '../Homepage/Footer'
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Link, useLocation } from 'react-router-dom';
+import Footer from '../Homepage/Footer';
+import Header from '../Homepage/Header';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios'
-import { useCart } from '../context/CartContext.jsx';
+import axios from 'axios';
+import { useCart } from '../context/CartContext';
+import { SearchContext } from '../context/SearchContext';
+import { useWishlist } from '../context/WishlistContext';
 
-
-const PageLayout = () => {
+const ShoppingPage = () => {
   const [products, setProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [cart, setCart] = useState([]);
+  const { addToCart } = useCart();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const context = useContext(SearchContext);
+  const searchQuery = context?.searchQuery || '';
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem('cart');
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
   const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -53,21 +58,22 @@ const PageLayout = () => {
     fetchProducts();
   }, []);
 
+
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   // Filter products based on search query using useMemo for performance
-  const filteredProducts = useMemo(() => {
-    return products.filter((item) => {
-      const searchTerm = searchQuery.toLowerCase();
-      return (
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.price.toString().includes(searchTerm)
-      );
-    });
-  }, [products, searchQuery]);
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchQuery)
+  );
+
 
   // Filter items based on the search query
-  const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredItems = items.filter(item =>
+  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -96,20 +102,6 @@ const PageLayout = () => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  // Function to get items for the current page and apply search filter
-  const getCurrentPageItems = () => {
-    const filteredItems = items.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) // Ensure case-insensitive search
-    );
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredItems.slice(startIndex, endIndex);
-  };
-
-  const startItemIndex = (currentPage - 1) * itemsPerPage + 1;
-  const endItemIndex = Math.min(currentPage * itemsPerPage, filteredItems.length);
-
-  const totalPages = Math.ceil(items.length / itemsPerPage);
 
   // Calculate the subtotal
   const calculateSubtotal = () => {
@@ -122,26 +114,73 @@ const PageLayout = () => {
   const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
   // Function to add a product to the cart
+  useEffect(() => {
+    // Save cart to localStorage whenever it changes
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
+
   const handleAddToCart = (product) => {
     setCart((prevCart) => {
-      // Check if the product already exists in the cart
-      const existingItem = prevCart.find(item => item.id === product.id);
+      const existingItem = prevCart.find(item => item.productId === product._id);
 
       if (existingItem) {
-        // If it exists, update the quantity
         return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        // If it doesn't exist, add it with quantity 1
-        return [...prevCart, { ...product, quantity: 1 }];
+        return [...prevCart, {
+          productId: product._id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        }];
       }
     });
   };
 
-  const handleDelete = (id) => {
-    const updatedCart = cart.filter(item => item.id !== id);
-    setCart(updatedCart);
+  const isInWishlist = (itemId) => {
+    return wishlist.some(item => item.productId === itemId);
+  };
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      const updateCartInDatabase = async () => {
+        const cartId = 'actual-cart-id'; // Ensure this is valid or dynamically fetched
+        const productData = {
+          cartId,
+          products: cart.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+          })),
+          totalAmount: calculateSubtotal(),
+        };
+
+        try {
+          await axios.post('http://localhost:8000/api/cart/save', productData);
+          console.log('Cart updated and saved to database successfully!');
+        } catch (error) {
+          console.error('Error updating cart in database', error);
+        }
+      };
+
+      updateCartInDatabase();
+    }
+  }, [cart, calculateSubtotal]);
+
+
+  const handleDelete = async (productId) => {
+    try {
+      // Update frontend state
+      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
+
+      // Delete from backend
+      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
+    } catch (error) {
+      console.error('Error deleting product from cart:', error);
+      // Optionally revert the cart state if backend delete fails
+      // You might want to show an error message to the user
+    }
   };
 
   // Toggle dropdown visibility
@@ -149,97 +188,48 @@ const PageLayout = () => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
     }
   };
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+
   const handleProductClick = (item) => {
-    navigate(`/details`, { state: { product: item } });
+    navigate(`/product`, { state: { product: item } });
   };
 
   const isLoggedIn = false; // Replace this with your actual login check
 
+  const handleCheckout = async () => {
+    const cartData = {
+      products: cart.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+      totalAmount: calculateSubtotal(),
+    };
 
-  const handleCheckout = () => {
-    // Proceed with checkout logic
-    console.log('Proceeding to checkout...');
-    navigate('/checkout'); // Redirect to checkout page
+    try {
+      await axios.post('http://localhost:8000/api/cart/save', cartData);
+      console.log('Cart saved successfully!');
+      navigate('/checkout'); // Redirect to checkout page
+    } catch (error) {
+      console.error('Error saving cart to database', error);
+      alert('Error saving cart. Please try again.');
+    }
   };
-
 
   return (
     <div className="page-wrap">
       <header>
 
-        <nav>
-          <div className="menu-toggle" onClick={toggleMenu}>
-            {isOpen ? <FaTimes /> : <FaBars />}
-          </div>
-          <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
-            <li><a href="/">Home</a></li>
-            <li><Link to="/shop">Shop</Link></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li> <div className="search-container">
-              <input
-                type="text"
-                placeholder="What are you looking for?"
-                className="search-input"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div></li>
-            <li><Link to="/wishlist"><FaRegHeart className='header-icon' /></Link></li>
-            <li className="cart-icon-container">
-              <div className="cart-icon" onClick={toggleDropdown}>
-                <BsCart3 />
-                {cart.length > 0 && (
-                  <span className="cart-count">
-                    {cart.reduce((total, item) => total + item.quantity, 0)}
-                  </span>
-                )}
-              </div>
-
-              {/* Dropdown for cart items */}
-              {isDropdownVisible && (
-                <div className="cart-dropdown">
-                  {cart.length === 0 ? (
-                    <p>Your cart is empty.</p>
-                  ) : (
-                    <div>
-                      <h2>Order Summary</h2>
-                      {cart.map((item) => (
-                        <div key={item.id} className="cart-dropdown-item">
-                          <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
-                          <div className="cart-item-details">
-                            <h4>{item.name}</h4>
-                            <p><b>{item.quantity} * Ksh{item.price} </b></p>
-                            <p><b>Total: Ksh{item.price * item.quantity}</b></p>
-                          </div>
-                          <button
-                            onClick={() => removeFromCart(item.id)} // Delete item
-                            className="delete-button"
-                          >
-                            <RiDeleteBin6Line />
-                          </button>
-                        </div>
-                      ))}
-
-                      {/* Subtotal Calculation */}
-                      <div className="cart-subtotal">
-                        <p>Subtotal: <strong>Ksh{calculateSubtotal()}</strong></p>
-                      </div>
-                      <button className="checkout-button" onClick={handleCheckout}>Checkout</button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </li>
-            <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
-          </ul>
-        </nav>
+        <Header />
       </header>
       {isDropdownVisible && <div className="mask"></div>}
       <div className='page-filter-showing'>
@@ -260,12 +250,11 @@ const PageLayout = () => {
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            <p>Showing {startItemIndex} -- {endItemIndex} of {filteredItems.length}</p>
+            <p>Showing {startIndex} -- {filteredProducts.length} of {filteredProducts.length}</p>
 
           </div>
         </div>
       </div>
-
 
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
@@ -316,7 +305,7 @@ const PageLayout = () => {
               ))}
             </ul>
             <div className="filtered-items">
-              {filteredItems.map((item) => (
+              {filteredProducts.map((item) => (
                 <div key={item.id}>{item.name}</div>
               ))}
             </div>
@@ -329,18 +318,26 @@ const PageLayout = () => {
           </div>
 
           {filteredProducts.map((item, index) => (
-            <div key={index} className="grid-item" onClick={() => handleProductClick(item)} style={{ cursor: 'pointer' }}>
-              <div className="product-image-container" style={{ backgroundColor: item.image ? 'transparent' : '#f0f0f0' }}>
-                {item.image ? (
-                  <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
-                ) : (
-                  <span className="image-placeholder">Image not available</span>
-                )}
-              </div>
-              <p className="product-name">{item.name}</p>
-              <p className="product-cost">Ksh{item.price}</p>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); handleAddToCart(item); }}>Add to Cart</button>
-
+            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+              {isInWishlist(item._id) ? (
+                <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
+              ) : (
+                <MdFavoriteBorder onClick={() => addToWishlist(item)} />
+              )}
+              <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="product-image-container">
+                  {item.image ? (
+                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
+                  ) : (
+                    <span className="image-placeholder">Image not available</span>
+                  )}
+                </div>
+                <p className="product-name">{item.name}</p>
+                <p className="product-cost">Ksh {item.price}</p>
+              </Link>
+              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
+                Add to Cart
+              </button>
             </div>
           ))}
 
@@ -349,7 +346,6 @@ const PageLayout = () => {
               <p>No products found matching "{searchQuery}"</p>
             </div>
           )}
-
           <div className="grid-pagination">
             <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
               {currentPage > 1 && <IoIosArrowRoundBack />}
@@ -403,4 +399,4 @@ const PageLayout = () => {
   );
 };
 
-export default PageLayout;
+export default ShoppingPage;

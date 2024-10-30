@@ -1,7 +1,7 @@
 {
   "name": "sparesguyv1",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000S\u0000P\u0000A\u0000R\u0000E\u0000S\u0000G\u0000U\u0000Y\u0000v\u00001\u0000\r\u0000 \u0000",
+  "description": "SPARESGUYv1",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.1",
     "multer": "^1.4.5-lts.1"

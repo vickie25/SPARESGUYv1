@@ -67,7 +67,11 @@ const LoginPage = () => {
           />
 
           <br></br>
+
           <input 
+
+          <input
+
             type="password"
             name="password"
             placeholder="Password"
