@@ -70,7 +70,7 @@ const LoginPage = () => {
 
           <input 
 
-          <input
+          
 
             type="password"
             name="password"
