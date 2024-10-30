@@ -304,11 +304,7 @@ const ShoppingPage = () => {
                 </li>
               ))}
             </ul>
-            <div className="filtered-items">
-              {filteredProducts.map((item) => (
-                <div key={item.id}>{item.name}</div>
-              ))}
-            </div>
+
           </div>
         </aside>
 
