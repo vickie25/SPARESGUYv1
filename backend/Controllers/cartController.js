@@ -3,20 +3,21 @@ import Cart from '../Models/CartModel.js';
 // Existing controller functions remain the same...
 export const createCart = async (req, res) => {
   try {
-    const { products, totalAmount } = req.body;
+    const { products, totalAmount, paymentMethod } = req.body;
 
     // Log the request body for debugging
     console.log('Request body:', req.body);
 
     // Check if the required fields are provided
-    if (!products || !totalAmount) {
-      return res.status(400).json({ message: "Products and totalAmount are required" });
+    if (!products || !totalAmount || !paymentMethod ) {
+      return res.status(400).json({ message: "Products, totalAmount and payment method are required" });
     }
 
     // Assuming you have a Cart model
     const newCart = new Cart({
       products,
-      totalAmount
+      totalAmount,
+      paymentMethod
     });
 
     await newCart.save();
@@ -44,13 +45,13 @@ export const getCartById = async (req, res) => {
 };
 
 export const addProductToCart = async (req, res) => {
-  const { cartId, productId, quantity, totalAmount } = req.body;
+  const { cartId, productId, quantity, totalAmount, paymentMethod } = req.body;
 
   try {
     let cart = await Cart.findById(cartId);
 
     if (!cart) {
-      cart = new Cart({ products: [], totalAmount: 0 });
+      cart = new Cart({ products: [], totalAmount: 0, paymentMethod: [] });
     }
 
     const existingProductIndex = cart.products.findIndex(
@@ -74,12 +75,13 @@ export const addProductToCart = async (req, res) => {
 
 // New function to save cart from frontend
 export const saveCart = async (req, res) => {
-  const { products, totalAmount } = req.body;
+  const { products, totalAmount, paymentMethod } = req.body;
 
   try {
     const newCart = new Cart({
       products,
       totalAmount,
+      paymentMethod,
     });
 
     const savedCart = await newCart.save();
