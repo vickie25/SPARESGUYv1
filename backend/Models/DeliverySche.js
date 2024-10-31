@@ -1,9 +1,10 @@
 // models/Payment.js
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const DeliveryScheSchema = new mongoose.Schema({
   deliveryDate: { type: Date, required: true },
   note: { type: String },
 }, { timestamps: true });
 
-module.exports = mongoose.model('DeliverySche', DeliveryScheSchema);
+const DeliveryInfoSchema = mongoose.model('DeliverySche', DeliveryScheSchema);
+export default DeliveryInfoSchema;

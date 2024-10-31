@@ -1,41 +1,69 @@
-import React, { useState } from 'react';
-import { FaStar } from 'react-icons/fa'; // Install react-icons to use the star icon
+import React, { useState, useEffect } from 'react';
+import { FaStar } from 'react-icons/fa';
 import './PagesCSS/Reviews.css';
-const reviewsData = [
-  {
-    id: 1,
-    name: 'apbc africa',
-    rating: 5,
-    reviewText: 'Enhance your driving visibility with our premium Car Headlight, designed for optimal performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road visibility even in low-light or harsh weather conditions. Built with durable materials.',
-    datePosted: 'Sept 12, 2024',
-  },
-  {
-    id: 2,
-    name: 'apbc africa',
-    rating: 5,
-    reviewText: 'Enhance your driving visibility with our premium Car Headlight, designed for optimal performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road visibility even in low-light or harsh weather conditions. Built with durable materials.',
-    datePosted: 'Sept 12, 2024',
-  }
-];
 
 const Reviews = () => {
+  const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [review, setReview] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  // Fetch reviews when the component mounts
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/reviews'); // Replace with your actual API endpoint
+        const data = await response.json();
+        setReviews(data);
+        setIsLoading(false);
+      } catch (err) {
+        setError('Failed to load reviews');
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Review submitted!');
+    const newReview = { name, email, reviewText: review, rating };
+
+    try {
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview),
+      });
+
+      if (!response.ok) throw new Error('Failed to submit review');
+
+      const savedReview = await response.json();
+      setReviews([...reviews, savedReview]); // Update state with new review
+      setName('');
+      setEmail('');
+      setReview('');
+      setRating(0);
+      alert('Review submitted!');
+    } catch (err) {
+      setError('Failed to submit review');
+    }
   };
 
   return (
     <div className="review-section">
       <h2>Customer Reviews</h2>
 
+      {isLoading && <p>Loading reviews...</p>}
+      {error && <p>{error}</p>}
+
       <div className="reviews-list">
-        {reviewsData.map((review) => (
+        {reviews.map((review) => (
           <div className="review" key={review.id}>
             <div className="review-header">
               <div className="profile">
@@ -43,12 +71,14 @@ const Reviews = () => {
                 <div className="profile-name">{review.name}</div>
               </div>
               <div className="rating">
-                {Array(5).fill().map((_, i) => (
-                  <FaStar
-                    key={i}
-                    color={i < review.rating ? '#ffc107' : '#e4e5e9'}
-                  />
-                ))}
+                {Array(5)
+                  .fill()
+                  .map((_, i) => (
+                    <FaStar
+                      key={i}
+                      color={i < review.rating ? '#ffc107' : '#e4e5e9'}
+                    />
+                  ))}
               </div>
             </div>
             <p>{review.reviewText}</p>
