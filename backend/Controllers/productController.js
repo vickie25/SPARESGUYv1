@@ -28,6 +28,7 @@ export const uploadImage = (req, res) => {
 //access private/admin
 export const createProduct = async (req, res) => {
   console.log("product added successfully")
+  console.log(req.user)
   try {
     const product = new Product(req.body);
     await product.save();
