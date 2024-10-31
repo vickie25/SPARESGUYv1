@@ -22,7 +22,7 @@ const Checkout = () => {
   };
 
   const handleProceedToCheckout = () => {
-    navigate('/confirmation');
+    navigate('/payement');
   };
 
   return (
