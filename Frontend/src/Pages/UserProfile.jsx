@@ -15,6 +15,11 @@ import carouselImage from '../Homepage/HomepageImages/defaultuser.png';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+// In your login function or component
+import { useUser } from './UserContext';
+
+
+
 
 const UserProfile = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -39,6 +44,11 @@ const UserProfile = () => {
   const handle2FAToggleClick = () => {
     setIs2FAEnabled(!is2FAEnabled);
   };
+
+  // const  = (userData) => {
+  //   const { setUser } = useUser();
+  //   setUser(userData); // userData should contain the user's name
+  // };
 
   const handleEmailNotToggleClick = () => {
     setIsEmailNotEnabled(!isEmailNotEnabled);
