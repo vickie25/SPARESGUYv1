@@ -1,7 +1,11 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+
+import cors from 'cors';
+
 import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
+
 import productRoutes from './routes/productRoutes.js'
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 
@@ -12,6 +16,7 @@ import OrderRoutes from './routes/OrderRoutes.js';
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js'; 
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -21,6 +26,9 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json());
+app.use(cookieParser()); // To parse cookies from the request
+
+
 
 // Serve files in the uploads directory
 app.use('/uploads', express.static('uploads'));
