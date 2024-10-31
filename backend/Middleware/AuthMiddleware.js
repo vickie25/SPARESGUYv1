@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
 import dotenv from "dotenv"
+import User from "../Models/User.js";
 
 dotenv.config()
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async(req, res, next) => {
     const token = req.cookies.token;
     console.log(token, "This is the token")
 
@@ -11,9 +12,11 @@ const authMiddleware = (req, res, next) => {
     console.log(key, "This isthe key")
 
     try {
-        const decoded = jwt.verify(token, key);
-        console.log(decoded)
-        req.user = decoded;
+        const email = jwt.verify(token, key);
+        console.log(email, "This is the email")
+        const user = await User.findOne({ email: email.id });
+        console.log(user, "This is the user")
+        req.user = user;
         next();
     } catch (error) {
         console.error("Authentication error:", error);
