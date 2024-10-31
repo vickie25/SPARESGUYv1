@@ -1,1 +1,125 @@
+/* Ensure the parent container takes the full height of the viewport */
+body,
+html {
+  height: 100%;
+  margin: 0;
+}
 
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.head {
+  text-align: center;
+  margin: 30px;
+}
+
+.contacts {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  max-width: 800px;
+}
+
+.g-i-t,
+.location {
+  flex: 1;
+  text-align: center;
+}
+.location {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.location-icon {
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+.location a {
+  text-decoration: none;
+  color: #fff;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.phone,
+.email,
+.whatsapp,
+.office {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.phone:last-child,
+.email:last-child,
+.whatsapp:last-child,
+.office:last-child {
+  margin-right: 0;
+}
+
+.g-i-t {
+  flex: 1;
+  text-align: center;
+}
+
+.g-i-t form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+}
+
+.map-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.map-container iframe {
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  border: 0;
+}
