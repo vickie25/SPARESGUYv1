@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Form, Row, Col, Button, Card } from 'react-bootstrap';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
-
+import mpesa from '../Homepage/HomepageImages/mpesa.svg'
+import card from '../Homepage/HomepageImages/card.png'
 const Payement= () => {
   const [validated, setValidated] = useState(false);
 
@@ -84,10 +85,15 @@ const Payement= () => {
             </Row>
           </Card>
 
-          <Card className="p-3">
+         
+        </Col>
+
+        <Col md={4}>
+        <Card className="p-3">
             <Card.Title className="text-center">Payment Method</Card.Title>
             <Form.Group controlId="formPaymentMethod">
               <div className="d-flex justify-content-around">
+              <img src={card} alt="card" width={24} height={25} className="me-2" />
                 <Form.Check
                   type="radio"
                   label="Credit/Debit card"
@@ -95,61 +101,25 @@ const Payement= () => {
                   id="creditDebit"
                   defaultChecked
                 />
+                <div className="d-flex align-items-center mb-2">
                 <Form.Check
                   type="radio"
                   label="Cash on Delivery"
                   name="paymentMethod"
                   id="cashOnDelivery"
                 />
-                <Form.Check
-                  type="radio"
-                  label="Lipa Na Mpesa"
-                  name="paymentMethod"
-                  id="mpesa"
-                />
+                </div>
+                <div className="d-flex align-items-center mb-2">
+                  <img src={mpesa} alt="Mpesa" width={24} height={24} className="me-2" />
+                  <Form.Check 
+                    type="radio"
+                    label="Mpesa"
+                    name="paymentMethod"
+                    id="mpesa"
+              />
+            </div>
               </div>
             </Form.Group>
-          </Card>
-        </Col>
-
-        <Col md={4}>
-          <Card className="p-3 mb-3">
-            <Card.Title className="text-center">Payment Information</Card.Title>
-            <Form>
-              <Form.Group controlId="formCardName">
-                <Form.Label>Name on Card</Form.Label>
-                <Form.Control required type="text" placeholder="Name" />
-              </Form.Group>
-
-              <Form.Group controlId="formAccountNumber">
-                <Form.Label>Account Number</Form.Label>
-                <Form.Control required type="text" placeholder="Number" />
-              </Form.Group>
-
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="formExpirationDate">
-                    <Form.Label>Expiration Date</Form.Label>
-                    <Form.Control required type="date" />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group controlId="formCVV">
-                    <Form.Label>CVV</Form.Label>
-                    <Form.Control required type="text" placeholder="Number" />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <div className="d-flex justify-content-between mt-3">
-                <h5>Grand Total</h5>
-                <h5>$270.00</h5>
-              </div>
-
-              <Button variant="dark" className="w-100 mt-3" type="submit">
-                Confirm
-              </Button>
-            </Form>
           </Card>
         </Col>
       </Row>

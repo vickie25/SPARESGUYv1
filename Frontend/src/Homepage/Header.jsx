@@ -39,8 +39,8 @@ const Header = () => {
         <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
           <li><a href="/">Home</a></li>
           <li><Link to="/shop">Shop</Link></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="AboutUs">About</a></li>
+          <li><a href="ContactUs">Contact Us</a></li>
           <li>
             <div className="search-container">
               <input
@@ -75,7 +75,7 @@ const Header = () => {
             </a>
           </li>
           <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
-          <li>Login</li>
+          <li><a href="login">Login</a></li>
         </ul>
       </nav>
       {isDropdownVisible && <div className="mask"></div>}

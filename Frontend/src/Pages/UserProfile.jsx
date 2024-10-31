@@ -9,6 +9,9 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
+import { BsCaretDownFill } from 'react-icons/bs';
+import { BsToggleOff } from "react-icons/bs";
+import { BsToggleOn } from "react-icons/bs";
 import carouselImage from '../Homepage/HomepageImages/defaultuser.png';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
@@ -19,6 +22,29 @@ const UserProfile = () => {
   const { addToCart } = useCart();
   const [quantities, setQuantities] = useState({});
   const location = useLocation();
+  const [is2FAEnabled, setIs2FAEnabled] = useState(() => {
+    return JSON.parse(localStorage.getItem('is2FAEnabled')) || false;
+  });
+  const [isEmailNotEnabled, setIsEmailNotEnabled] = useState(() => {
+    return JSON.parse(localStorage.getItem('isEmailNotEnabled')) || false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('is2FAEnabled', JSON.stringify(is2FAEnabled));
+  }, [is2FAEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('isEmailNotEnabled', JSON.stringify(isEmailNotEnabled));
+  }, [isEmailNotEnabled]);
+
+  const handle2FAToggleClick = () => {
+    setIs2FAEnabled(!is2FAEnabled);
+  };
+
+  const handleEmailNotToggleClick = () => {
+    setIsEmailNotEnabled(!isEmailNotEnabled);
+  };
+
 
   const handleQuantityChange = (productId, change) => {
     setQuantities(prev => ({
@@ -176,7 +202,6 @@ const UserProfile = () => {
       case 'wishlist':
         return (
           <div id="wishlist" className="wishlist-container">
-            <h2>My Wishlist</h2>
             <section className="grid-section">
               <div className="grid-container">
                 {getCurrentPageItems().map((item, index) => (
@@ -226,7 +251,34 @@ const UserProfile = () => {
       case 'notifications':
         return <div>Notifications settings will be displayed here.</div>;
       case 'settings':
-        return <div>Settings options will be displayed here.</div>;
+        return <div className="settings">
+          <div className="appearance">
+            <h3>Appearance</h3>
+            <p>Customize your theme looks on your device</p>
+          </div>
+          <div className="language">
+            <h3>Language</h3>
+            <p>Select your language</p>
+          </div>
+          <div className="2FA">
+            <h3>Two-factor Authentication</h3>
+            <p>Keep your account secure by enabling 2FA</p>
+            {is2FAEnabled ? (
+              <BsToggleOn className="toggle-button" onClick={handle2FAToggleClick} />
+            ) : (
+              <BsToggleOff className="toggle-button" onClick={handle2FAToggleClick} />
+            )}
+          </div>
+          <div className="email-not">
+            <h3>Email Notifications</h3>
+            <p>Receive email notifications</p>
+            {isEmailNotEnabled ? (
+              <BsToggleOn className="toggle-button" onClick={handleEmailNotToggleClick} />
+            ) : (
+              <BsToggleOff className="toggle-button" onClick={handleEmailNotToggleClick} />
+            )}
+          </div>
+        </div>;
       default:
         return <div>Select a section from the sidebar</div>;
     }

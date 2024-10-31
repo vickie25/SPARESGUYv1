@@ -68,11 +68,15 @@ const LoginPage = () => {
 
           <br></br>
 
-          <input 
 
           
 
-            type="password"
+
+     <input 
+
+          
+
+           type="password"
             name="password"
             placeholder="Password"
             value={password}
