@@ -75,7 +75,7 @@ const Header = () => {
             </a>
           </li>
           <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
-          <li>Login</li>
+          <li><a href="login">Login</a></li>
         </ul>
       </nav>
       {isDropdownVisible && <div className="mask"></div>}
