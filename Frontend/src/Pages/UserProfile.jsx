@@ -9,6 +9,7 @@ import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosArrowRoundBack, IoIosArrowRoundForward } from "react-icons/io";
+import { BsCaretDownFill } from 'react-icons/bs';
 import { BsToggleOff } from "react-icons/bs";
 import { BsToggleOn } from "react-icons/bs";
 import carouselImage from '../Homepage/HomepageImages/defaultuser.png';
