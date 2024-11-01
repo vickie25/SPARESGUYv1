@@ -301,7 +301,7 @@ const ShoppingPage = () => {
                   )}
                 </div>
                 <p className="product-name">{item.name}</p>
-                <p className="product-cost">Ksh {item.price}</p>
+                <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
               </Link>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
                 Add to Cart
