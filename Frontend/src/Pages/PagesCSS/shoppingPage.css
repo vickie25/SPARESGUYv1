@@ -272,6 +272,7 @@ main {
 
 .delete-button:hover {
   color: darkred;
+  background: none;
 }
 
 /* Subtotal */

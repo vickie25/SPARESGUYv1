@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import "./PagesCSS/shoppingPage.css";
 
 const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
     const { cart, removeFromCart, calculateSubtotal, addToCart } = useCart();
