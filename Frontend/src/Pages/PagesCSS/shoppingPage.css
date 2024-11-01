@@ -168,8 +168,8 @@ main {
 }
 
 .product-cost {
-  font-size: 1em;
-  color: #00;
+  display: block; /* Ensure it is not set to 'none' */
+  color: inherit; /* Ensure the text color is visible */
 }
 
 .add-to-cart-button {
