@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './HomepageCSS/ProductListing.css';
+import { useCart } from '../context/CartContext';
 
 const ProductListing = () => {
   const [selectedTab, setSelectedTab] = useState('Latest');
+  const { addToCart } = useCart();
+
 
   const latestItems = [
     { id: 1, name: "Latest Product 1", price: 500, image: "path/to/image1" },
     { id: 2, name: "Latest Product 2", price: 700, image: "path/to/image2" },
+    { id: 3, name: "Latest Product 3", price: 600, image: "path/to/image2" },
+    { id: 4, name: "Latest Product 4", price: 400, image: "path/to/image2" },
   ];
 
   const bestSellersItems = [
@@ -37,11 +42,6 @@ const ProductListing = () => {
         items = [];
     }
 
-    // Ensure a minimum of 4 products
-    while (items.length < 4) {
-      items.push({ id: `placeholder-${items.length}`, name: "Placeholder Product", price: 0, image: "path/to/placeholder-image" });
-    }
-
     return items;
   };
 
@@ -64,7 +64,7 @@ const ProductListing = () => {
             <img src={item.image} alt={item.name} />
             <p>{item.name}</p>
             <p>Price: Ksh{item.price}</p>
-            <button>Add to cart</button>
+            <button onClick={() => addToCart(item)}>Add to cart</button>
           </div>
         ))}
       </div>
