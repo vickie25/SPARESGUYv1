@@ -2,6 +2,8 @@ import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
+import bodyParser from 'body-parser';
+import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 import authMiddleware from './Middleware/AuthMiddleware.js';
@@ -16,11 +18,12 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
-app.use(express.json());
 const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes
+app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.json());
 app.use(cookieParser()); // To parse cookies from the request
 
@@ -52,6 +55,8 @@ app.use('/api/order', OrderRoutes);
 
 // Review routes
 app.use('/api/review', ReviewRoutes);
+
+app.use('/api/contact', contactRoutes);
 
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes); // Use the correct route

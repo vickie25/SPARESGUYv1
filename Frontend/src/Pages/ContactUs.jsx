@@ -1,13 +1,40 @@
-import React from 'react'
-import "./PagesCSS/ContactUs.css"
+import React, { useState } from 'react';
+import axios from 'axios';
+import "./PagesCSS/ContactUs.css";
 import { BsTelephone } from "react-icons/bs";
 import { MdOutlineMail, MdOutlineLocationOn } from "react-icons/md";
 import { BiMessageRounded } from "react-icons/bi";
 import Footer from '../Homepage/Footer';
 import Header from '../Homepage/Header';
 
-
 const ContactUs = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('http://localhost:8000/api/contact/send-email', formData);
+            console.log('Email sent successfully:', response.data);
+            alert('Your message has been sent successfully!');
+        } catch (error) {
+            console.error('Error sending email:', error);
+            alert('There was an error sending your message. Please try again later.');
+        }
+    };
+
     return (
         <div className="page-container">
             <main className="main-content">
@@ -20,22 +47,22 @@ const ContactUs = () => {
                     {/* Get in Touch Form */}
                     <div className="form-section">
                         <h3>Get In Touch</h3>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label>Name:</label>
-                                <input type="text" placeholder="Enter your name" />
+                                <input type="text" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Email:</label>
-                                <input type="email" placeholder="Enter your email" />
+                                <input type="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Subject:</label>
-                                <input type="text" placeholder="Enter the subject" />
+                                <input type="text" name="subject" placeholder="Enter the subject" value={formData.subject} onChange={handleChange} />
                             </div>
                             <div className="form-group">
                                 <label>Message:</label>
-                                <textarea placeholder="Enter your message"></textarea>
+                                <textarea name="message" placeholder="Enter your message" value={formData.message} onChange={handleChange}></textarea>
                             </div>
                             <button type="submit" className="submit-button">Submit</button>
                         </form>
