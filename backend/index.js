@@ -1,7 +1,7 @@
 import express from 'express';
 import connectDB from './Config/db.js';
 
-import cors from 'cors';
+
 
 import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
