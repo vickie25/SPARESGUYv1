@@ -22,30 +22,33 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
     }, [toggleDropdown]);
 
     const handleCheckout = async () => {
-        const cartData = {
-            products: cart.map(item => ({
-                productId: item.productId,
-                quantity: item.quantity,
-            })),
-            totalAmount: calculateSubtotal(),
-        };
+        navigate('/checkout');
+        // const cartData = {
+        //     products: cart.map(item => ({
+        //         productId: item.productId,
+        //         quantity: item.quantity,
+        //     })),
+        //     totalAmount: calculateSubtotal(),
+            
+        // };
+        // console.log(cartData, "cart data")
 
-        try {
-            await axios.post('http://localhost:8000/api/cart/save', cartData);
-            console.log('Cart saved successfully!');
-            navigate('/checkout');  // Redirect to checkout page
-        } catch (error) {
-            if (error.response) {
-                console.error('Error response:', error.response.data);
-                alert(`Error saving cart: ${error.response.data.message}`);
-            } else if (error.request) {
-                console.error('No response received:', error.request);
-                alert('No response from the server. Please try again later.');
-            } else {
-                console.error('Error:', error.message);
-                alert(`Error: ${error.message}`);
-            }
-        }
+        // try {
+        //     await axios.post('http://localhost:8000/api/cart/save', cartData);
+        //     console.log('Cart saved successfully!');
+        //     navigate('/checkout');  // Redirect to checkout page
+        // } catch (error) {
+        //     if (error.response) {
+        //         console.error('Error response:', error.response.data);
+        //         alert(`Error saving cart: ${error.response.data.message}`);
+        //     } else if (error.request) {
+        //         console.error('No response received:', error.request);
+        //         alert('No response from the server. Please try again later.');
+        //     } else {
+        //         console.error('Error:', error.message);
+        //         alert(`Error: ${error.message}`);
+        //     }
+        // }
     };
 
     return (
