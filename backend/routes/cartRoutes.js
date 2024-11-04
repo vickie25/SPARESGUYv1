@@ -9,7 +9,6 @@ router.post('/save', async (req, res) => {
 
     const { products, totalAmount, PaymentMethod } = req.body;
 
-    const { products, totalAmount, paymentMethod } = req.body;
 
 
     try {
@@ -24,7 +23,7 @@ router.post('/save', async (req, res) => {
 
             PaymentMethod
 
-            paymentMethod, // Include paymentMethod field
+          
 
         });
 
