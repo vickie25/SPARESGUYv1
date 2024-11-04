@@ -8,7 +8,9 @@ const cartSchema = new mongoose.Schema({
     }, 
   ],
   totalAmount: { type: Number, required: true },
+  paymentMethod:  { type: String, enum: ['Credit/Debit', 'Mpesa', 'Cash on Delivery'],  required: true }
 }, { timestamps: true });
+
 
 const Cart = mongoose.model('Cart', cartSchema);
 

@@ -12,16 +12,32 @@ import ProductDetail from './Pages/productDetail.jsx';
 import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
+import ContactUs from './Pages/ContactUs.jsx';
+import AboutUs from './Pages/AboutUs.jsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';
-import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
+// import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -35,7 +51,13 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="checkout" element={<Checkout />} />
     <Route path="payement" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
+
+    {/* <Route path="confirmation" element={<PaymentConfirmation />} /> */}
+
     <Route path="confirmation" element={<PaymentConfirmation />} />
+    <Route path="ContactUs" element={<ContactUs />} />
+    <Route path="AboutUs" element={<AboutUs />} />
+
   </Route>
 ));
 
