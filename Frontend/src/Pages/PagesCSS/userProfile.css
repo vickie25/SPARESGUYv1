@@ -249,6 +249,55 @@ input {
   color: #fff;
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+  margin-left: 40px;
+  margin-top: 40px;
+  gap: 20px;
+}
+
+.settings h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.settings p {
+  font-size: 16px;
+  margin: 5px 0 0 0;
+  color: #666;
+}
+
+.settings > div {
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.settings > div:hover {
+  border-color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.appearance,
+.language,
+.2fa,
+.email-not {
+  background-color: white;
+}
+
+.toggle-button {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  cursor: pointer;
+}
+
 /* Media Queries for Responsiveness */
 @media (max-width: 1024px) {
   .sidebar {
