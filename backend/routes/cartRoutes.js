@@ -6,7 +6,11 @@ const router = express.Router();
 
 // Route to save the cart
 router.post('/save', async (req, res) => {
+
+    const { products, totalAmount, PaymentMethod } = req.body;
+
     const { products, totalAmount, paymentMethod } = req.body;
+
 
     try {
         // Validate input data
@@ -17,7 +21,11 @@ router.post('/save', async (req, res) => {
         const newCart = new Cart({
             products,
             totalAmount,
+
+            PaymentMethod
+
             paymentMethod, // Include paymentMethod field
+
         });
 
         const savedCart = await newCart.save();

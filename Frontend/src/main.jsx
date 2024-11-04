@@ -38,8 +38,15 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="checkout" element={<Checkout />} />
     <Route path="payement" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
+
+
+    {/* <Route path="confirmation" element={<PaymentConfirmation />} /> */}
+
+    {/* <Route path="confirmation" element={<PaymentConfirmation />} /> */}
+
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} />
+
     <Route path="ContactUs" element={<ContactUs />} />
     <Route path="AboutUs" element={<AboutUs />} />
 

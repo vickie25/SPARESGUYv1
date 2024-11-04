@@ -1,5 +1,6 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+
 import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
 import bodyParser from 'body-parser';
