@@ -112,25 +112,6 @@ const ShoppingPage = () => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(item => item.productId === product._id);
-
-      if (existingItem) {
-        return prevCart.map(item =>
-          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...prevCart, {
-          productId: product._id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: 1
-        }];
-      }
-    });
-  };
 
   const isInWishlist = (itemId) => {
     return wishlist.some(item => item.productId === itemId);
@@ -139,21 +120,37 @@ const ShoppingPage = () => {
   useEffect(() => {
     if (cart.length > 0) {
       const updateCartInDatabase = async () => {
-        const cartId = 'actual-cart-id'; // Ensure this is valid or dynamically fetched
         const productData = {
-          cartId,
           products: cart.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
           })),
           totalAmount: calculateSubtotal(),
+          paymentMethod: 'Credit/Debit',  // Ensure paymentMethod is included here
         };
 
+        console.log('Preparing to send the following product data:', productData);
+
         try {
-          await axios.post('http://localhost:8000/api/cart/save', productData);
-          console.log('Cart updated and saved to database successfully!');
+          const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log('Cart updated and saved to database successfully!', response.data);
         } catch (error) {
-          console.error('Error updating cart in database', error);
+          if (error.response) {
+            // Server responded with a status other than 2xx
+            console.error('Error updating cart in database', error.response.data);
+            console.error('Status:', error.response.status);
+            console.error('Headers:', error.response.headers);
+          } else if (error.request) {
+            // Request was made but no response received
+            console.error('No response received:', error.request);
+          } else {
+            // Something else happened while setting up the request
+            console.error('Error setting up request:', error.message);
+          }
         }
       };
 
@@ -162,24 +159,6 @@ const ShoppingPage = () => {
   }, [cart, calculateSubtotal]);
 
 
-  const handleDelete = async (productId) => {
-    try {
-      // Update frontend state
-      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
-
-      // Delete from backend
-      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
-    } catch (error) {
-      console.error('Error deleting product from cart:', error);
-      // Optionally revert the cart state if backend delete fails
-      // You might want to show an error message to the user
-    }
-  };
-
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -322,7 +301,7 @@ const ShoppingPage = () => {
                   )}
                 </div>
                 <p className="product-name">{item.name}</p>
-                <p className="product-cost">Ksh {item.price}</p>
+                <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
               </Link>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
                 Add to Cart
