@@ -30,7 +30,7 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
         //         quantity: item.quantity,
         //     })),
         //     totalAmount: calculateSubtotal(),
-            
+
         // };
         // console.log(cartData, "cart data")
 
@@ -57,10 +57,10 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
                 quantity: item.quantity,
             })),
             totalAmount: calculateSubtotal(),
-            paymentMethod: 'Credit/Debit',  // Ensure paymentMethod matches enum values
+            paymentMethod: 'Credit/Debit', // Ensure PaymentMethod matches enum values
         };
 
-    try {
+        try {
             await axios.post('http://localhost:8000/api/cart/save', cartData);
             console.log('Cart saved successfully!');
             navigate('/checkout');  // Redirect to checkout page
