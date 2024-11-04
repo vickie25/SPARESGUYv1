@@ -62,6 +62,7 @@ app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
     res.json({ message: "Welcome to the admin dashboard" });
 });
 
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
