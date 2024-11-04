@@ -39,6 +39,8 @@ export const createProduct = async (req, res) => {
 };
 
 // Get all products
+//route GET /api/products
+//access public
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
@@ -49,6 +51,8 @@ export const getAllProducts = async (req, res) => {
 };
 
 // Get a single product by ID
+//route GET /api/products/:id
+//access public
 export const getProductById = async (req, res) => {
   const { id } = req.params;
   console.log('Received ID:', id);
@@ -68,6 +72,8 @@ export const getProductById = async (req, res) => {
 
 
 // Update a product by ID
+//route PUT /api/products/:id
+//access private/admin
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -81,6 +87,8 @@ export const updateProduct = async (req, res) => {
 };
 
 // Delete a product by ID
+//route DELETE /api/products/:id
+//access private/admin
 export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
