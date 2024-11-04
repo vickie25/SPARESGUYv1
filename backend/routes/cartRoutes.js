@@ -1,8 +1,40 @@
-// routes/cartRoutes.js
 import express from 'express';
 import { createCart, getCartById, addProductToCart, saveCart, removeProductFromCart } from '../Controllers/cartController.js'; // Adjust the path as necessary
+import Cart from '../Models/CartModel.js'; // Import the Cart model
 
 const router = express.Router();
+
+// Route to save the cart
+router.post('/save', async (req, res) => {
+
+    const { products, totalAmount, PaymentMethod } = req.body;
+
+    const { products, totalAmount, paymentMethod } = req.body;
+
+
+    try {
+        // Validate input data
+        if (!products || !totalAmount || !paymentMethod) {
+            return res.status(400).json({ message: 'Missing required fields' });
+        }
+
+        const newCart = new Cart({
+            products,
+            totalAmount,
+
+            PaymentMethod
+
+            paymentMethod, // Include paymentMethod field
+
+        });
+
+        const savedCart = await newCart.save();
+        res.status(201).json(savedCart);
+    } catch (error) {
+        console.error('Error saving cart to database:', error); // Log the error
+        res.status(500).json({ message: 'Error saving cart to database', error });
+    }
+});
 
 // Route to create a new cart
 router.post('/', createCart);
@@ -13,26 +45,7 @@ router.get('/:id', getCartById);
 // Route to add a product to the cart
 router.post('/add', addProductToCart);
 
-// Add these new routes to your existing routes
-router.post('/save', saveCart);
+// Route to remove a product from the cart
 router.delete('/:cartId/product/:productId', removeProductFromCart);
-
-// Route to save the cart
-router.post('/save', async (req, res) => {
-    const { products, totalAmount, PaymentMethod } = req.body;
-
-    try {
-        const newCart = new Cart({
-            products,
-            totalAmount,
-            PaymentMethod
-        });
-
-        const savedCart = await newCart.save();
-        res.status(201).json(savedCart);
-    } catch (error) {
-        res.status(500).json({ message: 'Error saving cart to database', error });
-    }
-});
 
 export default router;
