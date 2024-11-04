@@ -30,14 +30,14 @@ const ShoppingPage = () => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const { cartItems, removeItem } = useCart();
+  // const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const productsPerPage = 9;
   const itemsPerPage = 9;
   const [isFilterApplied, setIsFilterApplied] = useState(false);
@@ -68,13 +68,6 @@ const ShoppingPage = () => {
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchQuery)
   );
-
-
-  // Filter items based on the search query
-  // const filteredItems = items.filter(item =>
-  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -197,33 +190,33 @@ const ShoppingPage = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  // const endIndex = startIndex + itemsPerPage;
+  // const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleProductClick = (item) => {
-    navigate(`/product`, { state: { product: item } });
-  };
+  // const handleProductClick = (item) => {
+  //   navigate(`/product`, { state: { product: item } });
+  // };
 
-  const isLoggedIn = false; // Replace this with your actual login check
+  // const isLoggedIn = false; // Replace this with your actual login check
 
-  const handleCheckout = async () => {
-    const cartData = {
-      products: cart.map(item => ({
-        productId: item.productId,
-        quantity: item.quantity,
-      })),
-      totalAmount: calculateSubtotal(),
-    };
+  // const handleCheckout = async () => {
+  //   const cartData = {
+  //     products: cart.map(item => ({
+  //       productId: item.productId,
+  //       quantity: item.quantity,
+  //     })),
+  //     totalAmount: calculateSubtotal(),
+  //   };
 
-    try {
-      await axios.post('http://localhost:8000/api/cart/save', cartData);
-      console.log('Cart saved successfully!');
-      navigate('/checkout'); // Redirect to checkout page
-    } catch (error) {
-      console.error('Error saving cart to database', error);
-      alert('Error saving cart. Please try again.');
-    }
-  };
+  //   try {
+  //     await axios.post('http://localhost:8000/api/cart/save', cartData);
+  //     console.log('Cart saved successfully!');
+  //     navigate('/checkout'); // Redirect to checkout page
+  //   } catch (error) {
+  //     console.error('Error saving cart to database', error);
+  //     alert('Error saving cart. Please try again.');
+  //   }
+  // };
 
   return (
     <div className="page-wrap">

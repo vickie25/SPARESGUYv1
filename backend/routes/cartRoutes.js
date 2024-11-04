@@ -19,12 +19,13 @@ router.delete('/:cartId/product/:productId', removeProductFromCart);
 
 // Route to save the cart
 router.post('/save', async (req, res) => {
-    const { products, totalAmount } = req.body;
+    const { products, totalAmount, PaymentMethod } = req.body;
 
     try {
         const newCart = new Cart({
             products,
             totalAmount,
+            PaymentMethod
         });
 
         const savedCart = await newCart.save();
