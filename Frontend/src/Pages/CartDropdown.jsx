@@ -3,9 +3,10 @@ import { useCart } from '../context/CartContext';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import "./PagesCSS/shoppingPage.css";
 
 const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
-    const { cart, removeFromCart, calculateSubtotal } = useCart();
+    const { cart, removeFromCart, calculateSubtotal, addToCart } = useCart();
     const navigate = useNavigate();
     const dropdownRef = useRef(null);  // Ref for the dropdown
 
@@ -22,30 +23,63 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
     }, [toggleDropdown]);
 
     const handleCheckout = async () => {
+        navigate('/checkout');
+        // const cartData = {
+        //     products: cart.map(item => ({
+        //         productId: item.productId,
+        //         quantity: item.quantity,
+        //     })),
+        //     totalAmount: calculateSubtotal(),
+            
+        // };
+        // console.log(cartData, "cart data")
+
+        // try {
+        //     await axios.post('http://localhost:8000/api/cart/save', cartData);
+        //     console.log('Cart saved successfully!');
+        //     navigate('/checkout');  // Redirect to checkout page
+        // } catch (error) {
+        //     if (error.response) {
+        //         console.error('Error response:', error.response.data);
+        //         alert(`Error saving cart: ${error.response.data.message}`);
+        //     } else if (error.request) {
+        //         console.error('No response received:', error.request);
+        //         alert('No response from the server. Please try again later.');
+        //     } else {
+        //         console.error('Error:', error.message);
+        //         alert(`Error: ${error.message}`);
+        //     }
+        // }
+
         const cartData = {
             products: cart.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity,
             })),
             totalAmount: calculateSubtotal(),
+            paymentMethod: 'Credit/Debit',  // Ensure paymentMethod matches enum values
         };
 
-        try {
+    try {
             await axios.post('http://localhost:8000/api/cart/save', cartData);
             console.log('Cart saved successfully!');
             navigate('/checkout');  // Redirect to checkout page
         } catch (error) {
             if (error.response) {
+                // Backend returned an error
                 console.error('Error response:', error.response.data);
                 alert(`Error saving cart: ${error.response.data.message}`);
             } else if (error.request) {
+                // Request made but no response received
                 console.error('No response received:', error.request);
                 alert('No response from the server. Please try again later.');
             } else {
+                // Something else caused the error
                 console.error('Error:', error.message);
                 alert(`Error: ${error.message}`);
             }
         }
+
     };
 
     return (
@@ -56,8 +90,8 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
                 ) : (
                     <div>
                         <h2>Order Summary</h2>
-                        {cart.map((item) => (
-                            <div key={item.productId} className="cart-dropdown-item">
+                        {cart.map((item, index) => (
+                            <div key={index} className="cart-dropdown-item">
                                 <img src={`http://localhost:8000${item.image}`} alt={item.name} className="cart-item-image" />
                                 <div className="cart-item-details">
                                     <h4>{item.name}</h4>

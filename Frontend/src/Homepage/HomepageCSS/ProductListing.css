@@ -37,6 +37,7 @@
 .product-item-example {
   background-color: #fff;
   flex: 1;
+  max-width: 350px;
   margin: 10px;
   display: flex;
   flex-direction: column;
