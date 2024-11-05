@@ -29,6 +29,14 @@ const ContactUs = () => {
             const response = await axios.post('http://localhost:8000/api/contact/send-email', formData);
             console.log('Email sent successfully:', response.data);
             alert('Your message has been sent successfully!');
+
+            // Clear the form fields
+            setFormData({
+                name: '',
+                email: '',
+                subject: '',
+                message: '',
+            });
         } catch (error) {
             console.error('Error sending email:', error);
             alert('There was an error sending your message. Please try again later.');
