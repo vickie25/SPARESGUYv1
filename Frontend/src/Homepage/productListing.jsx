@@ -21,7 +21,6 @@ const ProductListing = () => {
 
   const featuredItems = [
     { id: 5, name: "Featured Product 1", price: 1000, image: "path/to/image5" },
-    { id: 6, name: "Featured Product 2", price: 1100, image: "path/to/image6" },
   ];
 
   const tabs = ['Latest', 'Best Sellers', 'Featured'];

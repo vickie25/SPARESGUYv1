@@ -9,6 +9,7 @@ import Login from './Pages/login.jsx';
 import Registration from './Pages/Registration.jsx';
 import Shop from './Pages/shoppingPage.jsx';
 import ProductDetail from './Pages/productDetail.jsx';
+import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
@@ -39,9 +40,9 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="UserProf" element={<UserProfile />} />
 
 
-    {/* <Route path="confirmation" element={<PaymentConfirmation />} /> */}
+    <Route path="confirmation" element={<PaymentConfirmation />} />
 
-    {/* <Route path="confirmation" element={<PaymentConfirmation />} /> */}
+    <Route path="confirmation" element={<PaymentConfirmation />} />
 
     {/* <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} /> */}
