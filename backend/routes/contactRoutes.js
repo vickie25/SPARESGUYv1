@@ -1,6 +1,8 @@
-// backend/routes/contactRoutes.js
 import express from 'express';
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -11,15 +13,15 @@ router.post('/send-email', async (req, res) => {
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'your-email@gmail.com', // Your email address
-            pass: 'your-email-password', // Your email password
+            user: process.env.EMAIL_USER, // Your email address from environment variable
+            pass: process.env.EMAIL_PASS, // Your email password from environment variable
         },
     });
 
     // Set up email data
     let mailOptions = {
         from: email, // Sender address
-        to: 'lynnakinyi2003@gmail.com', // List of receivers
+        to: 'apbcafricait@gmail.com', // List of receivers
         subject: subject, // Subject line
         text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`, // Plain text body
     };
