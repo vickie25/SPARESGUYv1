@@ -1,12 +1,12 @@
-import React from 'react'
-import "./PagesCSS/AboutUs.css"
+// import React from 'react'
+// import "./PagesCSS/AboutUs.css"
 
-const AboutUs = () => {
-    return (
-        <div>
+// const AboutUs = () => {
+//     return (
+//         <>
+        
+//         </>
+//     )
+// }
 
-        </div>
-    )
-}
-
-export default AboutUs
+// export default AboutUs
