@@ -1,47 +1,42 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomepageCSS/ProductListing.css';
 import { useCart } from '../context/CartContext';
+import axios from 'axios';
 
 const ProductListing = () => {
   const [selectedTab, setSelectedTab] = useState('Latest');
   const { addToCart } = useCart();
+  const [latestItems, setLatestItems] = useState([]);
+  const [bestSellersItems, setBestSellersItems] = useState([]);
+  const [featuredItems, setFeaturedItems] = useState([]);
 
-
-  const latestItems = [
-    { id: 1, name: "Latest Product 1", price: 500, image: "path/to/image1" },
-    { id: 2, name: "Latest Product 2", price: 700, image: "path/to/image2" },
-    { id: 3, name: "Latest Product 3", price: 600, image: "path/to/image2" },
-    { id: 4, name: "Latest Product 4", price: 400, image: "path/to/image2" },
-  ];
-
-  const bestSellersItems = [
-    { id: 3, name: "Best Seller Product 1", price: 800, image: "path/to/image3" },
-    { id: 4, name: "Best Seller Product 2", price: 900, image: "path/to/image4" },
-  ];
-
-  const featuredItems = [
-    { id: 5, name: "Featured Product 1", price: 1000, image: "path/to/image5" },
-  ];
+  useEffect(() => {
+    // Fetch products from the backend
+    axios.get('http://localhost:8000/api/products')
+      .then(response => {
+        const products = response.data;
+        setLatestItems(products.filter(product => product.isLatest));
+        setBestSellersItems(products.filter(product => product.isBestSeller));
+        setFeaturedItems(products.filter(product => product.isFeatured));
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
+  }, []);
 
   const tabs = ['Latest', 'Best Sellers', 'Featured'];
 
   const getItemsForSelectedTab = () => {
-    let items;
     switch (selectedTab) {
       case 'Latest':
-        items = latestItems;
-        break;
+        return latestItems;
       case 'Best Sellers':
-        items = bestSellersItems;
-        break;
+        return bestSellersItems;
       case 'Featured':
-        items = featuredItems;
-        break;
+        return featuredItems;
       default:
-        items = [];
+        return [];
     }
-
-    return items;
   };
 
   return (
@@ -59,11 +54,11 @@ const ProductListing = () => {
       </div>
       <div className="products-example">
         {getItemsForSelectedTab().map(item => (
-          <div key={item.id} className="product-item-example">
-            <img src={item.image} alt={item.name} />
+          <div key={item._id} className="product-item-example">
+            <img src={`http://localhost:8000${item.image}`} alt={item.name} />
             <p>{item.name}</p>
-            <p>Price: Ksh{item.price}</p>
-            <button onClick={() => addToCart(item)}>Add to cart</button>
+            <p>Price: Ksh {item.price}</p>
+            <button onClick={() => addToCart({ ...item, quantity: 1 })}>Add to cart</button>
           </div>
         ))}
       </div>

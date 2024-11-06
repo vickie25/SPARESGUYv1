@@ -56,11 +56,12 @@
   text-align: left;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  position: relative; /* Added for positioning discount badge */
 }
 
 .product-item img {
-  max-width: 100%;
-  height: auto;
+  max-width: 80%;
+  height: 250px;
   max-height: 70%; /* Ensure image doesn't take up too much vertical space */
   object-fit: cover; /* Keeps image aspect ratio intact */
   border-radius: 10px;
@@ -69,6 +70,22 @@
 
 .product-item p {
   margin: 5px 0;
+}
+
+.product-item .original-price {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.product-item .discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #d21f1f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 /* For tablets and smaller screens */

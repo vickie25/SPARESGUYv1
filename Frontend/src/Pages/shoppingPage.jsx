@@ -93,6 +93,9 @@ const ShoppingPage = () => {
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
+  const startIndex = indexOfFirstProduct + 1;
+  const endIndex = Math.min(indexOfLastProduct, filteredProducts.length);
+
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
@@ -149,7 +152,7 @@ const ShoppingPage = () => {
     }
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
+
 
   return (
     <div className="page-wrap">
@@ -176,7 +179,7 @@ const ShoppingPage = () => {
             <span className="vertical-line"></span>
 
             {/* Showing text */}
-            <p>Showing {startIndex} -- {filteredProducts.length} of {filteredProducts.length}</p>
+            <p>Showing {startIndex} -- {endIndex} of {filteredProducts.length}</p>
 
           </div>
         </div>
