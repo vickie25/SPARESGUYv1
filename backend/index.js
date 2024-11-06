@@ -5,7 +5,7 @@ import userRoutes from './routes/userRoutes.js';
 
 
 
-import productRoutes from './routes/productRoutes.js'
+// import productRoutes from './routes/productRoutes.js'
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 
 
@@ -13,7 +13,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+// import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 
 import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
@@ -79,7 +79,10 @@ app.get('/profile', authMiddleware, (req, res) => {
 app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
     res.json({ message: 'Welcome to the admin dashboard' });
 });
+console.log(process.env.PAYPAL_CLIENT_ID);
 
+app.get('/api/config/paypal', (req, res) => res.send({
+    clientId: process.env.PAYPAL_CLIENT_ID}));
 
 // Start the server
 app.listen(PORT, () => {
