@@ -150,33 +150,6 @@ const ShoppingPage = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
-
-  // const handleProductClick = (item) => {
-  //   navigate(`/product`, { state: { product: item } });
-  // };
-
-  // const isLoggedIn = false; // Replace this with your actual login check
-
-  // const handleCheckout = async () => {
-  //   const cartData = {
-  //     products: cart.map(item => ({
-  //       productId: item.productId,
-  //       quantity: item.quantity,
-  //     })),
-  //     totalAmount: calculateSubtotal(),
-  //   };
-
-  //   try {
-  //     await axios.post('http://localhost:8000/api/cart/save', cartData);
-  //     console.log('Cart saved successfully!');
-  //     navigate('/checkout'); // Redirect to checkout page
-  //   } catch (error) {
-  //     console.error('Error saving cart to database', error);
-  //     alert('Error saving cart. Please try again.');
-  //   }
-  // };
 
   return (
     <div className="page-wrap">
