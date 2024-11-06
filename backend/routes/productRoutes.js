@@ -36,7 +36,7 @@ router.get('/:id', authMiddleware, validateObjectId, productController.getProduc
 router.put('/:id', authMiddleware, requireAdmin, validateObjectId, productController.updateProduct);
 
 // Delete a product by ID with ObjectId validation
-router.delete('/:id', authMiddleware,requireAdmin, validateObjectId, productController.deleteProduct);
+router.delete('/:id', authMiddleware, requireAdmin, validateObjectId, productController.deleteProduct);
 
 // Route to upload image
 router.post('/upload', productController.upload, productController.uploadImage);
