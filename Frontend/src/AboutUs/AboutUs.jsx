@@ -1,4 +1,5 @@
 import React from 'react'
+
 import Banner from './Banner'
 import Statistics from './Statistics'
 import Team from './Team'
