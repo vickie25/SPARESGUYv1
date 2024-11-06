@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useUser } from './UserContext'
 import './PagesCSS/Login.css';
 import LoginFrame from '../Homepage/HomepageImages/gears.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,10 @@ const LoginPage = () => {
   // Separate state variables for email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setUser } = useUser(); // Access `setUser` from context
+  const [username, setUsername] = useState('');
+
+  
 
   const navigate = useNavigate(); // For navigation after successful login
   const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
@@ -32,6 +37,13 @@ const LoginPage = () => {
 
       // Create credentials object from email and password state
       const credentials = { email, password };
+
+      // This could be the result of an API call for authentication
+    const userData = { name: username };
+    
+    // Update context with user data
+    setUser(userData);
+    
 
       // Send login request to backend
       const res = await loginUser(credentials).unwrap();
@@ -68,11 +80,15 @@ const LoginPage = () => {
 
           <br></br>
 
-          <input 
 
           
 
-            type="password"
+
+     <input 
+
+          
+
+           type="password"
             name="password"
             placeholder="Password"
             value={password}

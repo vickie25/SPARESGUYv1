@@ -1,14 +1,28 @@
 import express from 'express';
 import connectDB from './Config/db.js';
+
 import userRoutes from './routes/userRoutes.js';
-import cors from 'cors';
+
+
+
 import productRoutes from './routes/productRoutes.js'
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
+
+
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import contactRoutes from './routes/contactRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+
 import authMiddleware from './Middleware/AuthMiddleware.js';
-import cartRoutes from './routes/cartRoutes.js'
-import deliveryInfoRoutes from './routes/deliveryInfoRoute.js'
+import cartRoutes from './routes/cartRoutes.js';
+import ReviewRoutes from './routes/ReviewRoutes.js';
+import OrderRoutes from './routes/OrderRoutes.js';
+import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -17,10 +31,10 @@ const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes
+app.use(bodyParser.json());
 app.use(express.json());
-
-// Middleware
 app.use(express.json());
+app.use(cookieParser()); // To parse cookies from the request
 
 // Serve files in the uploads directory
 app.use('/uploads', express.static('uploads'));
@@ -36,20 +50,25 @@ app.get('/', (req, res) => {
 // User routes
 app.use('/api/users', userRoutes);
 
-
 // Product routes
 app.use('/api/products', productRoutes);
 
-//Cart routes
+// Cart routes
 app.use('/api/cart', cartRoutes);
 
-
-// payment routes
-
+// Payment routes
 app.use('/api/payments', paymentInfoRoutes);
-// deliveryInfo routes
 
-app.use('/api/deliveryInfo', deliveryInfoRoutes);
+// Order routes
+app.use('/api/order', OrderRoutes);
+
+// Review routes
+app.use('/api/review', ReviewRoutes);
+
+app.use('/api/contact', contactRoutes);
+
+// Delivery routes
+app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
@@ -58,11 +77,11 @@ app.get('/profile', authMiddleware, (req, res) => {
 
 // Protect the admin dashboard route
 app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
-    res.json({ message: "Welcome to the admin dashboard" });
+    res.json({ message: 'Welcome to the admin dashboard' });
 });
+
 
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-

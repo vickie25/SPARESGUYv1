@@ -8,6 +8,8 @@ import generateToken from "../Utils/generateToken.js";
 dotenv.config()
 
 //register a user
+//route: POST /api/users/register
+//access: Public
 
 export const registerUser = async (req, res) => {
     try {
@@ -57,7 +59,9 @@ export const registerUser = async (req, res) => {
     
 };
 
-//login a user
+//login a user'
+//route: POST /api/users/login
+//access: Public
 
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -77,25 +81,11 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password." });
         }
 
-        // Generate a JWT token
+       // Generate a token and set it in the response's cookies
+         generateToken(res, user.email); 
 
-        // console.log("JWT_SECRET:", process.env.JWT_SECRET);
-        // const token = jwt.sign({ userId: user._id,  }, 'mySuperSecretKey123!', {
-        //     expiresIn: '1h',
-        // });
-        // console.log()
-        // res.json({ token });
-
-        const token = jwt.sign(
-            {
-                userId: user._id,
-                role: user.role,
-            },
-            'mySuperSecretKey123!',
-            { expiresIn: '1h' }
-        )
-
-        res.json({ token });
+        // Return a success message instead of the token
+        res.json({ message: "User logged in successfully" });
 
 
     } catch (error) {
@@ -104,5 +94,91 @@ export const loginUser = async (req, res) => {
     }
 };
 
+// Get all users
+// route: GET /api/users
+// access: Private/Admin
+
+export const getUsers = async (req, res) => {
+    const users = await User.find({});
+    res.json(users);
+}
 
 
+// Get user profile 
+// route: GET /api/users/profile
+// access: Private
+
+export const getUserProfile = async (req, res) => {
+    const user = await User.findById(req.user._id)
+    if (user) {
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+        });
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+}
+
+//update user profile
+//route: PUT /api/users/profile
+//access: Private
+
+export const updateUserProfile = async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+
+        if (req.body.password) {
+            user.password = req.body.password;
+        }
+
+        const updatedUser = await user.save();
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            role: updatedUser.role
+        });
+    } else{
+        res.status(404)
+        throw new Error('User not found')
+    }
+}
+
+
+//delete user
+//route: DELETE /api/users/:id
+//access: Private/Admin
+
+export const deleteUser = async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (user) {
+        await user.remove()
+        res.json({ message: 'User removed' })
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+}
+
+//get user by id
+//route: GET /api/users/:id
+//access: Private/Admin
+
+export const getUserById = async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password')
+
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(404)
+        throw new Error('User not found')
+    }
+}

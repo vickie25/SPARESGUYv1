@@ -1,8 +1,17 @@
 import express from "express";
 import productController from "../Controllers/productController.js";
 import authMiddleware from "../Middleware/AuthMiddleware.js";
+
+import requireAdmin from "../Middleware/roleMiddleware.js";
+
+
 import roleMiddleware from "../Middleware/roleMiddleware.js";
+
 import mongoose from 'mongoose'; // Import mongoose for ObjectId validation
+
+
+
+
 
 const router = express.Router();
 
@@ -15,19 +24,19 @@ const validateObjectId = (req, res, next) => {
 };
 
 // Create a new product
-router.post('/', authMiddleware, productController.createProduct);
+router.post('/', authMiddleware, requireAdmin, productController.createProduct);
 
 // Get all products
 router.get('/', productController.getAllProducts);
 
 // Get a single product by ID with ObjectId validation
-router.get('/:id', validateObjectId, productController.getProductById);
+router.get('/:id', authMiddleware, validateObjectId, productController.getProductById);
 
 // Update a product by ID with ObjectId validation
-router.put('/:id', validateObjectId, productController.updateProduct);
+router.put('/:id', authMiddleware, requireAdmin, validateObjectId, productController.updateProduct);
 
 // Delete a product by ID with ObjectId validation
-router.delete('/:id', validateObjectId, productController.deleteProduct);
+router.delete('/:id', authMiddleware, requireAdmin, validateObjectId, productController.deleteProduct);
 
 // Route to upload image
 router.post('/upload', productController.upload, productController.uploadImage);
