@@ -30,20 +30,15 @@ const ShoppingPage = () => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const navigate = useNavigate();
   const productsPerPage = 9;
   const itemsPerPage = 9;
   const [isFilterApplied, setIsFilterApplied] = useState(false);
-  const items = [
-  ];
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,21 +55,13 @@ const ShoppingPage = () => {
 
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Filter products based on search query using useMemo for performance
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery)
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    product.price >= priceRange[0] && product.price <= priceRange[1]
   );
-
-
-  // Filter items based on the search query
-  // const filteredItems = items.filter(item =>
-  //   item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
-
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
@@ -86,7 +73,6 @@ const ShoppingPage = () => {
 
     setCheckedCategories(newCheckedCategories);
 
-    // Fetch items based on the selected condition
     if (newCheckedCategories.includes(condition)) {
       const response = await axios.get('/api/items', { params: { condition } });
       setFilteredItems(response.data);
@@ -95,72 +81,58 @@ const ShoppingPage = () => {
     }
   };
 
-  const handlePriceChange = (value) => setPriceRange(value);
-
-  // Handle search input changes
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value.toLowerCase());
+  const handlePriceChange = (range) => {
+    setPriceRange(range);
   };
 
-
-  // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // Calculating the indices for slicing the product array
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Function to add a product to the cart
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
-  const handleAddToCart = (product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(item => item.productId === product._id);
-
-      if (existingItem) {
-        return prevCart.map(item =>
-          item.productId === product._id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...prevCart, {
-          productId: product._id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: 1
-        }];
-      }
-    });
-  };
 
   const isInWishlist = (itemId) => {
     return wishlist.some(item => item.productId === itemId);
   };
 
+
   useEffect(() => {
     if (cart.length > 0) {
       const updateCartInDatabase = async () => {
-        const cartId = 'actual-cart-id'; // Ensure this is valid or dynamically fetched
         const productData = {
-          cartId,
           products: cart.map(item => ({
             productId: item.productId,
             quantity: item.quantity,
           })),
           totalAmount: calculateSubtotal(),
+          paymentMethod: 'Credit/Debit',
         };
 
+        console.log('Preparing to send the following product data:', productData);
+
         try {
-          await axios.post('http://localhost:8000/api/cart/save', productData);
-          console.log('Cart updated and saved to database successfully!');
+          const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log('Cart updated and saved to database successfully!', response.data);
         } catch (error) {
-          console.error('Error updating cart in database', error);
+          if (error.response) {
+            console.error('Error updating cart in database', error.response.data);
+            console.error('Status:', error.response.status);
+            console.error('Headers:', error.response.headers);
+          } else if (error.request) {
+            console.error('No response received:', error.request);
+          } else {
+            console.error('Error setting up request:', error.message);
+          }
         }
       };
 
@@ -168,25 +140,6 @@ const ShoppingPage = () => {
     }
   }, [cart, calculateSubtotal]);
 
-
-  const handleDelete = async (productId) => {
-    try {
-      // Update frontend state
-      setCart(prevCart => prevCart.filter(item => item.productId !== productId));
-
-      // Delete from backend
-      await axios.delete(`http://localhost:8000/api/cart/remove/${productId}`);
-    } catch (error) {
-      console.error('Error deleting product from cart:', error);
-      // Optionally revert the cart state if backend delete fails
-      // You might want to show an error message to the user
-    }
-  };
-
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownVisible(!isDropdownVisible);
-  };
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -197,33 +150,33 @@ const ShoppingPage = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  // const endIndex = startIndex + itemsPerPage;
+  // const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleProductClick = (item) => {
-    navigate(`/product`, { state: { product: item } });
-  };
+  // const handleProductClick = (item) => {
+  //   navigate(`/product`, { state: { product: item } });
+  // };
 
-  const isLoggedIn = false; // Replace this with your actual login check
+  // const isLoggedIn = false; // Replace this with your actual login check
 
-  const handleCheckout = async () => {
-    const cartData = {
-      products: cart.map(item => ({
-        productId: item.productId,
-        quantity: item.quantity,
-      })),
-      totalAmount: calculateSubtotal(),
-    };
+  // const handleCheckout = async () => {
+  //   const cartData = {
+  //     products: cart.map(item => ({
+  //       productId: item.productId,
+  //       quantity: item.quantity,
+  //     })),
+  //     totalAmount: calculateSubtotal(),
+  //   };
 
-    try {
-      await axios.post('http://localhost:8000/api/cart/save', cartData);
-      console.log('Cart saved successfully!');
-      navigate('/checkout'); // Redirect to checkout page
-    } catch (error) {
-      console.error('Error saving cart to database', error);
-      alert('Error saving cart. Please try again.');
-    }
-  };
+  //   try {
+  //     await axios.post('http://localhost:8000/api/cart/save', cartData);
+  //     console.log('Cart saved successfully!');
+  //     navigate('/checkout'); // Redirect to checkout page
+  //   } catch (error) {
+  //     console.error('Error saving cart to database', error);
+  //     alert('Error saving cart. Please try again.');
+  //   }
+  // };
 
   return (
     <div className="page-wrap">
@@ -285,8 +238,8 @@ const ShoppingPage = () => {
             <Slider
               range
               min={0}
-              max={10000}
-              defaultValue={[0, 10000]}
+              max={100000}
+              defaultValue={[0, 100000]}
               value={priceRange}
               onChange={handlePriceChange}
               trackStyle={{ backgroundColor: 'black' }}
@@ -313,7 +266,7 @@ const ShoppingPage = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {filteredProducts.map((item, index) => (
+          {currentProducts.map((item, index) => (
             <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
               {isInWishlist(item._id) ? (
                 <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
@@ -329,7 +282,7 @@ const ShoppingPage = () => {
                   )}
                 </div>
                 <p className="product-name">{item.name}</p>
-                <p className="product-cost">Ksh {item.price}</p>
+                <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
               </Link>
               <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
                 Add to Cart

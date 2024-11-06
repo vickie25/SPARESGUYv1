@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const CartContext = createContext();
 
@@ -25,6 +26,49 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('discount', JSON.stringify(discount));
     }, [discount]);
 
+    useEffect(() => {
+        if (cart.length > 0) {
+            const updateCartInDatabase = async () => {
+                const cartId = 'actual-cart-id'; // Ensure this is valid or dynamically fetched
+                const productData = {
+                    cartId,
+                    products: cart.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                    totalAmount: calculateSubtotal(),
+                    PaymentMethod: 'Credit/Debit',  // Ensure PaymentMethod is included here
+                };
+
+                console.log('Preparing to send the following product data:', productData);
+
+                try {
+                    const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log('Cart updated and saved to database successfully!', response.data);
+                } catch (error) {
+                    if (error.response) {
+                        // Server responded with a status other than 2xx
+                        console.error('Error updating cart in database', error.response.data);
+                        console.error('Status:', error.response.status);
+                        console.error('Headers:', error.response.headers);
+                    } else if (error.request) {
+                        // Request was made but no response received
+                        console.error('No response received:', error.request);
+                    } else {
+                        // Something else happened while setting up the request
+                        console.error('Error setting up request:', error.message);
+                    }
+                }
+            };
+
+            updateCartInDatabase();
+        }
+    }, [cart]);
+
     const addToCart = (product) => {
         setCart((prevCart) => {
             const existingItem = prevCart.find(item => item.productId === product._id);
@@ -47,7 +91,6 @@ export const CartProvider = ({ children }) => {
             }
         });
     };
-
 
     const removeFromCart = (productId) => {
         setCart(prevCart => prevCart.filter(item => item.productId !== productId));
