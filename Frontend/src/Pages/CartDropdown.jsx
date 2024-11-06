@@ -55,9 +55,10 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
             products: cart.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity,
+                PaymentMethod: 'Credit/Debit',
             })),
             totalAmount: calculateSubtotal(),
-            paymentMethod: 'Credit/Debit', // Ensure PaymentMethod matches enum values
+            PaymentMethod: 'Credit/Debit', // Ensure PaymentMethod matches enum values
         };
 
         try {
