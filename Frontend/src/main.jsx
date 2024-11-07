@@ -14,7 +14,6 @@ import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
 import ContactUs from './Pages/ContactUs.jsx';
-import AboutUs from './Pages/AboutUs.jsx';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
@@ -25,6 +24,7 @@ import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';// import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
+import AboutUs from './AboutUs/AboutUs.jsx';
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
