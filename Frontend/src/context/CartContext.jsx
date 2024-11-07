@@ -43,6 +43,7 @@ export const CartProvider = ({ children }) => {
                 console.log('Preparing to send the following product data:', productData);
 
                 try {
+                   
                     const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
                         headers: {
                             'Content-Type': 'application/json'
