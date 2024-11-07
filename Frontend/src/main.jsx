@@ -36,7 +36,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="cart" element={<CartPage />} />
     <Route path="revew" element={<Review />} />
     <Route path="checkout" element={<Checkout />} />
-    <Route path="payement" element={<Payement />} />
+    <Route path="payment/:orderId" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
 
 

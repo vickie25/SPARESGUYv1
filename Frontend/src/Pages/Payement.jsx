@@ -4,12 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import mpesa from '../Homepage/HomepageImages/mpesa.svg';
-import card from '../Homepage/HomepageImages/card.png';
-import PaymentConfirmation from './PaymentConfirmation';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useGetPaypalClientIdQuery } from "../slices/transactionApiSlice";
 import { toast } from 'react-toastify';
-
+import { useCart } from '../context/CartContext'
 const Payment = () => {
     const [validated, setValidated] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -48,32 +46,36 @@ const Payment = () => {
     };
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
+const clientId = paypal?.clientId;
 
-    const createOrder = (data, actions) => {
-        return actions.order.create({
-            purchase_units: [{
-                amount: { value: totalPrice } // Replace with your total price variable
-            }]
-        });
-    };
+const { calculateGrandTotal } = useCart();
+      // Calculate total price from CartContext
+      const totalPrice = calculateGrandTotal();
 
-    const onApprove = (data, actions) => {
-        return actions.order.capture().then(function(details) {
-            console.log(details);
-            // Handle successful payment logic here
-            toast.success("Payment Successful");
-            // Optionally navigate or perform other actions here
-        });
-    };
-
-    const onError = (error) => {
-        toast.error("Payment Failed");
-        console.log(error);
-        navigate('/payment');
-    };
+      const createOrder = (data, actions) => {
+          return actions.order.create({
+              purchase_units: [{
+                  amount: { value: totalPrice.toString() } // Ensure value is a string
+              }]
+          });
+      };
+  
+      const onApprove = (data, actions) => {
+          return actions.order.capture().then(function(details) {
+              console.log(details);
+              toast.success("Payment Successful");
+              // Optionally navigate or perform other actions here
+          });
+      };
+  
+      const onError = (error) => {
+          toast.error("Payment Failed");
+          console.log(error);
+          navigate('/payment');
+      };
 
     return (
-        <PayPalScriptProvider options={{ 'client-id': paypal?.clientId || '', currency: 'USD' }}>
+        <PayPalScriptProvider options={{ 'client-id': 'AQQ5fKyqjEygOr9OJ3Mu7v7c0Mjs6-HkHyt1FYPNcOOsFP2zWKRp1pu_yQddwyvY2hyZC24a6h_lshHk', currency: 'USD' }}>
             <Header />
             <div className="checkout-container d-flex justify-content-center">
                 <Row className="w-75">
@@ -155,7 +157,7 @@ const Payment = () => {
                                     {loadingPayPal ? (
                                         <p>Loading...</p> // Show loading state
                                     ) : (
-                                        paypal?.clientId && (
+                                        'AQQ5fKyqjEygOr9OJ3Mu7v7c0Mjs6-HkHyt1FYPNcOOsFP2zWKRp1pu_yQddwyvY2hyZC24a6h_lshHk' && (
                                             <>
                                                 <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError} />
                                             </>
@@ -166,13 +168,15 @@ const Payment = () => {
                                 {/* Other Payment Options */}
                                 {/* Cash on Delivery */}
                                 <ListGroup.Item className="d-flex align-items-center mb-2">
-                                    <input type="radio" name="paymentMethod" id="cashOnDelivery" />
+                                    <input type="radio" name="paymentMethod" id="cashOnDelivery" className='mr-2' />
                                     Cash on Delivery
                                 </ListGroup.Item>
 
                                 {/* Mpesa */}
                                 <ListGroup.Item className="d-flex align-items-center mb-2">
+                                      <input type="radio" name="paymentMethod" id="cashOnDelivery" />
                                     <img src={mpesa} alt="Mpesa" width={24} height={24} className="me-2" />
+                                  
                                     Mpesa
                                 </ListGroup.Item>
 
@@ -183,17 +187,7 @@ const Payment = () => {
 
                 </Row>
 
-                {/* Confirm Payment Button */}
-                <div className="d-flex justify-content-center mt-3">
-                    <Button className="confirm-button"
-                        onClick={openConfirmationModal}
-                        style={{ backgroundColor: '#000', width: '150px', height: '40px', marginTop: '20px' }}>
-                        Confirm Payment
-                    </Button>
-                </div>
-
-                {/* Payment Confirmation Modal */}
-                <PaymentConfirmation show={showConfirmation} onClose={closeConfirmationModal} />
+              
 
             </div>
 
