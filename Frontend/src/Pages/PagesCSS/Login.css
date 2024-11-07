@@ -1,94 +1,79 @@
 .login-container {
   display: flex;
   height: 100vh;
-  background: url('../../Homepage/HomepageImages/gears.jpg') no-repeat center center; 
-  background-size: cover; 
+  /* background: url('../../Homepage/HomepageImages/gears.jpg') no-repeat center center; */
+  background-size: cover;
 }
 
-  
-  .login-image {
-    flex: 1;
-    filter: blur(1px);
-    border-radius:20px;
-    object-fit: fill;
-    width:200%;
-    background-position: center; 
+.login-image {
+  flex: 1;
+  filter: blur(1px);
+  border-radius: 20px;
+  object-fit: cover;
+  width: 100%; /* Ensure the image fills the entire width */
+  height: 100%; /* Ensure the image fills the entire height */
+}
 
-    height: 100%; 
-  }
-  
-  .login-form {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: rgb(250, 248, 249);
-    padding: 20px;
-  
-  }
-  
-  .login-form h1 {
-    margin-bottom: 15px;
-    font-size: 3em;
-    margin-right:50px;
-    text-align: center;
-  
-  }
-  
-  .login-form p {
-    margin-bottom: 20px;
-        
-    text-align: left;
-    margin-right: 120px;
-    
-  }
-  
-  .login-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    margin-right:140px;
-  
-  
-  }
-  
-  .login-form button {
-    width: 30%;
-    padding: 10px;
-    background-color: #000000;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;  
-    text-align: center; 
-    margin-left:px;
-    border-radius:30px; 
-        
-  }
-  
-  button.forgot-password  {
-    width:20%;
-    padding: 10px;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    margin-right:180px;
-    border-radius:30px;
-    
-  }
-  
-  .signup-link {
-    margin-top: 20px;
-  }
-  
-  .signup-link a {
-    color: #0f0629;
-    text-decoration: none;
-    
-  }
-  
+.login-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(250, 248, 249, 0.85);
+  padding: 20px;
+  border-radius: 20px;
+  margin: 20px;
+}
+
+.login-form h1 {
+  margin-bottom: 15px;
+  font-size: 2.5em;
+  text-align: center;
+}
+
+.login-form p {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-form input {
+  width: 80%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form button {
+  width: 80%;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-align: center;
+}
+
+button.forgot-password {
+  width: 80%;
+  padding: 10px;
+  background: none;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.signup-link {
+  margin-top: 20px;
+}
+
+.signup-link a {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
