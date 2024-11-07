@@ -1,18 +1,34 @@
-// Checkout.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import { useCart } from '../context/CartContext.jsx';
 import { useNavigate } from 'react-router-dom';
-
+import { useCreateOrderMutation } from '../slices/CheckoutApiSlice.js'; // Import the API slice
+import { useUser } from './UserContext';
 const Checkout = () => {
   const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, calculateGrandTotal } = useCart();
   const navigate = useNavigate();
-
+  const [userInfo, setUserInfo] = useState(null);
+  // Discount code state
   const [discountCode, setDiscountCode] = useState('');
   const [discountError, setDiscountError] = useState('');
+  
+  useEffect(() => {
+    // Fetch userInfo from localStorage and parse it
+    const storedUserInfo = localStorage.getItem('userInfo');
+    
+    if (storedUserInfo) {
+      setUserInfo(JSON.parse(storedUserInfo)); // Parse the stored JSON string into an object
+    } else {
+      console.log("No user info found in localStorage");
+    }
+  }, [navigate]);
 
+  // Use createOrder mutation from API slice
+  const [createOrder] = useCreateOrderMutation();
+
+  // Apply discount code
   const applyDiscount = () => {
     if (discountCode === 'SAVE35') {
       setDiscountError('');
@@ -21,8 +37,44 @@ const Checkout = () => {
     }
   };
 
-  const handleProceedToCheckout = () => {
-    navigate('/payement');
+  // Proceed to checkout
+  const handleProceedToCheckout = async () => {
+    // Make sure userInfo is available
+    if (!userInfo) {
+      return alert('Please log in to proceed.');
+    }
+
+    // Extract cart product data and calculate total
+    const cartProducts = cart.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price,
+    }));
+
+    const totalAmount = calculateGrandTotal().toFixed(2);
+
+    try {
+      // Call createOrder API to create the order
+      const { data } = await createOrder({
+        name: userInfo.name,
+        email: userInfo.email,
+        address: userInfo.address,
+        phone: userInfo.phone,
+        cartProducts,
+        totalAmount,
+      });
+
+      if (data && data.success) {
+        // Redirect to the payment page with the orderId
+        navigate(`/payment/${data.orderId}`);
+      } else {
+        console.error('Error creating order:', data.message);
+        alert('Failed to place order. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error placing order:', error.message);
+      alert('An error occurred while placing the order.');
+    }
   };
 
   return (
