@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
-
-  const orderSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
@@ -39,9 +38,17 @@ import mongoose from 'mongoose';
     orderDate: {
         type: Date,
         default: Date.now
+    },
+    isPaid: {
+        type: Boolean,
+        default: false
+    },
+    datePaid: {
+        type: Date,
+        default: null
     }
 });
 
-const OrderSchema = mongoose.model('Order', orderSchema);
 
-export default OrderSchema;
+const Order = mongoose.model('Order', orderSchema);
+export default Order;
