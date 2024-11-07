@@ -19,7 +19,7 @@ export const createOrder = async (req, res) => {
     }
 };
 
-// Get all orders
+// Get all ordrrs 
 export const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find().populate('customerId').populate('cartItems.productId');
