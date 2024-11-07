@@ -6,14 +6,11 @@ const router = express.Router();
 
 // Route to save the cart
 router.post('/save', async (req, res) => {
-
-    const { products, totalAmount, PaymentMethod } = req.body;
-
-
+    const { products, totalAmount, paymentMethod } = req.body;  // Lowercase here
 
     try {
         // Validate input data
-        if (!products || !totalAmount || !paymentMethod) {
+        if (!products || !totalAmount || !PaymentMethod) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
@@ -25,13 +22,16 @@ router.post('/save', async (req, res) => {
 
           
 
+
+            paymentMethod  // Lowercase here as well
+
         });
 
         const savedCart = await newCart.save();
         res.status(201).json(savedCart);
     } catch (error) {
-        console.error('Error saving cart to database:', error); // Log the error
-        res.status(500).json({ message: 'Error saving cart to database', error });
+        console.error('Error saving cart to database:', error);
+        res.status(500).json({ message: 'Error saving cart to database', error: error.message });
     }
 });
 

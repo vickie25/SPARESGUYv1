@@ -30,20 +30,15 @@ const ShoppingPage = () => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  // const { cartItems, removeItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 100000]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  // const navigate = useNavigate();
   const productsPerPage = 9;
   const itemsPerPage = 9;
   const [isFilterApplied, setIsFilterApplied] = useState(false);
-  const items = [
-  ];
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,13 +55,12 @@ const ShoppingPage = () => {
 
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Filter products based on search query using useMemo for performance
   const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery)
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    product.price >= priceRange[0] && product.price <= priceRange[1]
   );
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -79,7 +73,6 @@ const ShoppingPage = () => {
 
     setCheckedCategories(newCheckedCategories);
 
-    // Fetch items based on the selected condition
     if (newCheckedCategories.includes(condition)) {
       const response = await axios.get('/api/items', { params: { condition } });
       setFilteredItems(response.data);
@@ -88,34 +81,26 @@ const ShoppingPage = () => {
     }
   };
 
-  const handlePriceChange = (value) => setPriceRange(value);
-
-  // Handle search input changes
-  const handleSearch = (event) => {
-    setSearchQuery(event.target.value.toLowerCase());
+  const handlePriceChange = (range) => {
+    setPriceRange(range);
   };
 
-
-  // Calculate the subtotal
   const calculateSubtotal = () => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // Calculating the indices for slicing the product array
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  // Function to add a product to the cart
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
 
   const isInWishlist = (itemId) => {
     return wishlist.some(item => item.productId === itemId);
   };
+
 
   useEffect(() => {
     if (cart.length > 0) {
@@ -126,7 +111,7 @@ const ShoppingPage = () => {
             quantity: item.quantity,
           })),
           totalAmount: calculateSubtotal(),
-          paymentMethod: 'Credit/Debit',  // Ensure paymentMethod is included here
+          paymentMethod: 'Credit/Debit',
         };
 
         console.log('Preparing to send the following product data:', productData);
@@ -140,15 +125,12 @@ const ShoppingPage = () => {
           console.log('Cart updated and saved to database successfully!', response.data);
         } catch (error) {
           if (error.response) {
-            // Server responded with a status other than 2xx
             console.error('Error updating cart in database', error.response.data);
             console.error('Status:', error.response.status);
             console.error('Headers:', error.response.headers);
           } else if (error.request) {
-            // Request was made but no response received
             console.error('No response received:', error.request);
           } else {
-            // Something else happened while setting up the request
             console.error('Error setting up request:', error.message);
           }
         }
@@ -157,7 +139,6 @@ const ShoppingPage = () => {
       updateCartInDatabase();
     }
   }, [cart, calculateSubtotal]);
-
 
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -169,33 +150,6 @@ const ShoppingPage = () => {
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
-
-  // const handleProductClick = (item) => {
-  //   navigate(`/product`, { state: { product: item } });
-  // };
-
-  // const isLoggedIn = false; // Replace this with your actual login check
-
-  // const handleCheckout = async () => {
-  //   const cartData = {
-  //     products: cart.map(item => ({
-  //       productId: item.productId,
-  //       quantity: item.quantity,
-  //     })),
-  //     totalAmount: calculateSubtotal(),
-  //   };
-
-  //   try {
-  //     await axios.post('http://localhost:8000/api/cart/save', cartData);
-  //     console.log('Cart saved successfully!');
-  //     navigate('/checkout'); // Redirect to checkout page
-  //   } catch (error) {
-  //     console.error('Error saving cart to database', error);
-  //     alert('Error saving cart. Please try again.');
-  //   }
-  // };
 
   return (
     <div className="page-wrap">
@@ -257,8 +211,8 @@ const ShoppingPage = () => {
             <Slider
               range
               min={0}
-              max={10000}
-              defaultValue={[0, 10000]}
+              max={100000}
+              defaultValue={[0, 100000]}
               value={priceRange}
               onChange={handlePriceChange}
               trackStyle={{ backgroundColor: 'black' }}
@@ -285,7 +239,7 @@ const ShoppingPage = () => {
             Filter< IoFilterOutline />
           </div>
 
-          {filteredProducts.map((item, index) => (
+          {currentProducts.map((item, index) => (
             <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
               {isInWishlist(item._id) ? (
                 <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
