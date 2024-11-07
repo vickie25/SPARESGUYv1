@@ -1,8 +1,8 @@
-const Customer = require('../models/Customer');
-const Cart = require('../models/Cart');
-const Order = require('../models/Order');
+import Customer from '../Models/CustomerModel.js';
+import  Cart from '../Models/CartModel.js';
+import Order  from '../Models/OrderModel.js';
 
-exports.createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   const { name, email, address, phone, cartProducts, totalAmount } = req.body;
 
   try {
@@ -27,14 +27,18 @@ exports.createOrder = async (req, res) => {
     });
     await order.save();
 
-    res.status(201).json({ success: true, message: 'Order placed successfully', order });
+    res.status(201).json({
+      success: true,
+      message: 'Order placed successfully',
+      orderId: order._id // Add orderId to the response
+    });
   } catch (error) {
     console.error('Error placing order', error.message);
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
 
-exports.getOrderDetails = async (req, res) => {
+const getOrderDetails = async (req, res) => {
   try {
     const order = await Order.findById(req.params.orderId)
       .populate('customerId')
@@ -49,3 +53,6 @@ exports.getOrderDetails = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server error' });
   }
 };
+export default {
+  createOrder, getOrderDetails
+}

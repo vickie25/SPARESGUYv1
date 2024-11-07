@@ -10,14 +10,21 @@ router.post('/save', async (req, res) => {
 
     try {
         // Validate input data
-        if (!products || !totalAmount || !paymentMethod) {
+        if (!products || !totalAmount || !PaymentMethod) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
         const newCart = new Cart({
             products,
             totalAmount,
+
+            PaymentMethod
+
+          
+
+
             paymentMethod  // Lowercase here as well
+
         });
 
         const savedCart = await newCart.save();
