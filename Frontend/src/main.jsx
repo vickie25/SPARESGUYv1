@@ -38,11 +38,12 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
-
-
+    <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} />
 
     <Route path="confirmation" element={<PaymentConfirmation />} />
+    <Route path="confirmation" element={<PaymentConfirmation />} />
+
 
     {/* <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} /> */}
