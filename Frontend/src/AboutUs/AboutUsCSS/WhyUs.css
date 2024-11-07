@@ -1,0 +1,25 @@
+.why-us-container {
+  max-width: 800px; /* Limit width for better readability */
+  margin: 0 auto; /* Center container */
+  padding: 20px; /* Add some padding */
+}
+
+.title {
+  text-align: center; /* Center title */
+}
+
+.why-us-items-container {
+  display: flex; /* Use flexbox for horizontal layout */
+  align-items: stretch; /* Stretch items to match height */
+}
+
+.why-us-item {
+  flex: 1; /* Allow items to grow equally */
+  padding: 20px; /* Add padding around items */
+}
+
+.divider {
+  width: 1px; /* Width of vertical divider */
+  background-color: black; /* Color of divider */
+  height: auto; /* Let height adjust based on content */
+}

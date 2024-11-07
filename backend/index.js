@@ -1,15 +1,19 @@
 import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+
 import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
+import CheckoutRoutes from './routes/CheckoutRoutes.js'
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
@@ -57,6 +61,7 @@ app.use('/api/order', OrderRoutes);
 app.use('/api/review', ReviewRoutes);
 
 app.use('/api/contact', contactRoutes);
+app.use('/api/chexckout', CheckoutRoutes)
 
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
@@ -70,7 +75,10 @@ app.get('/profile', authMiddleware, (req, res) => {
 app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
     res.json({ message: 'Welcome to the admin dashboard' });
 });
+console.log(process.env.PAYPAL_CLIENT_ID);
 
+app.get('/api/config/paypal', (req, res) => res.send({
+    clientId: process.env.PAYPAL_CLIENT_ID}));
 
 // Start the server
 app.listen(PORT, () => {
