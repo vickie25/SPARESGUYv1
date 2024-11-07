@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+
+
   const orderSchema = new mongoose.Schema({
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -41,4 +43,5 @@ import mongoose from 'mongoose';
 });
 
 const OrderSchema = mongoose.model('Order', orderSchema);
+
 export default OrderSchema;
