@@ -1,56 +1,31 @@
 import React, { useState } from 'react';
-import { useUser } from './UserContext'
-import './PagesCSS/Login.css';
-import LoginFrame from '../Homepage/HomepageImages/gears.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUserMutation } from '../slices/usersApiSlice';
+import LoginFrame from '../Homepage/HomepageImages/gears.jpg';
+import './PagesCSS/Login.css';
 
 const LoginPage = () => {
-  // Separate state variables for email and password
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUser } = useUser(); // Access `setUser` from context
-  const [username, setUsername] = useState('');
-
-  
-
-  const navigate = useNavigate(); // For navigation after successful login
+  const navigate = useNavigate();
   const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (name === 'email') {
-      setEmail(value); // Update email state
+      setEmail(value);
     } else if (name === 'password') {
-      setPassword(value); // Update password state
+      setPassword(value);
     }
   };
 
-  // Handle login form submission
   const handleLogin = async (e) => {
-    e.preventDefault();  // Prevent default form submission behavior
-
+    e.preventDefault();
     try {
-      console.log(password); // Log password for debugging
-
-      // Create credentials object from email and password state
       const credentials = { email, password };
-
-      // This could be the result of an API call for authentication
-    const userData = { name: username };
-    
-    // Update context with user data
-    setUser(userData);
-    
-
-      // Send login request to backend
       const res = await loginUser(credentials).unwrap();
       console.log('Login successful:', res);
-
-      // Redirect to homepage/dashboard after successful login
-      navigate('/shop');  // Replace with your desired route
+      navigate('/shop');
     } catch (err) {
       console.error('Login failed:', err);
     }
@@ -59,11 +34,7 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <div className="login-image">
-        <img
-          src={LoginFrame}
-          alt="Frame"
-          className="img-fluid"
-        />
+        <img src={LoginFrame} alt="Frame" className="img-fluid" />
       </div>
       <div className="login-form">
         <h1>Welcome Back!</h1>
@@ -77,25 +48,14 @@ const LoginPage = () => {
             onChange={handleChange}
             required
           />
-
-          <br></br>
-
-
-          
-
-
-     <input 
-
-          
-
-           type="password"
+          <input
+            type="password"
             name="password"
             placeholder="Password"
             value={password}
             onChange={handleChange}
             required
           />
-          <br />
           <button type="submit" disabled={isLoading}>
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
