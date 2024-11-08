@@ -17,14 +17,7 @@ router.post('/save', async (req, res) => {
         const newCart = new Cart({
             products,
             totalAmount,
-
             PaymentMethod
-
-          
-
-
-            paymentMethod  // Lowercase here as well
-
         });
 
         const savedCart = await newCart.save();
