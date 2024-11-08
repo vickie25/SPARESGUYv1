@@ -9,6 +9,7 @@ const ProductListing = () => {
   const [latestItems, setLatestItems] = useState([]);
   const [bestSellersItems, setBestSellersItems] = useState([]);
   const [featuredItems, setFeaturedItems] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Fetch products from the backend
@@ -39,6 +40,19 @@ const ProductListing = () => {
     }
   };
 
+  const handleNext = () => {
+    const items = getItemsForSelectedTab();
+    if (currentIndex + 4 < items.length) {
+      setCurrentIndex(currentIndex + 4);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex - 4 >= 0) {
+      setCurrentIndex(currentIndex - 4);
+    }
+  };
+
   return (
     <div className="product-section">
       <div className="tabs">
@@ -46,14 +60,22 @@ const ProductListing = () => {
           <button
             key={tab}
             className={selectedTab === tab ? 'active' : ''}
-            onClick={() => setSelectedTab(tab)}
+            onClick={() => {
+              setSelectedTab(tab);
+              setCurrentIndex(0); // Reset index when tab changes
+            }}
           >
             {tab}
           </button>
         ))}
       </div>
       <div className="products-example">
-        {getItemsForSelectedTab().map(item => (
+        {currentIndex > 0 && (
+          <button className="carousel-button" onClick={handlePrev}>
+            &lt;
+          </button>
+        )}
+        {getItemsForSelectedTab().slice(currentIndex, currentIndex + 4).map(item => (
           <div key={item._id} className="product-item-example">
             <img src={`http://localhost:8000${item.image}`} alt={item.name} />
             <p>{item.name}</p>
@@ -61,6 +83,11 @@ const ProductListing = () => {
             <button onClick={() => addToCart({ ...item, quantity: 1 })}>Add to cart</button>
           </div>
         ))}
+        {currentIndex + 4 < getItemsForSelectedTab().length && (
+          <button className="carousel-button" onClick={handleNext}>
+            &gt;
+          </button>
+        )}
       </div>
     </div>
   );
