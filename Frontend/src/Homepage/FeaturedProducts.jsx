@@ -68,7 +68,7 @@ const FeaturedProducts = () => {
               <p>{item.name}</p>
               <p className="original-price"> Ksh {item.price}</p>
               <p>Ksh {discountedPrice.toFixed(2)}</p>
-              <button onClick={() => addToCart({ ...item, quantity: 1 })}>Add to cart</button>
+              <button onClick={() => addToCart({ ...item, price: discountedPrice, quantity: 1 })}>Add to cart</button>
             </div>
           );
         })}
@@ -86,7 +86,7 @@ const FeaturedProducts = () => {
                   <p className="original-price"> Ksh {item.price}</p>
                   <p>Ksh {discountedPrice.toFixed(2)}</p>
                 </Link>
-                <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
+                <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, price: discountedPrice, quantity: 1 }); }}>
                   Add to Cart
                 </button>
               </div>
