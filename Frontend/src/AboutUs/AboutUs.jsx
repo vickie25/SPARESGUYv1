@@ -10,15 +10,14 @@ import WhyUs from './WhyUs'
 const AboutUs = () => {
   return (
     <>
-    
-      
+
       <Banner />
       <Statistics />
       <Team />
       <WhyUs />
-      
-      
-    
+
+
+
     </>
   )
 }
