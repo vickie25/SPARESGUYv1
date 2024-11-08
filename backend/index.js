@@ -6,10 +6,14 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+
 import authMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
+import CheckoutRoutes from './routes/CheckoutRoutes.js'
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
@@ -57,6 +61,7 @@ app.use('/api/order', OrderRoutes);
 app.use('/api/review', ReviewRoutes);
 
 app.use('/api/contact', contactRoutes);
+app.use('/api/chexckout', CheckoutRoutes)
 
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
