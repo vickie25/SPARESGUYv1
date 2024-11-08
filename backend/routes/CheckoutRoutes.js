@@ -1,9 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { applyDiscount, createOrder } = require('../Controllers/CheckoutController')
+import {  createOrder, getOrderDetails } from '../Controllers/CheckoutController.js'
 
 router.post('/apply-discount', applyDiscount);
 
 router.post('/create-order', createOrder);
-
-module.exports = router;
+export default router
