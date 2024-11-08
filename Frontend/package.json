@@ -33,6 +33,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.26.2",
     "react-slick": "^0.30.2",
+    "react-toastify": "^10.0.6",
     "slick-carousel": "^1.8.1",
     "slider": "^1.0.4",
     "uuid": "^10.0.0"
