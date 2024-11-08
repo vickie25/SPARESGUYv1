@@ -18,11 +18,6 @@ router.post('/save', async (req, res) => {
             products,
             totalAmount,
 
-            PaymentMethod
-
-          
-
-
             paymentMethod  // Lowercase here as well
 
         });
