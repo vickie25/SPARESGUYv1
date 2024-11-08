@@ -1,58 +1,85 @@
-import Customer from '../Models/CustomerModel.js';
-import  Cart from '../Models/CartModel.js';
-import Order  from '../Models/OrderModel.js';
+import Order from '../Models/OrderModel.js';
 
-const createOrder = async (req, res) => {
-  const { name, email, address, phone, cartProducts, totalAmount } = req.body;
+// Create a new order
+export const createOrder = async (req, res) => {
+    try {
+        const { customerId, cartItems, discountApplied } = req.body;
 
-  try {
-  
-    let customer = await Customer.findOne({ email });
-    if (!customer) {
-      customer = new Customer({ name, email, address, phone });
-      await customer.save();
+        // Calculate the total amount from cart items
+        const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        const newOrder = new Order({
+            customerId,
+            cartItems,
+            totalAmount,
+            discountApplied: discountApplied || 0,
+        });
+
+        const savedOrder = await newOrder.save();
+        res.status(201).json(savedOrder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating order', error: error.message });
     }
-
-  
-    const cart = new Cart({
-      products: cartProducts,
-      totalAmount,
-    });
-    await cart.save();
-
-  
-    const order = new Order({
-      customerId: customer._id,
-      cartId: cart._id,
-    });
-    await order.save();
-
-    res.status(201).json({
-      success: true,
-      message: 'Order placed successfully',
-      orderId: order._id // Add orderId to the response
-    });
-  } catch (error) {
-    console.error('Error placing order', error.message);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
 };
 
-const getOrderDetails = async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.orderId)
-      .populate('customerId')
-      .populate('cartId');
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+// Get order details by ID
+export const getOrderDetails = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id)
+            .populate('customerId')
+            .populate('cartItems.productId');
 
-    res.json(order);
-  } catch (error) {
-    console.error('Error fetching order details', error.message);
-    res.status(500).json({ success: false, message: 'Server error' });
-  }
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        // Include final amount after discount in the response
+        res.status(200).json({
+            ...order.toObject(),
+            finalAmount: order.finalAmount
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching order details', error: error.message });
+    }
 };
-export default {
-  createOrder, getOrderDetails
-}
+
+// Update an order by ID
+export const updateOrder = async (req, res) => {
+    try {
+        const { cartItems, discountApplied } = req.body;
+
+        const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        const updatedOrder = await Order.findByIdAndUpdate(
+            req.params.id,
+            { cartItems, totalAmount, discountApplied },
+            { new: true }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        res.status(200).json({
+            ...updatedOrder.toObject(),
+            finalAmount: updatedOrder.finalAmount
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating order', error: error.message });
+    }
+};
+
+// Delete an order by ID
+export const deleteOrder = async (req, res) => {
+    try {
+        const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+
+        if (!deletedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting order', error: error.message });
+    }
+};
