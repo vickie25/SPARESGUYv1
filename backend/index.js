@@ -1,7 +1,7 @@
 import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
-import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
+// import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import contactRoutes from './routes/contactRoutes.js';
