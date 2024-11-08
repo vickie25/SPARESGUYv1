@@ -15,17 +15,7 @@ body {
     padding: 10px;
     color: rgb(240, 234, 234); 
 }
-.footer {
-    position: absolute; /* Absolute positioning */
-    right: -60px; 
-    bottom: 20px; /* Stick to the bottom */
-    width: auto; 
-    display: flex; /* Use Flexbox for layout */
-    justify-content: space-between; /* Space out the items evenly */
-    align-items: center; /* Center items vertically if they have different heights */
-    padding: 20px; /* Optional: Add some padding around the container */
-    background: none;
-}
+
 .black-text{
     color:black;
     font-weight:bold;
@@ -35,12 +25,8 @@ body {
     color:rgb(173, 173, 43);
     font-size:1em;
 }
-.footer p {
-    margin: 0; /* Remove default margin from paragraphs */
-    padding: 0 20px; /* Optional: Add horizontal padding for spacing */
-    
-  
-}
+
+
 .image-container {
     flex: 1; /* Allow the image container to grow */
     display: flex;
