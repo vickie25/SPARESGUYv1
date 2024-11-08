@@ -1,5 +1,5 @@
 
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const discountSchema = new mongoose.Schema({
     code: { type: String, required: true, unique: true }, 

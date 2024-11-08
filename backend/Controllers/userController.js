@@ -14,8 +14,8 @@ dotenv.config()
 export const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        const role = "customer"; // Default role is 'customer'
-        
+        const role = "admin"; // Default role is 'customer'
+
         console.log("This is the name:", name);
         console.log("This is the role:", role);
 
@@ -56,7 +56,7 @@ export const registerUser = async (req, res) => {
         });
     }
 
-    
+
 };
 
 //login a user'
@@ -81,8 +81,8 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password." });
         }
 
-       // Generate a token and set it in the response's cookies
-         generateToken(res, user.email); 
+        // Generate a token and set it in the response's cookies
+        generateToken(res, user.email);
 
         // Return a success message instead of the token
         res.json({ message: "User logged in successfully" });
@@ -145,7 +145,7 @@ export const updateUserProfile = async (req, res) => {
             email: updatedUser.email,
             role: updatedUser.role
         });
-    } else{
+    } else {
         res.status(404)
         throw new Error('User not found')
     }
