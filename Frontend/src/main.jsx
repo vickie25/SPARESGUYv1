@@ -24,7 +24,7 @@ import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';// import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
-import AboutUs from './AboutUs/AboutUs.jsx';
+// import AboutUs from './Pages/AboutUsPages/AboutUs.jsx';
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -49,7 +49,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="confirmation" element={<PaymentConfirmation />} /> */}
 
     <Route path="ContactUs" element={<ContactUs />} />
-    <Route path="AboutUs" element={<AboutUs />} />
+    {/* <Route path="AboutUs" element={<AboutUs />} /> */}
 
   </Route>
 ));
