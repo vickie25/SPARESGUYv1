@@ -80,6 +80,18 @@
   background-color: #333;
 }
 
+.carousel-button {
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 0 10px;
+}
+
+.carousel-button:disabled {
+  cursor: not-allowed;
+}
+
 @media (max-width: 1024px) {
   .product-section {
     height: auto;

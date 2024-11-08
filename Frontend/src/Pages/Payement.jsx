@@ -8,7 +8,7 @@ import card from '../Homepage/HomepageImages/card.png';
 import PaymentConfirmation from './PaymentConfirmation';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useGetPaypalClientIdQuery } from "../slices/transactionApiSlice";
-import { toast } from 'react-toastify';
+
 
 const Payment = () => {
     const [validated, setValidated] = useState(false);
@@ -22,7 +22,7 @@ const Payment = () => {
         "Bomet", "Embu", "Nyandarua", "Siaya", "Migori",
         "Kirinyaga", "Narok", "Kitui", "Tharaka-Nithi",
         "Nandi", "Samburu", "Kajiado", "Vihiga",
-        "Nyamira", "Kwale", "Taita-Taveta", 
+        "Nyamira", "Kwale", "Taita-Taveta",
         "West Pokot", "Garissa", "Wajir",
         "Mandera", "Marsabit", "Isiolo",
         "Turkana", "Lamu", "Tana River",
@@ -58,7 +58,7 @@ const Payment = () => {
     };
 
     const onApprove = (data, actions) => {
-        return actions.order.capture().then(function(details) {
+        return actions.order.capture().then(function (details) {
             console.log(details);
             // Handle successful payment logic here
             toast.success("Payment Successful");

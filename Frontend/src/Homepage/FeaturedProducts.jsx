@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './HomepageCSS/FeaturedProducts.css';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
+import { Link } from 'react-router-dom';
 
 const FeaturedProducts = () => {
-  const { setCart } = useCart();
+  const { addToCart } = useCart();
   const [discountedItems, setDiscountedItems] = useState([]);
+  const [timeLeft, setTimeLeft] = useState('');
+  const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
     // Fetch products from the backend
@@ -20,41 +23,43 @@ const FeaturedProducts = () => {
       });
   }, []);
 
-  const addToCart = (product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find(item => item.productId === product._id);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const endDate = new Date('2024-12-31T23:59:59'); // Replace with actual discount end date
+      const timeDifference = endDate - now;
 
-      if (existingItem) {
-        // Increment quantity by product's quantity
-        return prevCart.map(item =>
-          item.productId === product._id
-            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-            : item
-        );
+      if (timeDifference <= 0) {
+        clearInterval(interval);
+        setTimeLeft('Discount period has ended');
       } else {
-        return [...prevCart, {
-          productId: product._id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: product.quantity || 1 // Default to 1 if no quantity passed
-        }];
+        const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+        const seconds = Math.floor((timeDifference / 1000) % 60);
+        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
       }
-    });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const toggleShowMore = () => {
+    setShowMore(!showMore);
   };
 
   return (
     <div className="promotional-section">
       <div className="promotion-banner">
         <h2 className="h2">HURRY UP</h2>
-        <h1 className="number">20% OFF </h1>
         <h2 className="h2">ANY TOYOTA PRODUCT</h2>
         <h2 className="h2">THIS WEEK ONLY SHOPPING DAYS</h2>
-        <h1 className="number">73 HOURS TO GO!</h1>
-        <button className="explore-more-btn">Explore More</button>
+        <h1 className="number">{timeLeft}</h1>
+        <button className="explore-more-btn" onClick={toggleShowMore}>
+          {showMore ? 'Show Less' : 'Explore More'}
+        </button>
       </div>
       <div className="products">
-        {discountedItems.map(item => {
+        {discountedItems.slice(0, 2).map(item => {
           const discountedPrice = item.price - (item.price * (item.discountPercentage / 100));
           return (
             <div key={item._id} className="product-item">
@@ -63,13 +68,32 @@ const FeaturedProducts = () => {
               <p>{item.name}</p>
               <p className="original-price"> Ksh {item.price}</p>
               <p>Ksh {discountedPrice.toFixed(2)}</p>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
-                Add to Cart
-              </button>
+              <button onClick={() => addToCart({ ...item, quantity: 1 })}>Add to cart</button>
             </div>
           );
         })}
       </div>
+      {showMore && (
+        <div className="products">
+          {discountedItems.slice(2).map(item => {
+            const discountedPrice = item.price - (item.price * (item.discountPercentage / 100));
+            return (
+              <div key={item._id} className="product-item">
+                <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="discount-badge">{item.discountPercentage}% OFF</div>
+                  <img src={`http://localhost:8000${item.image}`} alt={item.name} />
+                  <p>{item.name}</p>
+                  <p className="original-price"> Ksh {item.price}</p>
+                  <p>Ksh {discountedPrice.toFixed(2)}</p>
+                </Link>
+                <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
+                  Add to Cart
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
