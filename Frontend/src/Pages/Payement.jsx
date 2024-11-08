@@ -6,8 +6,10 @@ import Footer from '../Homepage/Footer';
 import mpesa from '../Homepage/HomepageImages/mpesa.svg';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useGetPaypalClientIdQuery } from "../slices/transactionApiSlice";
+
 import { toast } from 'react-toastify';
 import { useCart } from '../context/CartContext'
+
 const Payment = () => {
     const [validated, setValidated] = useState(false);
     const [showConfirmation, setShowConfirmation] = useState(false);
@@ -20,7 +22,7 @@ const Payment = () => {
         "Bomet", "Embu", "Nyandarua", "Siaya", "Migori",
         "Kirinyaga", "Narok", "Kitui", "Tharaka-Nithi",
         "Nandi", "Samburu", "Kajiado", "Vihiga",
-        "Nyamira", "Kwale", "Taita-Taveta", 
+        "Nyamira", "Kwale", "Taita-Taveta",
         "West Pokot", "Garissa", "Wajir",
         "Mandera", "Marsabit", "Isiolo",
         "Turkana", "Lamu", "Tana River",
@@ -46,6 +48,30 @@ const Payment = () => {
     };
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
+
+    const createOrder = (data, actions) => {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: totalPrice } // Replace with your total price variable
+            }]
+        });
+    };
+
+    const onApprove = (data, actions) => {
+        return actions.order.capture().then(function (details) {
+            console.log(details);
+            // Handle successful payment logic here
+            toast.success("Payment Successful");
+            // Optionally navigate or perform other actions here
+        });
+    };
+
+    const onError = (error) => {
+        toast.error("Payment Failed");
+        console.log(error);
+        navigate('/payment');
+    };
+
 const clientId = paypal?.clientId;
 
 const { calculateGrandTotal } = useCart();
@@ -72,7 +98,7 @@ const { calculateGrandTotal } = useCart();
           toast.error("Payment Failed");
           console.log(error);
           navigate('/payment');
-      };
+
 
     return (
         <PayPalScriptProvider options={{ 'client-id': 'AQQ5fKyqjEygOr9OJ3Mu7v7c0Mjs6-HkHyt1FYPNcOOsFP2zWKRp1pu_yQddwyvY2hyZC24a6h_lshHk', currency: 'USD' }}>

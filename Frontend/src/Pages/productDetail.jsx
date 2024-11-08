@@ -25,7 +25,7 @@ const ProductDetail = () => {
         setProduct(response.data);
         setError(null);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error('Error fetching product details:', error.response ? error.response.data : error.message);
         setError('Product not found');
         // Optionally redirect to a 404 page or product listing
         // navigate('/shop');
