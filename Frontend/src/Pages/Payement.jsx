@@ -49,12 +49,6 @@ const Payment = () => {
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
 
-    const onError = (error) => {
-        toast.error("Payment Failed");
-        console.log(error);
-        navigate('/payment');
-    };
-
 const clientId = paypal?.clientId;
 
 const { calculateGrandTotal } = useCart();
@@ -205,5 +199,6 @@ const { calculateGrandTotal } = useCart();
         </PayPalScriptProvider>
     );
 };
+
 
 export default Payment;
