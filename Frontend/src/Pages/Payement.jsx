@@ -49,23 +49,6 @@ const Payment = () => {
 
     const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
 
-    const createOrder = (data, actions) => {
-        return actions.order.create({
-            purchase_units: [{
-                amount: { value: totalPrice } // Replace with your total price variable
-            }]
-        });
-    };
-
-    const onApprove = (data, actions) => {
-        return actions.order.capture().then(function (details) {
-            console.log(details);
-            // Handle successful payment logic here
-            toast.success("Payment Successful");
-            // Optionally navigate or perform other actions here
-        });
-    };
-
     const onError = (error) => {
         toast.error("Payment Failed");
         console.log(error);
@@ -94,10 +77,10 @@ const { calculateGrandTotal } = useCart();
           });
       };
   
-      const onError = (error) => {
-          toast.error("Payment Failed");
-          console.log(error);
-          navigate('/payment');
+    //   const onError = (error) => {
+    //       toast.error("Payment Failed");
+    //       console.log(error);
+    //       navigate('/payment');
 
 
     return (
