@@ -44,7 +44,9 @@ const ContactUs = () => {
     };
 
     return (
+
         <div className="page-container">
+            <Header />
             <main className="main-content">
                 <div className="header">
                     <h2>Contact Us</h2>
