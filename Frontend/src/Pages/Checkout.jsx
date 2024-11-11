@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import { useCart } from '../context/CartContext.jsx';
 import { useNavigate } from 'react-router-dom';
 import { useCreateOrderMutation } from '../slices/CheckoutApiSlice.js'; // Import the API slice
+import { CartContext } from '../context/CartContext'; // Assuming CartContext is available
 import { useUser } from './UserContext';
+import moment from 'moment'; 
+
 const Checkout = () => {
   const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, calculateGrandTotal } = useCart();
   const navigate = useNavigate();
@@ -13,17 +16,19 @@ const Checkout = () => {
   // Discount code state
   const [discountCode, setDiscountCode] = useState('');
   const [discountError, setDiscountError] = useState('');
-  
+
   useEffect(() => {
     // Fetch userInfo from localStorage and parse it
     const storedUserInfo = localStorage.getItem('userInfo');
-    
     if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo)); // Parse the stored JSON string into an object
+      setUserInfo(JSON.parse(storedUserInfo)); 
     } else {
       console.log("No user info found in localStorage");
     }
   }, [navigate]);
+
+  console.log(userInfo?.data?.user_id);
+  console.log(userInfo);
 
   // Use createOrder mutation from API slice
   const [createOrder] = useCreateOrderMutation();
@@ -53,27 +58,24 @@ const Checkout = () => {
 
     const totalAmount = calculateGrandTotal().toFixed(2);
 
+    // Get current date formatted (optional)
+    const orderDate = moment().format('DD/MM/YYYY'); // Format date as '14/01/2024.'
+
     try {
       // Call createOrder API to create the order
-      const { data } = await createOrder({
-        name: userInfo.name,
-        email: userInfo.email,
-        address: userInfo.address,
-        phone: userInfo.phone,
-        cartProducts,
-        totalAmount,
+      const res = await createOrder({
+        customerId: userInfo?.data?.user_id, // Dynamically get customer ID
+        cartItems: cartProducts,
+        totalAmount: totalAmount,
+        discountApplied: discountCode === 'SAVE35' ? 35 : 0, // Apply discount if valid
+        orderDate: orderDate, 
       });
 
-      if (data && data.success) {
-        // Redirect to the payment page with the orderId
-        navigate(`/payment/${data.orderId}`);
-      } else {
-        console.error('Error creating order:', data.message);
-        alert('Failed to place order. Please try again.');
-      }
+      console.log('Order created successfully:', res.data);
+      // Optionally, you can redirect to the order confirmation page
+      navigate('/order-confirmation');
     } catch (error) {
-      console.error('Error placing order:', error.message);
-      alert('An error occurred while placing the order.');
+      console.error('Error creating order:', error);
     }
   };
 
