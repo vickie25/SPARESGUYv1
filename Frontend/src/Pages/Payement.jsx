@@ -71,10 +71,10 @@ const { calculateGrandTotal } = useCart();
           });
       };
   
-      const onError = (error) => {
-          toast.error("Payment Failed");
-          console.log(error);
-          navigate('/payment');
+    //   const onError = (error) => {
+    //       toast.error("Payment Failed");
+    //       console.log(error);
+    //       navigate('/payment');
 
 
     return (
@@ -199,6 +199,6 @@ const { calculateGrandTotal } = useCart();
         </PayPalScriptProvider>
     );
 };
-}
+
 
 export default Payment;
