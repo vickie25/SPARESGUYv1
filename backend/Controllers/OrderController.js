@@ -1,13 +1,25 @@
 import Order from '../Models/OrderModel.js';
+import mongoose from 'mongoose';
 
 // Create a new order
 export const createOrder = async (req, res) => {
     try {
         const { customerId, cartItems, totalAmount, discountApplied } = req.body;
 
+        // Convert customerId to ObjectId
+        const convertedCustomerId = new mongoose.Types.ObjectId(customerId);
+
+        if (!cartItems || cartItems.length === 0) {
+            return res.status(400).json({ message: 'No cart items found' });
+        }
+
         const newOrder = new Order({
-            customerId,
-            cartItems,
+            cartItems: cartItems.map((item) => ({
+                ...item,
+                product: item.productId, // assuming you're using productId in the cartItem
+                _id: undefined // Remove the original _id to avoid duplicates
+            })),
+            customerId: convertedCustomerId, // Ensure the customerId is an ObjectId
             totalAmount,
             discountApplied,
         });
@@ -18,6 +30,7 @@ export const createOrder = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // Get all ordrrs 
 export const getAllOrders = async (req, res) => {
