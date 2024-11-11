@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
@@ -18,12 +19,12 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import store from './store.js'
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';// import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
-// import AboutUs from './Pages/AboutUsPages/AboutUs.jsx';
+import AboutUs from './Pages/AboutUs.jsx';
+
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -39,16 +40,11 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="UserProf" element={<UserProfile />} />
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} />
-
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="confirmation" element={<PaymentConfirmation />} />
-
-
-    {/* <Route path="confirmation" element={<PaymentConfirmation />} />
-    <Route path="confirmation" element={<PaymentConfirmation />} /> */}
-
     <Route path="ContactUs" element={<ContactUs />} />
-    <Route path="AboutUs" element={<AboutUs />} /> 
+    <Route path="AboutUs" element={<AboutUs />} />
+   
 
   </Route>
 ));
