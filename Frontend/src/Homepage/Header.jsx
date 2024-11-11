@@ -39,7 +39,7 @@ const Header = () => {
         <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
           <li><a href="/">Home</a></li>
           <li><Link to="/shop">Shop</Link></li>
-          <li><a href="AboutUs">About</a></li>
+          <li><a href="/AboutUs">About</a></li>
           <li><a href="ContactUs">Contact Us</a></li>
           <li>
             <div className="search-container">
