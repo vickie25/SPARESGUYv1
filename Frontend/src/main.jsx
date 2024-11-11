@@ -19,7 +19,6 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import store from './store.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import Checkout from './Pages/Checkout.jsx';
 import Payement from './Pages/Payement.jsx';// import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import { CartProvider } from './context/CartContext.jsx';
@@ -49,7 +48,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="confirmation" element={<PaymentConfirmation />} /> */}
 
     <Route path="ContactUs" element={<ContactUs />} />
-    {/* <Route path="AboutUs" element={<AboutUs />} /> */}
+    <Route path="AboutUs" element={<AboutUs />} /> 
 
   </Route>
 ));
