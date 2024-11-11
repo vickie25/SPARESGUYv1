@@ -28,10 +28,9 @@
     "mongoose": "^8.7.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
-<<<<<<< HEAD
+
     "nodemon": "^3.1.7",
-=======
->>>>>>> ea6ebe204fe5a45e92ad7ddb5f04b99da3a791b4
+
     "uuid": "^11.0.2",
     "validator": "^13.12.0"
   }
