@@ -16,7 +16,7 @@ import {
   FaTimes
 } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import Header from '../Homepage/Header';
+import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
 
 // Styled Components
@@ -137,7 +137,7 @@ const AdminLayout = () => {
 
   return (
     <>
-      <Header />
+      <AdminHeader /> 
       <Container fluid className="p-0">
         <Row className="g-0">
           <ToggleButton
