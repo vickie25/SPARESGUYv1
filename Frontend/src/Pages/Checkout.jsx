@@ -4,9 +4,9 @@ import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import { useCart } from '../context/CartContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useCreateOrderMutation } from '../slices/CheckoutApiSlice.js'; // Import the API slice
-import { CartContext } from '../context/CartContext'; // Assuming CartContext is available
-import { useUser } from './UserContext';
+import { useCreateOrderMutation } from '../slices/CheckoutApiSlice'; // Import the API slice
+//import { CartContext } from '../context/CartContext'; // Assuming CartContext is available
+// import { useUser } from './UserContext';
 import moment from 'moment'; 
 
 const Checkout = () => {
@@ -54,6 +54,7 @@ const Checkout = () => {
       productId: item.productId,
       quantity: item.quantity,
       price: item.price,
+      name: item?.name || "just A name"
     }));
 
     const totalAmount = calculateGrandTotal().toFixed(2);
@@ -70,10 +71,15 @@ const Checkout = () => {
         discountApplied: discountCode === 'SAVE35' ? 35 : 0, // Apply discount if valid
         orderDate: orderDate, 
       });
+      console.log(userInfo?.data?.user_id);
+      console.log(userInfo);
+      console.log('This is the response:', res);
 
-      console.log('Order created successfully:', res.data);
+      const orderId = res?.data._id
+      console.log(orderId, "this is just an Id")
       // Optionally, you can redirect to the order confirmation page
-      navigate('/order-confirmation');
+      navigate(`/payment/${orderId}`);
+
     } catch (error) {
       console.error('Error creating order:', error);
     }
