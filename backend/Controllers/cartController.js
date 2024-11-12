@@ -3,7 +3,6 @@ import Cart from '../Models/CartModel.js';
 import Product from '../Models/productModel.js';
 import mongoose from 'mongoose';
 
-const router = express.Router();
 const { isValidObjectId } = mongoose;
 
 // Create a new cart
@@ -60,7 +59,7 @@ export const getCartById = async (req, res) => {
 
 // Add a product to the cart
 export const addProductToCart = async (req, res) => {
-  const { cartId, productId, quantity, totalAmount, paymentMethod } = req.body;
+  const { cartId, productId, quantity, totalAmount } = req.body;
 
   try {
     let cart = await Cart.findById(cartId);

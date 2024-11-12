@@ -27,8 +27,8 @@ const Checkout = () => {
     }
   }, [navigate]);
 
-  console.log(userInfo?.data?.user_id);
-  console.log(userInfo);
+  // console.log(userInfo?.data?.user_id);
+  // console.log(userInfo);
 
   // Use createOrder mutation from API slice
   const [createOrder] = useCreateOrderMutation();
