@@ -4,6 +4,7 @@ import Order from '../Models/OrderModel.js';
 export const createOrder = async (req, res) => {
     try {
         const { customerId, cartItems, discountApplied } = req.body;
+        console.log(cartItems)
 
         // Calculate the total amount from cart items
         const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
