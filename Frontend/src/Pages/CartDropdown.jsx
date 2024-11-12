@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useCart } from '../context/CartContext';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "./PagesCSS/shoppingPage.css";
 
 const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
@@ -14,7 +14,7 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                toggleDropdown(false);  // Close dropdown if click is outside
+                toggleDropdown(false);  
             }
         };
 
@@ -55,10 +55,10 @@ const CartDropdown = ({ isDropdownVisible, toggleDropdown }) => {
             products: cart.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity,
-                PaymentMethod: 'Credit/Debit',
+                paymentMethod: 'Credit/Debit',
             })),
             totalAmount: calculateSubtotal(),
-            PaymentMethod: 'Credit/Debit', // Ensure PaymentMethod matches enum values
+            paymentMethod: 'Credit/Debit', // Ensure PaymentMethod matches enum values
         };
 
         try {
