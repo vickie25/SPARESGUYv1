@@ -12,19 +12,19 @@ const productSchema = new mongoose.Schema({
   make: { type: String, required: true }, // e.g., Toyota, Honda
   model: { type: String, required: true }, // e.g., Corolla, Civic
   year: { type: Number, required: true },
-  transmission: { type: String, enum: ['Manual', 'Automatic'], required: true },
+  // transmission: { type: String, enum: ['Manual', 'Automatic'], required: true },
   condition: { type: String, enum: ['New', 'Used'], required: true },
-  fuelType: { type: String, enum: ['Diesel', 'Petrol'], required: true },
+  // fuelType: { type: String, enum: ['Diesel', 'Petrol'], required: true },
 
   // Additional fields for product classification and discount
-  isLatest: { type: Boolean, default: false },
+  // isLatest: { type: Boolean, default: false },
   isBestSeller: { type: Boolean, default: false },
   isFeatured: { type: Boolean, default: false },
   hasDiscount: { type: Boolean, default: false },
   discountPercentage: {
     type: Number,
     min: 0,
-    max: 100,
+    max: 50,
     validate: {
       validator: function (v) {
         // Ensure discountPercentage is only set if hasDiscount is true
