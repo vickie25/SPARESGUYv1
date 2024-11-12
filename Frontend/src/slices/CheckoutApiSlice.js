@@ -6,7 +6,7 @@ const CheckoutApiSlice = apiSlice.injectEndpoints({
     // Define the 'createOrder' mutation
     createOrder: builder.mutation({
       query: (orderData) => ({
-        url: 'http://localhost:8000/api/checkout/create-order', // Make sure this is the correct endpoint for your backend
+        url: 'http://localhost:8000/api/order', // Make sure this is the correct endpoint for your backend
         method: 'POST',
         body: orderData, // Send the orderData as the body
       }),
