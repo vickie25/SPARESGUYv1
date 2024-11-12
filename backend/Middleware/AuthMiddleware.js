@@ -8,7 +8,7 @@ const authMiddleware = async (req, res, next) => {
     const token = req.cookies.token;
     console.log(token, 'This is the token');
 
-    const key = process.env.JWT_SECRET || 'mySuperSecretKey123!';
+    const key = process.env.JWT_SECRET || 'mysparesguy102';
     console.log(key, 'This is the key');
 
     if (!token) {
