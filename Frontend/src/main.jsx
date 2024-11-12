@@ -25,8 +25,13 @@ import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
 import AboutUs from './Pages/AboutUs.jsx';
 import AdminLayout from './Admin/AdminLayout.jsx';
-
-
+import AdminDashboard from './Admin/AdminDashboard.jsx';
+import Inventory from './Admin/Inventory.jsx';
+import Customers from './Admin/Customer.jsx';
+import Order from './Admin/Order.jsx';
+import Categories from './Admin/Categories.jsx';
+import Reports from './Admin/Reports.jsx';
+import Logout from './Admin/Logout.jsx';
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
     <Route index element={<Homepage />} />
@@ -46,6 +51,13 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="ContactUs" element={<ContactUs />} />
     <Route path="AboutUs" element={<AboutUs />} />
     <Route path="admin" element={<AdminLayout />} />
+    <Route path="admin/dashboard" element={<AdminDashboard />} />
+    <Route path="admin/inventory" element={<Inventory />} />
+    <Route path="admin/customers" element={<Customers />} />
+    <Route path="admin/orders" element={<Order />} />
+    <Route path="admin/categories" element={<Categories />} />
+    <Route path="admin/reports" element={<Reports />} />
+    <Route path="logout" element={<Logout />} />
    
 
   </Route>
