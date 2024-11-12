@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Row, Col, Button, Card, ListGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Homepage/Header';
@@ -6,13 +6,11 @@ import Footer from '../Homepage/Footer';
 import mpesa from '../Homepage/HomepageImages/mpesa.svg';
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useGetPaypalClientIdQuery } from "../slices/transactionApiSlice";
-
 import { toast } from 'react-toastify';
-import { useCart } from '../context/CartContext'
+import { useCart } from '../context/CartContext';
 
 const Payment = () => {
     const [validated, setValidated] = useState(false);
-    const [showConfirmation, setShowConfirmation] = useState(false);
     const navigate = useNavigate();
     const counties = [
         "Nairobi", "Mombasa", "Kisumu", "Nakuru", "Uasin Gishu",
@@ -29,56 +27,54 @@ const Payment = () => {
         "Baringo", "Busia"
     ];
 
+    const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
+    const clientId = paypal?.clientId;
+
+    const { calculateGrandTotal } = useCart();
+    const totalPrice = calculateGrandTotal();
+
     const handleSubmit = (event) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
+        } else {
+            // Handle valid form submission (e.g., open confirmation modal)
+            console.log("Form is valid, proceed with payment.");
         }
         setValidated(true);
     };
 
-    const openConfirmationModal = () => {
-        setShowConfirmation(true);
+    const createOrder = (data, actions) => {
+        return actions.order.create({
+            purchase_units: [{
+                amount: { value: totalPrice.toString() } // Ensure value is a string
+            }]
+        });
     };
 
-    const closeConfirmationModal = () => {
-        setShowConfirmation(false);
-        navigate('/');
+    const onApprove = (data, actions) => {
+        return actions.order.capture().then(function(details) {
+            console.log(details);
+            toast.success("Payment Successful");
+            navigate('/success'); // Navigate to success page
+        });
     };
 
-    const { data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
+    const onError = (error) => {
+        toast.error("Payment Failed");
+        console.log(error);
+        navigate('/payment');
+    };
 
-const clientId = paypal?.clientId;
-
-const { calculateGrandTotal } = useCart();
-      // Calculate total price from CartContext
-      const totalPrice = calculateGrandTotal();
-
-      const createOrder = (data, actions) => {
-          return actions.order.create({
-              purchase_units: [{
-                  amount: { value: totalPrice.toString() } // Ensure value is a string
-              }]
-          });
-      };
-  
-      const onApprove = (data, actions) => {
-          return actions.order.capture().then(function(details) {
-              console.log(details);
-              toast.success("Payment Successful");
-              // Optionally navigate or perform other actions here
-          });
-      };
-  
-    //   const onError = (error) => {
-    //       toast.error("Payment Failed");
-    //       console.log(error);
-    //       navigate('/payment');
-
+    if (errorPayPal) {
+        toast.error("Failed to load PayPal client ID");
+        return <p>Error loading PayPal</p>; // Fallback UI
+    }
+    
 
     return (
-        <PayPalScriptProvider options={{ 'client-id': 'AQQ5fKyqjEygOr9OJ3Mu7v7c0Mjs6-HkHyt1FYPNcOOsFP2zWKRp1pu_yQddwyvY2hyZC24a6h_lshHk', currency: 'USD' }}>
+        <PayPalScriptProvider options={{ 'client-id': clientId || 'your-default-client-id', currency: 'USD' }}>
             <Header />
             <div className="checkout-container d-flex justify-content-center">
                 <Row className="w-75">
@@ -110,7 +106,7 @@ const { calculateGrandTotal } = useCart();
                                     <Col md={6}>
                                         <Form.Group controlId="formCity">
                                             <Form.Label>City</Form.Label>
-                                            <Form.Control as="select" required>
+                                            <Form.Control as="select " required>
                                                 <option>Select city</option>
                                                 {counties.map((county, index) => (
                                                     <option key={index} value={county}>{county}</option>
@@ -160,10 +156,8 @@ const { calculateGrandTotal } = useCart();
                                     {loadingPayPal ? (
                                         <p>Loading...</p> // Show loading state
                                     ) : (
-                                        'AQQ5fKyqjEygOr9OJ3Mu7v7c0Mjs6-HkHyt1FYPNcOOsFP2zWKRp1pu_yQddwyvY2hyZC24a6h_lshHk' && (
-                                            <>
-                                                <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError} />
-                                            </>
+                                        clientId && (
+                                            <PayPalButtons createOrder={createOrder} onApprove={onApprove} onError={onError} />
                                         )
                                     )}
                                 </ListGroup.Item>
@@ -177,9 +171,8 @@ const { calculateGrandTotal } = useCart();
 
                                 {/* Mpesa */}
                                 <ListGroup.Item className="d-flex align-items-center mb-2">
-                                      <input type="radio" name="paymentMethod" id="cashOnDelivery" />
+                                    <input type="radio" name="paymentMethod" id="mpesa" />
                                     <img src={mpesa} alt="Mpesa" width={24} height={24} className="me-2" />
-                                  
                                     Mpesa
                                 </ListGroup.Item>
 
@@ -189,9 +182,6 @@ const { calculateGrandTotal } = useCart();
                     </Col>
 
                 </Row>
-
-              
-
             </div>
 
             {/* Footer */}
@@ -199,6 +189,5 @@ const { calculateGrandTotal } = useCart();
         </PayPalScriptProvider>
     );
 };
-
 
 export default Payment;
