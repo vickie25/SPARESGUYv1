@@ -24,6 +24,7 @@ import Payement from './Pages/Payement.jsx';// import PaymentConfirmation from '
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
 import AboutUs from './Pages/AboutUs.jsx';
+import AdminLayout from './Admin/AdminLayout.jsx';
 
 
 const routes = createBrowserRouter(createRoutesFromElements(
@@ -44,6 +45,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="ContactUs" element={<ContactUs />} />
     <Route path="AboutUs" element={<AboutUs />} />
+    <Route path="admin" element={<AdminLayout />} />
    
 
   </Route>
