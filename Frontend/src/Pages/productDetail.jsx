@@ -6,7 +6,7 @@ import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
-import { useCart } from '../context/CartContext.jsx';
+//import { useCart } from '../context/CartContext.jsx';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -15,7 +15,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams(); // Get the product ID from URL
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+//
 
   useEffect(() => {
     const fetchProductDetails = async () => {
