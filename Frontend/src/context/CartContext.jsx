@@ -37,7 +37,7 @@ export const CartProvider = ({ children }) => {
                         quantity: item.quantity,
                     })),
                     totalAmount: calculateSubtotal(),
-                    PaymentMethod: 'Credit/Debit',  // Ensure PaymentMethod is included here
+                    paymentMethod: 'Credit/Debit',  // Ensure PaymentMethod is included here
                 };
 
                 console.log('Preparing to send the following product data:', productData);
