@@ -40,7 +40,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="shop" element={<Shop />} />
     <Route path="product/:id" element={<ProductDetail />} />
     <Route path="cart" element={<CartPage />} />
-    <Route path="revew" element={<Review />} />
+    <Route path="review" element={<Review />} />
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
