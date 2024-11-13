@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateOrderMutation } from '../slices/CheckoutApiSlice'; // Import the API slice
 //import { CartContext } from '../context/CartContext'; // Assuming CartContext is available
 // import { useUser } from './UserContext';
-import moment from 'moment'; 
+// import moment from 'moment'; 
 
 const Checkout = () => {
   const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, calculateGrandTotal } = useCart();

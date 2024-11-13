@@ -1,14 +1,24 @@
 import React, { useState, useContext } from 'react';
-import { FaBars, FaTimes, FaRegHeart, FaRegUser } from 'react-icons/fa';
+import {
+  Navbar,
+  Nav,
+  Container,
+  Form,
+  InputGroup,
+  Badge,
+  Button,
+  Offcanvas
+} from 'react-bootstrap';
+import { FaBars, FaRegHeart, FaRegUser, FaSearch } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
+import { MdOutlineNotificationsNone } from "react-icons/md";
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { SearchContext } from '../context/SearchContext';
 import CartDropdown from '../Pages/CartDropdown';
-import { MdOutlineNotificationsNone } from "react-icons/md";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const { searchQuery, setSearchQuery } = useContext(SearchContext);
   const { cart } = useCart();
@@ -22,64 +32,172 @@ const Header = () => {
     navigate('/UserProf', { state: { section: 'notifications' } });
   };
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleDropdown = () => setIsDropdownVisible(!isDropdownVisible);
-
   const handleSearch = (event) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
+  const toggleDropdown = () => setIsDropdownVisible(!isDropdownVisible);
 
   return (
-    <header>
-      <nav>
-        <div className="menu-toggle" onClick={toggleMenu}>
-          {isOpen ? <FaTimes /> : <FaBars />}
-        </div>
-        <ul className={isOpen ? 'nav-list active' : 'nav-list'}>
-          <li><a href="/">Home</a></li>
-          <li><Link to="/shop">Shop</Link></li>
-          <li><a href="/AboutUs">About</a></li>
-          <li><a href="ContactUs">Contact Us</a></li>
-          <li>
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder="What are you looking for?"
-                className="search-input"
-                value={searchQuery}
-                onChange={handleSearch}
-              />
-            </div>
-          </li>
-          <li>
-            <a onClick={handleWishlistClick}>
-              <FaRegHeart className='header-icon' />
-            </a>
-          </li>
+    <>
+      {/* Add a placeholder div to prevent content jump */}
+      <div style={{ height: '70px' }}></div>
+      
+      <Navbar
+        expand="lg"
+        className="shadow-sm"
+        style={{
+          backgroundColor: '#000000',
+          minHeight: '70px',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1050
+        }}
+      >
+        <Container fluid>
+          {/* Rest of your Navbar content remains the same */}
+          <Navbar.Brand as={Link} to="/" className="fw-bold fs-4" style={{ color: '#FFFFFF' }}>
+            LOGO
+          </Navbar.Brand>
 
-          <li className="cart-icon-container">
-            <div className="cart-icon" onClick={toggleDropdown}>
-              <BsCart3 />
+          <div className="d-flex align-items-center gap-3 d-lg-none">
+            <Button 
+              variant="link" 
+              className="position-relative p-1"
+              onClick={toggleDropdown}
+              style={{ color: '#FFFFFF' }}
+            >
+              <BsCart3 size={22} />
               {cart.length > 0 && (
-                <span className="cart-count">
+                <Badge 
+                  bg="danger" 
+                  className="position-absolute top-0 start-100 translate-middle rounded-circle"
+                >
                   {cart.reduce((total, item) => total + item.quantity, 0)}
-                </span>
+                </Badge>
               )}
-            </div>
-            <CartDropdown isDropdownVisible={isDropdownVisible} toggleDropdown={toggleDropdown} />
-          </li>
-          <li>
-            <a onClick={handleNotificationsClick}>
-              <MdOutlineNotificationsNone className='header-icon' />
-            </a>
-          </li>
-          <li><Link to="/UserProf"><FaRegUser className='header-icon' /></Link></li>
-          <li><a href="login">Login</a></li>
-        </ul>
-      </nav>
-      {isDropdownVisible && <div className="mask"></div>}
-    </header>
+            </Button>
+            <Navbar.Toggle 
+              aria-controls="offcanvasNavbar"
+              onClick={() => setShowOffcanvas(true)}
+              className="border-0"
+              style={{ color: '#FFFFFF' }}
+            >
+              <FaBars size={22} />
+            </Navbar.Toggle>
+          </div>
+
+          <Navbar.Offcanvas
+            show={showOffcanvas}
+            onHide={() => setShowOffcanvas(false)}
+            placement="end"
+            id="offcanvasNavbar"
+            style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title style={{ color: '#DAA520' }}>Menu</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="justify-content-center flex-grow-1 pe-3">
+                <Nav.Link as={Link} to="/" className="mx-2" style={{ color: '#FFFFFF' }}>Home</Nav.Link>
+                <Nav.Link as={Link} to="/shop" className="mx-2" style={{ color: '#FFFFFF' }}>Shop</Nav.Link>
+                <Nav.Link as={Link} to="/AboutUs" className="mx-2" style={{ color: '#FFFFFF' }}>About</Nav.Link>
+                <Nav.Link as={Link} to="/ContactUs" className="mx-2" style={{ color: '#FFFFFF' }}>Contact</Nav.Link>
+              </Nav>
+
+              <div className="d-flex align-items-center justify-content-center my-3">
+                <InputGroup className="w-auto">
+                  <Form.Control
+                    type="search"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    style={{ border: '1px solid #DAA520', backgroundColor: '#FFFFFF' }}
+                    className="border-end-0"
+                  />
+                  <Button 
+                    variant="outline-secondary" 
+                    style={{ border: '1px solid #DAA520', color: '#DAA520' }}
+                    className="border-start-0"
+                  >
+                    <FaSearch />
+                  </Button>
+                </InputGroup>
+              </div>
+
+              <Nav className="justify-content-end align-items-center gap-3">
+                {/* Your navigation items remain the same */}
+                <Button 
+                  variant="link" 
+                  className="p-1"
+                  onClick={handleWishlistClick}
+                  style={{ color: '#FFFFFF' }}
+                >
+                  <FaRegHeart size={22} />
+                </Button>
+
+                <div className="position-relative d-none d-lg-block">
+                  <Button 
+                    variant="link" 
+                    className="position-relative p-1"
+                    onClick={toggleDropdown}
+                    style={{ color: '#FFFFFF' }}
+                  >
+                    <BsCart3 size={22} />
+                    {cart.length > 0 && (
+                      <Badge 
+                        bg="danger" 
+                        className="position-absolute top-0 start-100 translate-middle rounded-circle"
+                      >
+                        {cart.reduce((total, item) => total + item.quantity, 0)}
+                      </Badge>
+                    )}
+                  </Button>
+                  {isDropdownVisible && <CartDropdown />}
+                </div>
+
+                <Button 
+                  variant="link" 
+                  className="p-1"
+                  onClick={handleNotificationsClick}
+                  style={{ color: '#FFFFFF' }}
+                >
+                  <MdOutlineNotificationsNone size={24} />
+                </Button>
+
+                <Nav.Link 
+                  as={Link} 
+                  to="/UserProf" 
+                  className="p-1"
+                  style={{ color: '#FFFFFF' }}
+                >
+                  <FaRegUser size={22} />
+                </Nav.Link>
+
+                <Nav.Link 
+                  as={Link} 
+                  to="/login" 
+                  className="btn rounded-pill px-4"
+                  style={{ backgroundColor: '#DAA520', color: '#FFFFFF' }}
+                >
+                  Login
+                </Nav.Link>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
+        </Container>
+      </Navbar>
+
+      {isDropdownVisible && (
+        <div 
+          className="position-fixed top-0 start-0 w-100 h-100" 
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1040 }}
+          onClick={toggleDropdown}
+        />
+      )}
+    </>
   );
 };
 
