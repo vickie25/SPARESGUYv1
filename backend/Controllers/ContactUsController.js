@@ -1,41 +1,65 @@
-import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
+// controllers/messageController.js
+import { sendingEmails } from '../Utils/SendEmail.js';
+import { asyncHandler } from '../Middleware/asyncHandler.js';
+import MessageModel from '../Models/MessageModel.js';
 
-dotenv.config();
+const sendMessage = asyncHandler(async (req, res) => {
+    const { name, email, subject, message } = req.body;
 
-export const sendEmail = async (req, res) => {
-  const { name, email, subject, message } = req.body;
+    // Validate required fields
+    if (!name || !email || !subject || !message) {
+        return res.status(400).json({ success: false, error: 'Please provide all required fields' });
+    }
 
- // data validation
-  if (!name || !email || !subject || !message) {
-    return res.status(400).json({ message: 'All fields are required.' });
-  }
+    const currentTimestamp = new Date().toISOString();
 
-  try {
-    // Configure the email transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail', // or any other email provider
-      auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASS, 
-      },
-    });
+    try {
+        // Send the email
+        const response = await sendingEmails(name, email, subject, message, currentTimestamp);
+        console.log('Email sent successfully:', response);
 
-    // Define the email options
-    const mailOptions = {
-      from: email,
-      to: process.env.RECIPIENT_EMAIL,
-      subject: `${subject} - From ${name}`,
-      text: message,
-  
-    };
+        // Only save to MongoDB if the email was sent successfully
+        const newMessage = new MessageModel({
+            name,
+            email,
+            subject,
+            message,
+            timestamp: currentTimestamp,
+        });
 
-    // Send the email
-    await transporter.sendMail(mailOptions);
+       const res1 = await newMessage.save();
+       console.log('Message saved to MongoDB:', res1);
+        console.log('Message saved to database successfully:', newMessage);
 
-    res.status(200).json({ message: 'Email sent successfully!' });
-  } catch (error) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ message: 'Failed to send email. Please try again later.' });
-  }
+        res.json({ success: true, message: 'Email sent and saved successfully!', data: response });
+    } catch (error) {
+        console.error('Error:', error);
+
+        // If the email sending fails, we should handle it gracefully
+        if (error.message.includes('Email sending failed')) {
+            return res.status(500).json({ success: false, error: 'Failed to send email', details: error.message });
+        }
+
+        // If saving to the database fails, we can handle that as well
+        try {
+            // Attempt to save the message even if email sending fails
+            const newMessage = new MessageModel({
+                name,
+                email,
+                subject,
+                message,
+                timestamp: currentTimestamp,
+            });
+            await newMessage.save();
+            console.log('Message saved to database despite email sending failure:', newMessage);
+        } catch (dbError) {
+            console.error('Failed to save message to database:', dbError);
+        }
+
+        res.status(500).json({ success: false, error: 'An error occurred', details: error.message });
+    }
+});
+
+export {
+    sendMessage
 };

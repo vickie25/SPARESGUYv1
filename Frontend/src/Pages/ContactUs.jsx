@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'; 
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { BsTelephone, BsWhatsapp } from "react-icons/bs";
 import { MdOutlineMail, MdOutlineLocationOn } from "react-icons/md";
@@ -25,18 +26,28 @@ const ContactUs = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8000/api/contact/send-email', formData);
-            alert('Message sent successfully!');
-            setFormData({
-                name: '',
-                email: '',
-                subject: '',
-                message: '',
-            });
+            console.log(response);
+        
+            if (response.status === 200) {
+                alert('Message sent successfully!');
+          
+                setFormData({
+                    name: '',
+                    email: '',
+                    subject: '',
+                    message: '',
+                });
+            } else {
+                alert('Failed to send message. Please try again.');
+            }
         } catch (error) {
-            alert('Error sending message. Please try again.');
-        }
-    };
 
+            console.error('Error sending email:', error);
+        
+            alert('An error occurred while sending the message. Please try again later.');
+        } 
+
+    }; 
     const contactInfo = [
         {
             icon: <BsTelephone size={24} />,
@@ -118,7 +129,7 @@ const ContactUs = () => {
                                         <Form.Label>Subject</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="subject"
+                                            name=" subject"
                                             value={formData.subject}
                                             onChange={handleChange}
                                             required
@@ -134,9 +145,12 @@ const ContactUs = () => {
                                             value={formData.message}
                                             onChange={handleChange}
                                             required
+                                            style={{
+                                                color: '#000000', // Set text color to black (or any visible color)
+                                                backgroundColor: '#FFFFFF', // Set a contrasting background color
+                                            }}
                                         />
-                                    </Form.Group>
-
+                                </Form.Group>
                                     <Button 
                                         type="submit"
                                         style={{
