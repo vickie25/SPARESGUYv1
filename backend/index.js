@@ -4,7 +4,7 @@ import userRoutes from './routes/userRoutes.js';
 // import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import contactRoutes from './routes/contactRoutes.js';
+// import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
@@ -64,7 +64,7 @@ app.use('/api/order', OrderRoutes);
 // Review routes
 app.use('/api/review', ReviewRoutes);
 
-app.use('/api/contact', contactRoutes);
+// app.use('/api/contact', contactRoutes);
 app.use('/api/chexckout', CheckoutRoutes)
 
 // Delivery routes
