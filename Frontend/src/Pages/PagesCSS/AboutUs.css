@@ -1,0 +1,153 @@
+/* PagesCSS/AboutUs.css */
+
+.Banner-About {
+  position: relative; /* Ensure the container is positioned */
+  background-image: url('../assets/car.jpg'); /* Corrected path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  height: 80vh; /* Adjust the height as needed */
+  padding: 50px;
+  color: #fff;
+  text-align: center;
+  z-index: 1;
+}
+.Banner-About::before {
+  content: ""; /* Required to create the pseudo-element */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: inherit; /* Inherit the background image from the parent */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px); /* Apply the blur effect only to the background image */
+  z-index: -1;
+}
+
+.Banner-About h {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.Banner-About p {
+  font-size: 1.5em;
+  line-height: 1.6;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.image-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.image-section img {
+  width: 100%;
+  height: auto;
+}
+
+.text-section {
+  flex: 1;
+  padding: 10px;
+  color: #333;
+  background-color: #fff;
+  border: 20px;
+  margin-left: -50px;
+}
+
+.text-section p {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+.stat-item {
+
+  display: flex;
+  flex-direction: row;  /* Align items horizontally */
+  justify-content: space-around;  /* Distribute space evenly between items */
+  align-items: center;  /* Vertically center the content */
+  margin-top:30%; /* Space above the stats */
+  gap: 40px;  
+}
+.black{
+    color: #000;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
+}
+.yellow{
+  color: rgb(165, 165, 77);
+    text-align: center;
+    display: block; /* Ensure the text is displayed in blocks */
+    line-height: 1.8;  /* Increase line height for better spacing */
+    margin-top: 10px; 
+}
+
+.Team {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f8f8f8; /* Optional: Background color for contrast */
+}
+
+.teamh {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.team-member, .team-member2 {
+    text-align: center;
+    margin: 10px;
+    flex: 1 1 20%; /* Adjusts the width of each team member card */
+    max-width: 20%; /* Ensures images do not exceed the container */
+    margin-top: 60px;
+}
+
+.team-member img, .team-member2 img {
+    width: 100%; /* Ensures the image takes up the full width of its container */
+    height: auto;
+    border-radius: 8px; /* Optional: Add rounded corners to the images */
+}
+
+.team-member p, .team-member2 p {
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+.WhyUs {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f8f8; /* Optional: Background color for contrast */
+}
+
+.why-us-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+}
+
+.why-us-content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;  /* Ensure the items are centered vertically */
+  gap: 30px;
+  padding: 20px;
+  height: auto; /* Ensure the container is big enough for its children */
+}
+
+/* Vertical line styling */
+.why-us-content .vertical-line {
+  width: 1px;
+  background-color: #000;
+  height: 50px;  /* Set a fixed height to see the line */
+  margin: 0 20px;
+}
