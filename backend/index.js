@@ -6,7 +6,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-
+import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 
 import authMiddleware from './Middleware/AuthMiddleware.js';
@@ -65,6 +65,9 @@ app.use('/api/chexckout', CheckoutRoutes)
 
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
+
+// Category routes
+app.use('/api/categories', CategoryRoutes);
 
 // Protect the profile route
 app.get('/profile', authMiddleware, (req, res) => {
