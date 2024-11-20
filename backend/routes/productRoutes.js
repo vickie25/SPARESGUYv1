@@ -24,7 +24,7 @@ const validateObjectId = (req, res, next) => {
 };
 
 // Create a new product
-router.post('/', authMiddleware, requireAdmin, productController.createProduct);
+router.post('/', authMiddleware,  productController.createProduct);
 
 // Get all products
 router.get('/', productController.getAllProducts);
