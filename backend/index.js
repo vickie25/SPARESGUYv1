@@ -4,7 +4,7 @@ import userRoutes from './routes/userRoutes.js';
 // import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import contactRoutes from './routes/contactRoutes.js';
+// import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
@@ -14,6 +14,7 @@ import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
 import CheckoutRoutes from './routes/CheckoutRoutes.js'
+import contactRoutes from './routes/contactRoutes.js';
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import dotenv from 'dotenv';
@@ -48,6 +49,9 @@ app.use('/api/users', userRoutes);
 // Product routes
 app.use('/api/products', productRoutes);
 
+// ContactUs routes
+app.use('/api/contact', contactRoutes);
+
 // Cart routes
 app.use('/api/cart', cartRoutes);
 
@@ -60,7 +64,7 @@ app.use('/api/order', OrderRoutes);
 // Review routes
 app.use('/api/review', ReviewRoutes);
 
-app.use('/api/contact', contactRoutes);
+// app.use('/api/contact', contactRoutes);
 app.use('/api/chexckout', CheckoutRoutes)
 
 // Delivery routes
