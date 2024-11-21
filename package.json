@@ -7,12 +7,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon backend/index.js",
+     "dev": "vite",
+    "build": "vite build",
     "client": "npm run dev --prefix frontend",
     "joe": "concurrently \"npm run start\" \"npm run client\""
   },
   "author": "apbc africa",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
     "@paypal/react-paypal-js": "^8.7.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
@@ -42,5 +47,9 @@
     "toasty": "^6.0.3",
     "uuid": "^11.0.2",
     "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0"
   }
 }
