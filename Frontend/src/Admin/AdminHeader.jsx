@@ -15,7 +15,7 @@ const HeaderContainer = styled.header`
   background: ${props => props.isDark ? '#1a1a1a' : '#ffffff'};
   border-bottom: 2px solid ${props => props.isDark ? '#2d2d2d' : '#f0f0f0'};
   padding: 1rem 2rem;
-  position: sticky;
+   position: 'fixed',
   top: 0;
   z-index: 1000;
   transition: all 0.3s ease;
