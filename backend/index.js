@@ -82,8 +82,7 @@ app.get('/profile', AuthMiddleware, (req, res) => {
     res.json({ message: `Welcome, ${req.user.userId}!` });
 });
 
-// Protect the admin dashboard route
-app.get('/admin/dashboard', AuthMiddleware, requireAdmin, (req, res) => {
+
 
 // Notification routes
 app.use('/api/notifications', NotificationRoutes);
