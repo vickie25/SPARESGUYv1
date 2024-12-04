@@ -9,7 +9,7 @@ import productRoutes from './routes/productRoutes.js';
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 
-import authMiddleware from './Middleware/AuthMiddleware.js';
+import AuthMiddleware from './Middleware/AuthMiddleware.js';
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
@@ -74,12 +74,12 @@ app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
 app.use('/api/categories', CategoryRoutes);
 
 // Protect the profile route
-app.get('/profile', authMiddleware, (req, res) => {
+app.get('/profile', AuthMiddleware, (req, res) => {
     res.json({ message: `Welcome, ${req.user.userId}!` });
 });
 
 // Protect the admin dashboard route
-app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
+app.get('/admin/dashboard', AuthMiddleware, requireAdmin, (req, res) => {
     res.json({ message: 'Welcome to the admin dashboard' });
 });
 console.log(process.env.PAYPAL_CLIENT_ID);

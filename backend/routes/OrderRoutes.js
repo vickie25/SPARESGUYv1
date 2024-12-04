@@ -6,11 +6,12 @@ import {
     updateOrder,
     deleteOrder
 } from '../Controllers/OrderController.js';
+import AuthMiddleware from '../Middleware/AuthMiddleware.js';
 
 const router = express.Router();
 
 // Create a new order
-router.post('/', createOrder);
+router.post('/', AuthMiddleware, createOrder);
 
 // Get all orders
 router.get('/', getAllOrders);
@@ -25,3 +26,4 @@ router.put('/:id', updateOrder);
 router.delete('/:id', deleteOrder);
 
 export default router;
+
