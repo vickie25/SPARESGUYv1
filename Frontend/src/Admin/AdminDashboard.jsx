@@ -6,25 +6,7 @@ import {
 } from 'react-icons/fa';
 import styled from 'styled-components';
 
-const DashboardCard = styled(motion.div)`
-  background: #FFFFFF;
-  border-radius: 15px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  border: 1px solid rgba(218, 165, 32, 0.2);
-`;
 
-const StatNumber = styled.h2`
-  color: #000000;
-  font-weight: bold;
-  margin: 0.5rem 0;
-`;
-
-const StatLabel = styled.p`
-  color: #666;
-  margin: 0;
-`;
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -120,3 +102,24 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
+const DashboardCard = styled(motion.div)`
+  background: #FFFFFF;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  border: 1px solid rgba(218, 165, 32, 0.2);
+`;
+
+const StatNumber = styled.h2`
+  color: #000000;
+  font-weight: bold;
+  margin: 0.5rem 0;
+`;
+
+const StatLabel = styled.p`
+  color: #666;
+  margin: 0;
+`;
