@@ -11,6 +11,90 @@ import {
   FaSignOutAlt
 } from 'react-icons/fa';
 
+
+const AdminHeader = () => {
+  const [isDark, setIsDark] = useState(false);
+  const [notifications] = useState(3);
+  const [messages] = useState(5);
+
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    // You can implement your theme switching logic here
+  };
+
+  return (
+    <HeaderContainer isDark={isDark}>
+      <HeaderContent>
+        <SearchBar isDark={isDark}>
+          <FaSearch />
+          <input 
+            type="text" 
+            placeholder="Search..." 
+            aria-label="Search"
+          />
+        </SearchBar>
+
+        <ActionButtons>
+          <IconButton
+            isDark={isDark}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={toggleTheme}
+          >
+            {isDark ? <FaSun /> : <FaMoon />}
+          </IconButton>
+
+          <IconButton
+            isDark={isDark}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaBell />
+            {notifications > 0 && (
+              <NotificationBadge>{notifications}</NotificationBadge>
+            )}
+          </IconButton>
+
+          <IconButton
+            isDark={isDark}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaEnvelope />
+            {messages > 0 && (
+              <NotificationBadge>{messages}</NotificationBadge>
+            )}
+          </IconButton>
+
+          <UserProfile isDark={isDark}>
+            <div className="user-info">
+              <div className="name">apbc</div>
+              <div className="role">Administrator</div>
+            </div>
+            <IconButton
+              isDark={isDark}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaUserCircle />
+            </IconButton>
+            <IconButton
+              isDark={isDark}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaSignOutAlt />
+            </IconButton>
+          </UserProfile>
+        </ActionButtons>
+      </HeaderContent>
+    </HeaderContainer>
+  );
+};
+
+export default AdminHeader;
+
+
 const HeaderContainer = styled.header`
   background: ${props => props.isDark ? '#1a1a1a' : '#ffffff'};
   border-bottom: 2px solid ${props => props.isDark ? '#2d2d2d' : '#f0f0f0'};
@@ -117,85 +201,3 @@ const UserProfile = styled.div`
     color: ${props => props.isDark ? '#cccccc' : '#666666'};
   }
 `;
-
-const AdminHeader = () => {
-  const [isDark, setIsDark] = useState(false);
-  const [notifications] = useState(3);
-  const [messages] = useState(5);
-
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    // You can implement your theme switching logic here
-  };
-
-  return (
-    <HeaderContainer isDark={isDark}>
-      <HeaderContent>
-        <SearchBar isDark={isDark}>
-          <FaSearch />
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            aria-label="Search"
-          />
-        </SearchBar>
-
-        <ActionButtons>
-          <IconButton
-            isDark={isDark}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleTheme}
-          >
-            {isDark ? <FaSun /> : <FaMoon />}
-          </IconButton>
-
-          <IconButton
-            isDark={isDark}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaBell />
-            {notifications > 0 && (
-              <NotificationBadge>{notifications}</NotificationBadge>
-            )}
-          </IconButton>
-
-          <IconButton
-            isDark={isDark}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaEnvelope />
-            {messages > 0 && (
-              <NotificationBadge>{messages}</NotificationBadge>
-            )}
-          </IconButton>
-
-          <UserProfile isDark={isDark}>
-            <div className="user-info">
-              <div className="name">John Doe</div>
-              <div className="role">Administrator</div>
-            </div>
-            <IconButton
-              isDark={isDark}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaUserCircle />
-            </IconButton>
-            <IconButton
-              isDark={isDark}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaSignOutAlt />
-            </IconButton>
-          </UserProfile>
-        </ActionButtons>
-      </HeaderContent>
-    </HeaderContainer>
-  );
-};
-
-export default AdminHeader;

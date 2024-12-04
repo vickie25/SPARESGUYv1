@@ -19,99 +19,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
 
-// Styled Components
-const SidebarContainer = styled(motion.div)`
-  background: #000000;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-  overflow-x: hidden;
-  border-right: 2px solid #DAA520;
-  
-  @media (max-width: 768px) {
-    position: fixed;
-    left: ${props => props.ismobile === "true" && props.iscollapsed === "true" ? '-100%' : '0'};
-    top: 0;
-    height: 100vh;
-    z-index: 1050;
-  }
-`;
-
-const ToggleButton = styled.button`
-  background: transparent;
-  border: none;
-  color: #DAA520;
-  font-size: 1.5rem;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: scale(1.1);
-    color: #FFFFFF;
-  }
-
-  @media (max-width: 768px) {
-    position: ${props => props.ismobile === "true" ? 'fixed' : 'relative'};
-    left: ${props => props.ismobile === "true" ? '1rem' : '0'};
-    top: ${props => props.ismobile === "true" ? '1rem' : '0'};
-    z-index: 1060;
-  }
-`;
-
-const NavItemStyled = styled(Nav.Item)`
-  margin: 0.5rem 0;
-  transition: all 0.3s ease;
-
-  .nav-link {
-    color: #FFFFFF;
-    padding: 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 3px;
-      height: 100%;
-      background: #DAA520;
-      transform: scaleY(0);
-      transition: transform 0.3s ease;
-    }
-
-    &:hover, &.active {
-      background: rgba(218, 165, 32, 0.1);
-      color: #DAA520;
-
-      &:before {
-        transform: scaleY(1);
-      }
-    }
-
-    svg {
-      font-size: 1.2rem;
-      margin-right: ${props => props.collapsed ? '0' : '1rem'};
-    }
-  }
-`;
-
-const MainContent = styled(Col)`
-  transition: all 0.3s ease;
-  background: #FFFFFF;
-  min-height: 100vh;
-`;
-
-const BrandTitle = styled(motion.h4)`
-  color: #DAA520;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-bottom: 2rem;
-  text-align: center;
-`;
 
 const AdminLayout = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -229,3 +136,97 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+
+// Styled Components
+const SidebarContainer = styled(motion.div)`
+  background: #000000;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+  border-right: 2px solid #DAA520;
+  
+  @media (max-width: 768px) {
+    position: fixed;
+    left: ${props => props.ismobile === "true" && props.iscollapsed === "true" ? '-100%' : '0'};
+    top: 0;
+    height: 100vh;
+    z-index: 1050;
+  }
+`;
+
+const ToggleButton = styled.button`
+  background: transparent;
+  border: none;
+  color: #DAA520;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.1);
+    color: #FFFFFF;
+  }
+
+  @media (max-width: 768px) {
+    position: ${props => props.ismobile === "true" ? 'fixed' : 'relative'};
+    left: ${props => props.ismobile === "true" ? '1rem' : '0'};
+    top: ${props => props.ismobile === "true" ? '1rem' : '0'};
+    z-index: 1060;
+  }
+`;
+
+const NavItemStyled = styled(Nav.Item)`
+  margin: 0.5rem 0;
+  transition: all 0.3s ease;
+
+  .nav-link {
+    color: #FFFFFF;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3px;
+      height: 100%;
+      background: #DAA520;
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    &:hover, &.active {
+      background: rgba(218, 165, 32, 0.1);
+      color: #DAA520;
+
+      &:before {
+        transform: scaleY(1);
+      }
+    }
+
+    svg {
+      font-size: 1.2rem;
+      margin-right: ${props => props.collapsed ? '0' : '1rem'};
+    }
+  }
+`;
+
+const MainContent = styled(Col)`
+  transition: all 0.3s ease;
+  background: #FFFFFF;
+  min-height: 100vh;
+`;
+
+const BrandTitle = styled(motion.h4)`
+  color: #DAA520;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-bottom: 2rem;
+  text-align: center;
+`;

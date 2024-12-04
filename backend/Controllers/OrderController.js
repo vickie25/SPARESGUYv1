@@ -4,11 +4,12 @@ import mongoose from 'mongoose';
 // Create a new order
 export const createOrder = async (req, res) => {
     try {
-        const { customerId, cartItems, totalAmount, discountApplied } = req.body;
+        const { cartItems, totalAmount, discountApplied } = req.body;
 
         // Convert customerId to ObjectId
         const convertedCustomerId = new mongoose.Types.ObjectId(customerId);
 
+        // Ensure cartItems is not empty
         if (!cartItems || cartItems.length === 0) {
             return res.status(400).json({ message: 'No cart items found' });
         }
@@ -32,7 +33,7 @@ export const createOrder = async (req, res) => {
 };
 
 
-// Get all ordrrs 
+// Get all orders 
 export const getAllOrders = async (req, res) => {
     try {
         const orders = await Order.find().populate('customerId').populate('cartItems.productId');
