@@ -1,22 +1,26 @@
 import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
-// import paymentInfoRoutes from './routes/paymentInfoRoutes.js'
 import cors from 'cors';
 import bodyParser from 'body-parser';
-// import contactRoutes from './routes/contactRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 
+
 import AuthMiddleware from './Middleware/AuthMiddleware.js';
+
+import authMiddleware from './Middleware/AuthMiddleware.js';
+
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
-import CheckoutRoutes from './routes/CheckoutRoutes.js'
+import CheckoutRoutes from './routes/CheckoutRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
+import NotificationRoutes from './routes/NotificationRoutes.js';
+
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -28,9 +32,8 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
-app.use(express.json());
-app.use(express.json());
 app.use(cookieParser()); // To parse cookies from the request
+app.use(express.json()); // Make sure body data can be parsed
 
 // Serve files in the uploads directory
 app.use('/uploads', express.static('uploads'));
@@ -64,14 +67,15 @@ app.use('/api/order', OrderRoutes);
 // Review routes
 app.use('/api/review', ReviewRoutes);
 
-// app.use('/api/contact', contactRoutes);
-app.use('/api/chexckout', CheckoutRoutes)
+// Checkout routes
+app.use('/api/checkout', CheckoutRoutes);
 
 // Delivery routes
-app.use('/api/delivery', deliveryScheRoutes); // Use the correct route
+app.use('/api/delivery', deliveryScheRoutes);
 
 // Category routes
 app.use('/api/categories', CategoryRoutes);
+
 
 // Protect the profile route
 app.get('/profile', AuthMiddleware, (req, res) => {
@@ -80,12 +84,25 @@ app.get('/profile', AuthMiddleware, (req, res) => {
 
 // Protect the admin dashboard route
 app.get('/admin/dashboard', AuthMiddleware, requireAdmin, (req, res) => {
+
+// Notification routes
+app.use('/api/notifications', NotificationRoutes);
+
+// Protect the profile route (example for a protected route)
+app.get('/profile', authMiddleware, (req, res) => {
+    res.json({ message: `Welcome, ${req.user.userId}!` });
+});
+
+// Protect the admin dashboard route (example for an admin route)
+app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
+
     res.json({ message: 'Welcome to the admin dashboard' });
 });
-console.log(process.env.PAYPAL_CLIENT_ID);
 
+// PayPal configuration endpoint
 app.get('/api/config/paypal', (req, res) => res.send({
-    clientId: process.env.PAYPAL_CLIENT_ID}));
+    clientId: process.env.PAYPAL_CLIENT_ID
+}));
 
 // Start the server
 app.listen(PORT, () => {
