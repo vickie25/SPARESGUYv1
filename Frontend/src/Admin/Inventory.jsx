@@ -425,7 +425,6 @@ const ImagePreview = styled.img`
   max-width: 100px;
   height: auto;
   margin: 10px 0;
-  border-radius: 5px;
-`;
+  border-radius: 5px;`;
 
 
