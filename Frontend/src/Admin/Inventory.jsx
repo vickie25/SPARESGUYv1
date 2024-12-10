@@ -40,7 +40,7 @@ const Inventory = () => {
             const { data: fetchedPart, isFetching, error } = useGetProductByIdQuery(partId, {
                 skip: !partId, // Only fetch when partId is provided
             });
-    
+
             if (!isFetching && fetchedPart) {
                 setCurrentPart(fetchedPart); // Set the fetched product data
                 setPreviewImage(fetchedPart.image || null); // Set the preview image
@@ -53,10 +53,10 @@ const Inventory = () => {
             setCurrentPart(null);
             setPreviewImage(null);
         }
-    
+
         setShowModal(true);
     };
-    
+
 
 
     const handleImageChange = (event) => {
@@ -85,7 +85,9 @@ const Inventory = () => {
             transmission: formData.get('transmission'),
             condition: formData.get('condition'),
             fuelType: formData.get('fuelType'),
+            category: formData.get('category'), // Add this line for category
         };
+
 
         try {
             if (currentPart) {
@@ -142,6 +144,7 @@ const Inventory = () => {
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>
+                                <th>Category</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Actions</th>
@@ -158,6 +161,7 @@ const Inventory = () => {
                                         )}
                                     </td>
                                     <td>{part.name}</td>
+                                    <td>{part.category}</td>
                                     <td>{part.quantity}</td>
                                     <td>${part.price.toFixed(2)}</td>
                                     <td>
@@ -192,139 +196,152 @@ const Inventory = () => {
                     {isLoading ? (
                         <p>Loading product details...</p>
                     ) : (
-                 
-                    <Form onSubmit={handleSave}>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Part Image</Form.Label>
-                            <Form.Control
-                                type="file"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                            />
-                            {previewImage && <ImagePreview src={previewImage} alt="Preview" />}
-                        </Form.Group>
+
+                        <Form onSubmit={handleSave}>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Part Image</Form.Label>
+                                <Form.Control
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                                {previewImage && <ImagePreview src={previewImage} alt="Preview" />}
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="name"
-                                defaultValue={currentPart ? currentPart.name : ''}
-                                required
-                                placeholder="Enter part name"
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="name"
+                                    defaultValue={currentPart ? currentPart.name : ''}
+                                    required
+                                    placeholder="Enter part name"
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Product Category</Form.Label>
+                                <Form.Control as="select" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Body Part">Body Part</option>
+                                    <option value="Engine">Engine</option>
+                                    <option value="Electrical Component">Electrical Component</option>
+                                    <option value="Suspension Part">Suspension Part</option>
+                                    <option value="Transmission Part">Transmission Part</option>
+                                </Form.Control>
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Description</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                name="description"
-                                placeholder="Enter product description"
-                                required
-                            />
-                        </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    name="description"
+                                    placeholder="Enter product description"
+                                    required
+                                />
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Additional Info</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="additionalInfo"
-                                placeholder="Enter additional product info"
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Additional Info</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="additionalInfo"
+                                    placeholder="Enter additional product info"
+                                />
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Make</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="make"
-                                placeholder="Enter make (e.g., Toyota)"
-                                required
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Make</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="make"
+                                    placeholder="Enter make (e.g., Toyota)"
+                                    required
+                                />
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Model</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="model"
-                                placeholder="Enter model (e.g., Corolla)"
-                                required
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Model</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="model"
+                                    placeholder="Enter model (e.g., Corolla)"
+                                    required
+                                />
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Year</Form.Label>
-                            <Form.Control
-                                type="number"
-                                name="year"
-                                min="1900"
-                                max={new Date().getFullYear()}
-                                placeholder="Enter year"
-                                required
-                            />
-                        </Form.Group>
-                        
-                        <Form.Group className="mb-3">
-                            <Form.Label>Transmission</Form.Label>
-                            <Form.Control as="select" name="transmission" required>
-                                <option value="Automatic">Automatic</option>
-                                <option value="Manual">Manual</option>
-                            </Form.Control>
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Year</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="year"
+                                    min="1900"
+                                    max={new Date().getFullYear()}
+                                    placeholder="Enter year"
+                                    required
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Transmission</Form.Label>
+                                <Form.Control as="select" name="transmission" required>
+                                    <option value="Automatic">Automatic</option>
+                                    <option value="Manual">Manual</option>
+                                </Form.Control>
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Condition</Form.Label>
-                            <Form.Control as="select" name="condition" required>
-                                <option value="New">New</option>
-                                <option value="Used">Used</option>
-                            </Form.Control>
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Condition</Form.Label>
+                                <Form.Control as="select" name="condition" required>
+                                    <option value="New">New</option>
+                                    <option value="Used">Used</option>
+                                </Form.Control>
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-3">
-                            <Form.Label>Fuel Type</Form.Label>
-                            <Form.Control as="select" name="fuelType" required>
-                                <option value="Petrol">Petrol</option>
-                                <option value="Diesel">Diesel</option>
-                            </Form.Control>
-                        </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Fuel Type</Form.Label>
+                                <Form.Control as="select" name="fuelType" required>
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Diesel">Diesel</option>
+                                </Form.Control>
+                            </Form.Group>
 
 
-                        <Form.Group className="mb-4">
-                            <Form.Label>Price ($)</Form.Label>
-                            <Form.Control
-                                type="number"
-                                name="price"
-                                step="0.01"
-                                required
-                                placeholder="Enter price"
-                            />
-                        </Form.Group>
+                            <Form.Group className="mb-4">
+                                <Form.Label>Price ($)</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    name="price"
+                                    step="0.01"
+                                    required
+                                    placeholder="Enter price"
+                                />
+                            </Form.Group>
 
 
-                        <div className="d-flex justify-content-end gap-2">
-                            <Button variant="secondary" onClick={handleClose}>
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                style={{ backgroundColor: '#DAA520', borderColor: '#DAA520' }}
-                            >
-                                {currentPart ? 'Update' : 'Add'} Part
-                            </Button>
-                        </div>
-                    </Form>
+                            <div className="d-flex justify-content-end gap-2">
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    style={{ backgroundColor: '#DAA520', borderColor: '#DAA520' }}
+                                >
+                                    {currentPart ? 'Update' : 'Add'} Part
+                                </Button>
+                            </div>
+                        </Form>
 
-                       )}
+                    )}
 
                 </Modal.Body>
             </StyledModal>

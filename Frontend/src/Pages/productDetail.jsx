@@ -6,7 +6,6 @@ import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
-//import { useCart } from '../context/CartContext.jsx';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
@@ -15,13 +14,14 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams(); // Get the product ID from URL
   const navigate = useNavigate();
-//
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
+        console.log(`Fetching product details for ID: ${id}`);
         // Make sure your backend URL is correct
-        const response = await axios.get(`http://localhost:8000/api/products/${id}/`);
+        const response = await axios.get(`http://localhost:8000/api/products/${id}`);
+        console.log('Product details fetched:', response.data);
         setProduct(response.data);
         setError(null);
       } catch (error) {
@@ -137,8 +137,6 @@ const ProductDetail = () => {
               >
                 Add to Cart
               </button>
-
-
             </Col>
           </Row>
 
