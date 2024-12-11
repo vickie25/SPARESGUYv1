@@ -6,39 +6,50 @@ import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
+import { useCart } from '../context/CartContext'; // Import cart context
 
 const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('description');
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams(); // Get the product ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useCart(); // Use cart context
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         console.log(`Fetching product details for ID: ${id}`);
-        // Make sure your backend URL is correct
         const response = await axios.get(`http://localhost:8000/api/products/${id}`);
         console.log('Product details fetched:', response.data);
         setProduct(response.data);
         setError(null);
       } catch (error) {
         console.error('Error fetching product details:', error.response ? error.response.data : error.message);
-        setError('Product not found');
-        // Optionally redirect to a 404 page or product listing
-        // navigate('/shop');
+        setError('An error occurred while fetching product details.');
       }
     };
 
     if (id) {
       fetchProductDetails();
     }
-  }, [id, navigate]);
+  }, [id]);
 
   const handleQuantityChange = (change) => {
     setQuantity(prev => Math.max(1, prev + change));
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: quantity
+      });
+    }
   };
 
   if (error) {
@@ -96,7 +107,7 @@ const ProductDetail = () => {
             <Col md={6}>
               <h1>{product.name}</h1>
               <p className="text-muted">{product.description}</p>
-              <p className="price"><strong>Ksh{product.price}</strong></p>
+              <p className="price"><strong>Ksh {product.price}</strong></p>
               <p>
                 <span className="badge bg-success">In Stock</span>
               </p>
@@ -124,16 +135,7 @@ const ProductDetail = () => {
 
               <button
                 className="btn btn-dark"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addToCart({
-                    _id: product._id, // Use product ID
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity // Pass the selected quantity
-                  });
-                }}
+                onClick={handleAddToCart}
               >
                 Add to Cart
               </button>
@@ -158,9 +160,6 @@ const ProductDetail = () => {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-          {activeTab === 'description' && (
-            <p className="text-muted">{product.description}</p>
-          )}
 
           <div className="tab-content mt-3">
             {activeTab === 'description' && (
@@ -170,7 +169,7 @@ const ProductDetail = () => {
             )}
             {activeTab === 'reviews' && (
               <div className="tab-pane active">
-                <Reviews productId={product.id} />
+                <Reviews productId={product._id} />
               </div>
             )}
           </div>
