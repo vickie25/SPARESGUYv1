@@ -526,20 +526,20 @@ main {
   }
 
   .benefit {
-    padding: 15px; /* Further reduce padding on mobile */
-    min-width: 150px; /* Allow even smaller width for better fit */
-    max-width: 100%; /* Take full width for mobile */
+    padding: 15px;
+    min-width: 150px;
+    max-width: 100%;
   }
 
   .benefit svg {
-    font-size: 28px; /* Reduce icon size for mobile */
+    font-size: 28px;
   }
 }
 
 /* header.css */
 
 header {
-  background: linear-gradient(to bottom, #e6e6e6, #f0f0f0);
+  /* background: linear-gradient(to bottom, #e6e6e6, #f0f0f0); */
   padding: 2rem;
   position: fixed;
   top: 0;
