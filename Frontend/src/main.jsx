@@ -33,6 +33,8 @@ import Categories from './Admin/Categories.jsx';
 import Reports from './Admin/Reports.jsx';
 import Logout from './Admin/Logout.jsx';
 import Notification from './Admin/Header/Notification.jsx';
+
+
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
     <Route index element={<Homepage />} />
@@ -60,7 +62,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="admin/reports" element={<Reports />} />
     <Route path="admin/header/notification" element={<Notification />} />
     <Route path="logout" element={<Logout />} />
-   
+
 
   </Route>
 ));
