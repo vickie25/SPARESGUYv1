@@ -113,21 +113,21 @@ const Banner = () => {
               </div>
 
               <div style={featuresStyle}>
-                <motion.div 
+                <motion.div
                   style={featureItemStyle}
                   whileHover={{ scale: 1.05 }}
                 >
                   <i className="fas fa-truck" style={{ fontSize: '24px', color: '#DAA520' }}></i>
                   <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Free Shipping</p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   style={featureItemStyle}
                   whileHover={{ scale: 1.05 }}
                 >
                   <i className="fas fa-shield-alt" style={{ fontSize: '24px', color: '#DAA520' }}></i>
                   <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Warranty</p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   style={featureItemStyle}
                   whileHover={{ scale: 1.05 }}
                 >
