@@ -85,9 +85,7 @@ const Inventory = () => {
             transmission: formData.get('transmission'),
             condition: formData.get('condition'),
             fuelType: formData.get('fuelType'),
-            category: formData.get('category'), // Add this line for category
         };
-
 
         try {
             if (currentPart) {
@@ -144,7 +142,6 @@ const Inventory = () => {
                             <tr>
                                 <th>Image</th>
                                 <th>Name</th>
-                                <th>Category</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Actions</th>
@@ -161,7 +158,6 @@ const Inventory = () => {
                                         )}
                                     </td>
                                     <td>{part.name}</td>
-                                    <td>{part.category}</td>
                                     <td>{part.quantity}</td>
                                     <td>${part.price.toFixed(2)}</td>
                                     <td>
@@ -219,19 +215,6 @@ const Inventory = () => {
                                     placeholder="Enter part name"
                                 />
                             </Form.Group>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label>Product Category</Form.Label>
-                                <Form.Control as="select" name="category" required>
-                                    <option value="">Select Category</option>
-                                    <option value="Body Part">Body Part</option>
-                                    <option value="Engine">Engine</option>
-                                    <option value="Electrical Component">Electrical Component</option>
-                                    <option value="Suspension Part">Suspension Part</option>
-                                    <option value="Transmission Part">Transmission Part</option>
-                                </Form.Control>
-                            </Form.Group>
-
 
 
                             <Form.Group className="mb-3">
