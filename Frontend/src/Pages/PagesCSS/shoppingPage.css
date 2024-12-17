@@ -231,15 +231,15 @@ main {
   position: absolute;
   top: 100%;
   right: 0;
-  background-color: #fff;
+  background-color: white;
+  color: black;
+  z-index: 1050;
+  width: 300px;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  z-index: 100;
   padding: 10px;
-  border-radius: 5px;
-  height: 80vh;
-  overflow-y: auto;
+  filter: none !important;
+  pointer-events: auto;
 }
 
 /* Cart Item Styles */
@@ -309,14 +309,13 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.3); /* Black with 50% opacity */
+  /* background-color: rgba(0, 0, 0, 0.3); Black with 50% opacity */
   z-index: 99; /* Ensure it is below the cart dropdown */
   pointer-events: auto; /* Prevent interaction with the mask */
 }
 
 /* Ensure the cart dropdown is not blurred */
-.cart-icon-container,
-.cart-dropdown {
+.cart-icon-container {
   filter: none !important;
   pointer-events: auto;
 }
