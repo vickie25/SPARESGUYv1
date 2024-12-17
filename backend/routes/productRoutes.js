@@ -1,17 +1,8 @@
 import express from "express";
 import productController from "../Controllers/productController.js";
 import authMiddleware from "../Middleware/AuthMiddleware.js";
-
 import requireAdmin from "../Middleware/roleMiddleware.js";
-
-
-import roleMiddleware from "../Middleware/roleMiddleware.js";
-
 import mongoose from 'mongoose'; // Import mongoose for ObjectId validation
-
-
-
-
 
 const router = express.Router();
 
@@ -24,13 +15,13 @@ const validateObjectId = (req, res, next) => {
 };
 
 // Create a new product
-router.post('/', authMiddleware,  productController.createProduct);
+router.post('/', authMiddleware, productController.createProduct);
 
 // Get all products
 router.get('/', productController.getAllProducts);
 
 // Get a single product by ID with ObjectId validation
-router.get('/:id', authMiddleware, validateObjectId, productController.getProductById);
+router.get('/:id', validateObjectId, productController.getProductById); // Removed authMiddleware
 
 // Update a product by ID with ObjectId validation
 router.put('/:id', authMiddleware, requireAdmin, validateObjectId, productController.updateProduct);
