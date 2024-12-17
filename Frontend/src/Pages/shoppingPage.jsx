@@ -157,7 +157,6 @@ const ShoppingPage = () => {
   return (
     <div className="page-wrap">
       <header>
-
         <Header />
       </header>
       {isDropdownVisible && <div className="mask"></div>}
