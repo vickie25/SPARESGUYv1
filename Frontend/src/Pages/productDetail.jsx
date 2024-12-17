@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Nav } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../Pages/PagesCSS/ProductDetail.css';
+//import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews.jsx';
