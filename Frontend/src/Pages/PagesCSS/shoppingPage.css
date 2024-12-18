@@ -179,31 +179,25 @@ main {
    margin-top: 5px;
    border-radius: 4px;
 }
-  
-
-.add-to-cart-button:hover {
+  .add-to-cart-button:hover {
   background-color: #000;
 }
-
 /* Base styles */
 .page-wrap {
   position: relative;
-  overflow: hidden; /* Prevents content from scrolling when the overlay is active */
+  overflow: hidden;
 }
-
-/* Overlay that appears when cart dropdown is open */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(100, 100, 100, 0.2); /* Semi-transparent background */
-  z-index: 90; /* Make sure it appears above the content but below the cart */
-  backdrop-filter: blur(1px); /* Apply the blur effect */
+  background-color: rgba(100, 100, 100, 0.2); 
+  z-index: 90;
+  backdrop-filter: blur(1px); 
   pointer-events: none; /* Disable interactions with the overlay */
 }
-
 /* Cart Icon and Count */
 .cart-icon-container {
   position: relative;
