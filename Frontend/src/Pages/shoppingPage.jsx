@@ -186,52 +186,6 @@ const ShoppingPage = () => {
 
       <main className={isDropdownVisible ? 'blur' : ''}>
         <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-          <div className="categories-container">
-            <h3>Product Categories</h3>
-            <ul>
-              {['Body Parts', 'Engine Parts', 'Electrical Components', 'Suspension Parts', 'Transmission Parts'].map((category) => (
-                <li key={category} onClick={() => toggleCategory(category)}>
-                  {checkedCategories.includes(category) ? <IoCheckboxOutline /> : <IoSquareOutline />} {category}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="categories-container">
-            <h3>Filter by brand</h3>
-            <ul>
-              {['Nissan', 'Subaru', 'Hyundai', 'Toyota', 'Vovlo', 'Mercedes-Benz'].map((brand) => (
-                <li key={brand} onClick={() => toggleCategory(brand)}>
-                  {checkedCategories.includes(brand) ? <IoCheckboxOutline /> : <IoSquareOutline />} {brand}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="categories-container">
-            <h3>Filter by price range</h3>
-            <Slider
-              range
-              min={0}
-              max={100000}
-              defaultValue={[0, 100000]}
-              value={priceRange}
-              onChange={handlePriceChange}
-              trackStyle={{ backgroundColor: 'black' }}
-              handleStyle={{ borderColor: 'black', backgroundColor: 'black' }}
-              railStyle={{ backgroundColor: '#ccc' }}
-            />
-            <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
-          </div>
-          <div className="categories-container">
-            <h3>Filter by condition</h3>
-            <ul>
-              {['New', 'Used', 'Refurbished'].map((condition) => (
-                <li key={condition} onClick={() => toggleCategory(condition)}>
-                  {checkedCategories.includes(condition) ? <IoCheckboxOutline /> : <IoSquareOutline />} {condition}
-                </li>
-              ))}
-            </ul>
 
           </div>
         </aside>
