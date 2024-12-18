@@ -117,43 +117,37 @@ main {
   overflow-y: auto;
 }
 
+/* Add a margin between the grid-section and the sidebar */
 .grid-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  gap: 10px;
-  min-height: 500px; /* Ensure the section has a minimum height */
-  position: relative; /* Make sure the pagination sticks within this section */
-  padding-bottom: 100px; /* Adds space so pagination doesn't overlap content */
+  margin-right: 40rem; /* Adjust the value as needed */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adds spacing between grid items */
 }
 
+/* Adjust grid-item height to a semi-medium size */
 .grid-item {
-  background-color: #fff;
-  color: #000;
-  padding: 20px;
-  text-align: center;
-  margin: 20px 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  min-height: 400px;
+  width: 250px; /* Adjust the width for uniformity */
+  height: 350px; /* Semi-medium size */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures content fits well */
+  border: 1px solid #ddd; /* Optional: adds a subtle border */
+  padding: 10px; /* Adds padding for spacing inside the box */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  border-radius: 5px; /* Optional rounded corners */
 }
 
 .product-image-container {
-  width: 100%;
-  height: 300px;
+  flex-grow: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  border-radius: 5px;
-  margin-bottom: 30px;
-  background-color: #f0f0f0;
+  justify-content: center;
 }
-
 .product-image {
   max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  max-height: 200px; /* Ensures image does not overflow */
+  object-fit: contain; /* Keeps image proportions */
 }
 
 .image-placeholder {
@@ -173,13 +167,16 @@ main {
 }
 
 .add-to-cart-button {
-  background-color: #333231;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+   background-color: #333231;
+   cursor: pointer;
+   color: #fff;
+   border: none;
+   padding: 8px 12px;
+   text-align: center;
+   margin-top: 5px;
+   border-radius: 4px;
 }
+  
 
 .add-to-cart-button:hover {
   background-color: #000;
