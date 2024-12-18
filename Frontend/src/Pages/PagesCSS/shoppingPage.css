@@ -118,8 +118,9 @@ main {
 }
 
 /* Add a margin between the grid-section and the sidebar */
+
 .grid-section {
-  margin-right: 40rem; /* Adjust the value as needed */
+  margin-left: 270px; /* Adjust the value to create space for the sidebar */
   display: flex;
   flex-wrap: wrap;
   gap: 20px; /* Adds spacing between grid items */
@@ -142,8 +143,10 @@ main {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end; /* Aligns the image to the right */
 }
+
+
 .product-image {
   max-width: 100%;
   max-height: 200px; /* Ensures image does not overflow */
@@ -440,19 +443,15 @@ main {
     color: #000;
   }
 
-  .sidebar {
-    display: none;
-    flex-direction: column;
-    background-color: #f4f4f4;
-    color: #000;
+  .sidebar { 
+    position: absolute; /* Make the sidebar position absolute */
+    left: 10px;
+    top: 0; 
     width: 250px;
+    height: 90%;
+    background-color: #f4f4f4; 
     padding: 20px;
-    position: absolute;
-    left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-  }
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
 
   .sidebar.open {
     display: flex;
@@ -605,4 +604,5 @@ header {
   .nav-list li {
     margin: 0.5rem 0;
   }
+}
 }
