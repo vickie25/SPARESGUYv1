@@ -30,15 +30,53 @@ const ShoppingPage = () => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
+  const [checkedBrands, setCheckedBrands] = useState([]);
+  const [checkedConditions, setCheckedConditions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 100000]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const productsPerPage = 9;
-  const itemsPerPage = 9;
-  const [isFilterApplied, setIsFilterApplied] = useState(false);
+
+  const toggleCategory = (item) => {
+    setCheckedCategories((prevState) =>
+      prevState.includes(item)
+        ? prevState.filter((category) => category !== item)
+        : [...prevState, item]
+    );
+  };
+
+  const toggleBrand = (item) => {
+    setCheckedBrands((prevState) =>
+      prevState.includes(item)
+        ? prevState.filter((brand) => brand !== item)
+        : [...prevState, item]
+    );
+  };
+
+  const toggleCondition = (item) => {
+    setCheckedConditions((prevState) =>
+      prevState.includes(item)
+        ? prevState.filter((condition) => condition !== item)
+        : [...prevState, item]
+    );
+  };
+
+  const handlePriceChange = (range) => {
+    setPriceRange(range);
+  };
+
+  const filterProducts = () => {
+    const filtered = products.filter((product) => {
+      const isCategoryMatch = checkedCategories.length === 0 || checkedCategories.includes(product.category);
+      const isBrandMatch = checkedBrands.length === 0 || checkedBrands.includes(product.brand);
+      const isConditionMatch = checkedConditions.length === 0 || checkedConditions.includes(product.condition);
+      const isPriceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
+
+      return isCategoryMatch && isBrandMatch && isConditionMatch && isPriceMatch;
+    });
+    setFilteredProducts(filtered);
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,98 +91,19 @@ const ShoppingPage = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    filterProducts();
+  }, [checkedCategories, checkedBrands, checkedConditions, priceRange, products]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
-
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    product.price >= priceRange[0] && product.price <= priceRange[1]
-  );
-
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-
-  const toggleCategory = async (condition) => {
-    const newCheckedCategories = checkedCategories.includes(condition)
-      ? checkedCategories.filter((cat) => cat !== condition)
-      : [...checkedCategories, condition];
-
-    setCheckedCategories(newCheckedCategories);
-
-    if (newCheckedCategories.includes(condition)) {
-      const response = await axios.get('/api/items', { params: { condition } });
-      setFilteredItems(response.data);
-    } else {
-      setFilteredItems([]);
-    }
-  };
-
-  const handlePriceChange = (range) => {
-    setPriceRange(range);
-  };
-
-  const calculateSubtotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const startIndex = indexOfFirstProduct + 1;
-  const endIndex = Math.min(indexOfLastProduct, filteredProducts.length);
-
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const isInWishlist = (itemId) => {
-    return wishlist.some(item => item.productId === itemId);
-  };
-
-
-  useEffect(() => {
-    if (cart.length > 0) {
-      const updateCartInDatabase = async () => {
-        const productData = {
-          products: cart.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity,
-          })),
-          totalAmount: calculateSubtotal(),
-          paymentMethod: 'Credit/Debit',
-        };
-
-        console.log('Preparing to send the following product data:', productData);
-
-        try {
-          const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          console.log('Cart updated and saved to database successfully!', response.data);
-        } catch (error) {
-          if (error.response) {
-            console.error('Error updating cart in database', error.response.data);
-            console.error('Status:', error.response.status);
-            console.error('Headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('No response received:', error.request);
-          } else {
-            console.error('Error setting up request:', error.message);
-          }
-        }
-      };
-
-      updateCartInDatabase();
-    }
-  }, [cart, calculateSubtotal]);
-
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const handlePageChange = (page) => {
     if (page > 0 && page <= totalPages) {
@@ -152,133 +111,121 @@ const ShoppingPage = () => {
     }
   };
 
-
+  const isInWishlist = (itemId) => wishlist.some(item => item.productId === itemId);
 
   return (
     <div className="page-wrap">
       <header>
         <Header />
       </header>
-      {isDropdownVisible && <div className="mask"></div>}
       <div className='page-filter-showing'>
         <div className='page-location'>
           <h2>{location.pathname}</h2>
-          {!isFilterApplied && searchQuery === '' && <p>All products</p>}
+          {!searchQuery && <p>All products</p>}
         </div>
         <div className='filter-showing'>
-
-
           <div className="showing-info">
-            {/* Filter text with an icon */}
             <div className="showing-ico" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <IoFilterOutline />  Filter
+              <IoFilterOutline /> Filter
             </div>
-
-            {/* Vertical line */}
             <span className="vertical-line"></span>
-
-            {/* Showing text */}
-            <p>Showing {startIndex} -- {endIndex} of {filteredProducts.length}</p>
-
+            <p>Showing {indexOfFirstProduct + 1} -- {Math.min(indexOfLastProduct, filteredProducts.length)} of {filteredProducts.length}</p>
           </div>
         </div>
       </div>
 
-      <main className={isDropdownVisible ? 'blur' : ''}>
-        <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-
-          </div>
-        </aside>
-
+      <main>
         <section className="grid-section">
-          <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
-            Filter< IoFilterOutline />
+          <div style={{ fontSize: '24px' }} className="filter-icon">
+            Filter <IoFilterOutline />
+          </div>
+
+          {/* Sidebar Filters (always visible) */}
+          <div className="sidebar-filters">
+            <div className="filter-category">
+              <h3>Categories</h3>
+              <ul>
+                {['Electronics', 'Furniture', 'Clothing'].map((category, index) => (
+                  <li key={index} onClick={() => toggleCategory(category)}>
+                    <input type="checkbox" checked={checkedCategories.includes(category)} />
+                    {category}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="filter-brand">
+              <h3>Brands</h3>
+              <ul>
+                {['Brand A', 'Brand B', 'Brand C'].map((brand, index) => (
+                  <li key={index} onClick={() => toggleBrand(brand)}>
+                    <input type="checkbox" checked={checkedBrands.includes(brand)} />
+                    {brand}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="filter-condition">
+              <h3>Condition</h3>
+              
+                {['New', 'Used', 'Refurbished'].map((condition, index) => (
+                  <li key={index} onClick={() => toggleCondition(condition)}>
+                    <input type="checkbox" checked={checkedConditions.includes(condition)} />
+                    {condition}
+                  </li>
+                ))}
+             
+            </div>
+            <div className="filter-price">
+              <h3>Price Range</h3>
+              <Slider
+                range
+                min={0}
+                max={100000}
+                value={priceRange}
+                onChange={handlePriceChange}
+                marks={{
+                  0: '0',
+                  25000: '25K',
+                  50000: '50K',
+                  75000: '75K',
+                  100000: '100K',
+                }}
+              />
+              <p>Price: Ksh {priceRange[0]} - Ksh {priceRange[1]}</p>
+            </div>
           </div>
 
           {currentProducts.map((item, index) => (
-            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
+            <div key={index} className="grid-item">
               {isInWishlist(item._id) ? (
                 <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
               ) : (
                 <MdFavoriteBorder onClick={() => addToWishlist(item)} />
               )}
               <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <div className="product-image-container">
-  {item.image ? (
-    <img
-      src={`http://localhost:8000${item.image}`}
-      alt={item.name}
-      className="product-image"
-    />
-  ) : (
-    <span className="image-placeholder">Image not available</span>
-  )}
-</div>
-
+                <div className="product-image-container">
+                  {item.image ? <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" /> : <span className="image-placeholder">Image not available</span>}
+                </div>
                 <p className="product-name">{item.name}</p>
                 <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
               </Link>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
-                Add to Cart
-              </button>
+              <button className="add-to-cart-button" onClick={() => addToCart({ ...item, quantity: 1 })}>Add to Cart</button>
             </div>
           ))}
 
-          {filteredProducts.length === 0 && searchQuery && (
-            <div className="no-results">
-              <p>No products found matching "{searchQuery}"</p>
-            </div>
+          {filteredProducts.length === 0 && (
+            <p>No products match your search criteria.</p>
           )}
-          <div className="grid-pagination">
-            <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
-              {currentPage > 1 && <IoIosArrowRoundBack />}
-            </div>
+        </section>
 
-            {[...Array(totalPages)].map((_, pageIndex) => (
-              <div
-                key={pageIndex + 1}
-                className={`grid-number ${currentPage === pageIndex + 1 ? "active" : ""}`}
-                onClick={() => handlePageChange(pageIndex + 1)}
-              >
-                {pageIndex === 0 && <PiNumberSquareOneLight />}
-                {pageIndex === 1 && <PiNumberSquareTwoLight />}
-                {pageIndex === 2 && <PiNumberSquareThreeLight />}
-              </div>
-            ))}
-
-            <div className="pagination-arrows" onClick={() => handlePageChange(currentPage + 1)}>
-              {currentPage < totalPages && <IoIosArrowRoundForward />}
-            </div>
-          </div>
+        <section className="pagination-section">
+          <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}><IoIosArrowRoundBack /></button>
+          <span>{currentPage} of {totalPages}</span>
+          <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}><IoIosArrowRoundForward /></button>
         </section>
       </main>
-
-      <div className="benefits">
-        <div className='benefit'>
-          <HiOutlineTrophy /><div className="text"><h3>High Quality</h3>
-            <p>Crafted from top materials</p></div>
-        </div>
-        <div className='benefit'>
-          <HiOutlineCheckBadge /><div className="text"><h3>Warranty Protection</h3>
-            <p>Over 2 years</p></div></div>
-        <div className='benefit'>
-          <RiHandCoinFill />
-          <div className="text"><h3>Free Shipping</h3>
-            <p>Order over 150</p>
-          </div>
-        </div>
-        <div className='benefit'>
-          <BiSupport /><div className="text"><h3>24 / 7 Support</h3>
-            <p>Dedicated support</p></div>
-        </div>
-      </div>
-
-
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </div>
-
   );
 };
 
