@@ -45,5 +45,4 @@ export const {
     useGetProductsQuery,
     useGetProductByIdQuery,
     useUpdateProductMutation,
-    useDeleteProductMutation} = 
-    ProductsApiSlice;
+    useDeleteProductMutation} = ProductsApiSlice;

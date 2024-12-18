@@ -3,52 +3,7 @@ import { Container, Row, Col, Table, Button, Badge, Modal, Form } from 'react-bo
 import { FaClipboardList, FaSearch, FaEdit, FaTrashAlt, FaPlus, FaRegImage } from 'react-icons/fa';
 import styled from 'styled-components';
 
-// Styled Components
-const PageTitle = styled.h2`
-  color: #DAA520;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  text-align: center;
-`;
 
-const OrderTable = styled(Table)`
-  background-color: #FFFFFF;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  .table th, .table td {
-    vertical-align: middle;
-  }
-`;
-
-const OrderBadge = styled(Badge)`
-  &.badge-success {
-    background-color: #28a745;
-  }
-  &.badge-warning {
-    background-color: #ffc107;
-  }
-  &.badge-danger {
-    background-color: #dc3545;
-  }
-`;
-
-const ActionButton = styled(Button)`
-  background-color: #DAA520;
-  border: none;
-  color: #FFFFFF;
-  &:hover {
-    background-color: #c7911f;
-    color: #FFFFFF;
-  }
-  margin-right: 8px;
-`;
-
-const OrderImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin-right: 10px;
-`;
 
 const OrderItem = ({ order, onEdit, onDelete }) => {
   return (
@@ -235,3 +190,51 @@ const OrderPage = () => {
 };
 
 export default OrderPage;
+
+
+// Styled Components
+const PageTitle = styled.h2`
+  color: #DAA520;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+`;
+
+const OrderTable = styled(Table)`
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  .table th, .table td {
+    vertical-align: middle;
+  }
+`;
+
+const OrderBadge = styled(Badge)`
+  &.badge-success {
+    background-color: #28a745;
+  }
+  &.badge-warning {
+    background-color: #ffc107;
+  }
+  &.badge-danger {
+    background-color: #dc3545;
+  }
+`;
+
+const ActionButton = styled(Button)`
+  background-color: #DAA520;
+  border: none;
+  color: #FFFFFF;
+  &:hover {
+    background-color: #c7911f;
+    color: #FFFFFF;
+  }
+  margin-right: 8px;
+`;
+
+const OrderImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+`;
