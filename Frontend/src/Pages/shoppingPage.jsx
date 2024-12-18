@@ -249,13 +249,18 @@ const ShoppingPage = () => {
                 <MdFavoriteBorder onClick={() => addToWishlist(item)} />
               )}
               <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="product-image-container">
-                  {item.image ? (
-                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
-                  ) : (
-                    <span className="image-placeholder">Image not available</span>
-                  )}
-                </div>
+              <div className="product-image-container">
+  {item.image ? (
+    <img
+      src={`http://localhost:8000${item.image}`}
+      alt={item.name}
+      className="product-image"
+    />
+  ) : (
+    <span className="image-placeholder">Image not available</span>
+  )}
+</div>
+
                 <p className="product-name">{item.name}</p>
                 <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
               </Link>
