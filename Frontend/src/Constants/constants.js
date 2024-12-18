@@ -6,8 +6,7 @@ export const TRANSACTION_URL = '/api/transactions'
 export const PAYPAL_URL = '/api/config/paypal'
 export const ONLINE_URL = '/api/online'
 export const ORDERS_URL = '/api/orders'
-<<<<<<< HEAD
 export const PROFILE_URL = '/api/profile'
-=======
-export const PROFILE_URL = '/api/orders'
->>>>>>> c176924ab86c1af3a57a17ecbee3eca179363e86
+
+
+
