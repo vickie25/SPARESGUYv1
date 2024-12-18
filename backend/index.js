@@ -6,12 +6,8 @@ import bodyParser from 'body-parser';
 import productRoutes from './routes/productRoutes.js';
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
-
-
 import AuthMiddleware from './Middleware/AuthMiddleware.js';
-
 import authMiddleware from './Middleware/AuthMiddleware.js';
-
 import cartRoutes from './routes/cartRoutes.js';
 import ReviewRoutes from './routes/ReviewRoutes.js';
 import OrderRoutes from './routes/OrderRoutes.js';
@@ -20,7 +16,6 @@ import contactRoutes from './routes/contactRoutes.js';
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import NotificationRoutes from './routes/NotificationRoutes.js';
-
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -81,8 +76,6 @@ app.use('/api/categories', CategoryRoutes);
 app.get('/profile', AuthMiddleware, (req, res) => {
     res.json({ message: `Welcome, ${req.user.userId}!` });
 });
-
-
 
 // Notification routes
 app.use('/api/notifications', NotificationRoutes);
