@@ -15,6 +15,11 @@ const productSchema = new mongoose.Schema({
   // transmission: { type: String, enum: ['Manual', 'Automatic'], required: true },
   condition: { type: String, enum: ['New', 'Used'], required: true },
   // fuelType: { type: String, enum: ['Diesel', 'Petrol'], required: true },
+  category: {
+    type: String,
+    enum: ['Body Part', 'Engine Part', 'Electrical Components', 'Suspension Parts', 'Transmission Parts'],
+    required: true
+  },
 
   // Additional fields for product classification and discount
   // isLatest: { type: Boolean, default: false },
