@@ -6,12 +6,13 @@ import {
     updateOrder,
     deleteOrder
 } from '../Controllers/OrderController.js';
-import AuthMiddleware from '../Middleware/AuthMiddleware.js';
+
+// import AuthMiddleware from '../Middleware/AuthMiddleware.js';
 
 const router = express.Router();
 
 // Create a new order
-router.post('/', AuthMiddleware, createOrder);
+router.post('/',  createOrder);
 
 // Get all orders
 router.get('/', getAllOrders);
