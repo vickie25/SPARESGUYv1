@@ -1,4 +1,3 @@
-// s// src/components/Inventory.js
 import React, { useState } from 'react';
 import { Table, Button, Modal, Form, Container, Card, Row, Col } from 'react-bootstrap';
 import { FaPlus, FaEdit, FaTrash, FaImage } from 'react-icons/fa';
@@ -9,23 +8,16 @@ import {
     useGetProductByIdQuery,
     useUpdateProductMutation,
     useDeleteProductMutation
-} from '../slices/productApiSlice'
-
+} from '../slices/productApiSlice';
 
 const Inventory = () => {
-
-
-    const { data: parts, isLoading } = useGetProductsQuery()
-    console.log("parts", parts)
-    const [createProduct] = useCreateProductMutation()
-    const [updateProduct] = useUpdateProductMutation()
+    const { data: parts, isLoading } = useGetProductsQuery();
+    const [createProduct] = useCreateProductMutation();
+    const [updateProduct] = useUpdateProductMutation();
     const [deleteProduct] = useDeleteProductMutation();
-
-
     const [showModal, setShowModal] = useState(false);
     const [currentPart, setCurrentPart] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
-
 
     const handleClose = () => {
         setShowModal(false);
@@ -33,31 +25,26 @@ const Inventory = () => {
         setPreviewImage(null);
     };
 
-
     const handleShow = (partId) => {
         if (partId) {
-            // Fetch product details by ID
             const { data: fetchedPart, isFetching, error } = useGetProductByIdQuery(partId, {
-                skip: !partId, // Only fetch when partId is provided
+                skip: !partId,
             });
 
             if (!isFetching && fetchedPart) {
-                setCurrentPart(fetchedPart); // Set the fetched product data
-                setPreviewImage(fetchedPart.image || null); // Set the preview image
+                setCurrentPart(fetchedPart);
+                setPreviewImage(fetchedPart.image || null);
             } else if (error) {
                 console.error("Error fetching product by ID:", error);
                 alert(`Failed to fetch product: ${error?.data?.error || "Unknown error"}`);
             }
         } else {
-            // For creating a new product
             setCurrentPart(null);
             setPreviewImage(null);
         }
 
         setShowModal(true);
     };
-
-
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -69,13 +56,13 @@ const Inventory = () => {
             reader.readAsDataURL(file);
         }
     };
+
     const handleSave = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
-
         const newProduct = {
             name: formData.get('name'),
-            image: 'https://example.com/images/toyota-corolla-engine.jpg', // Assume `previewImage` contains the image URL
+            image: 'https://example.com/images/toyota-corolla-engine.jpg',
             price: Number(formData.get('price')),
             description: formData.get('description'),
             additionalInfo: formData.get('additionalInfo') || '',
@@ -85,25 +72,23 @@ const Inventory = () => {
             transmission: formData.get('transmission'),
             condition: formData.get('condition'),
             fuelType: formData.get('fuelType'),
+            category: formData.get('category'),
         };
 
         try {
             if (currentPart) {
-                // Update existing product
                 await updateProduct({ ...newProduct, id: currentPart.id }).unwrap();
                 alert('Product successfully updated!');
             } else {
-                // Create new product
                 await createProduct(newProduct).unwrap();
                 alert('Product successfully created!');
             }
-            handleClose(); // Close the modal/form
+            handleClose();
         } catch (error) {
             console.error('Error saving product:', error);
             alert(`Failed to save product: ${error?.data?.error || 'Unknown error'}`);
         }
     };
-
 
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
@@ -117,6 +102,7 @@ const Inventory = () => {
         }
     };
 
+    console.log(parts); // Add this line to inspect the parts data
 
     return (
         <StyledContainer fluid>
@@ -136,7 +122,6 @@ const Inventory = () => {
                         </Col>
                     </Row>
 
-
                     <StyledTable responsive hover>
                         <thead>
                             <tr>
@@ -144,12 +129,13 @@ const Inventory = () => {
                                 <th>Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Category</th> {/* Ensure Category Column is Included */}
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {parts?.map(part => (
-                                <tr key={part.id}>
+                                <tr key={part.id}> {/* Add key prop */}
                                     <td>
                                         {part.image ? (
                                             <ImagePreview src={part.image} alt={part.name} />
@@ -160,6 +146,7 @@ const Inventory = () => {
                                     <td>{part.name}</td>
                                     <td>{part.quantity}</td>
                                     <td>${part.price.toFixed(2)}</td>
+                                    <td>{part.category || 'N/A'}</td>
                                     <td>
                                         <ActionButton
                                             variant="warning"
@@ -183,7 +170,6 @@ const Inventory = () => {
                 </Card.Body>
             </StyledCard>
 
-
             <StyledModal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{currentPart ? 'Edit Part' : 'Add New Part'}</Modal.Title>
@@ -192,7 +178,6 @@ const Inventory = () => {
                     {isLoading ? (
                         <p>Loading product details...</p>
                     ) : (
-
                         <Form onSubmit={handleSave}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Part Image</Form.Label>
@@ -203,7 +188,6 @@ const Inventory = () => {
                                 />
                                 {previewImage && <ImagePreview src={previewImage} alt="Preview" />}
                             </Form.Group>
-
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Name</Form.Label>
@@ -216,7 +200,6 @@ const Inventory = () => {
                                 />
                             </Form.Group>
 
-
                             <Form.Group className="mb-3">
                                 <Form.Label>Description</Form.Label>
                                 <Form.Control
@@ -227,7 +210,6 @@ const Inventory = () => {
                                 />
                             </Form.Group>
 
-
                             <Form.Group className="mb-3">
                                 <Form.Label>Additional Info</Form.Label>
                                 <Form.Control
@@ -236,7 +218,6 @@ const Inventory = () => {
                                     placeholder="Enter additional product info"
                                 />
                             </Form.Group>
-
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Make</Form.Label>
@@ -248,7 +229,6 @@ const Inventory = () => {
                                 />
                             </Form.Group>
 
-
                             <Form.Group className="mb-3">
                                 <Form.Label>Model</Form.Label>
                                 <Form.Control
@@ -258,7 +238,6 @@ const Inventory = () => {
                                     required
                                 />
                             </Form.Group>
-
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Year</Form.Label>
@@ -280,7 +259,6 @@ const Inventory = () => {
                                 </Form.Control>
                             </Form.Group>
 
-
                             <Form.Group className="mb-3">
                                 <Form.Label>Condition</Form.Label>
                                 <Form.Control as="select" name="condition" required>
@@ -288,7 +266,6 @@ const Inventory = () => {
                                     <option value="Used">Used</option>
                                 </Form.Control>
                             </Form.Group>
-
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Fuel Type</Form.Label>
@@ -298,6 +275,16 @@ const Inventory = () => {
                                 </Form.Control>
                             </Form.Group>
 
+                            <Form.Group className="mb-3">
+                                <Form.Label>Category</Form.Label>
+                                <Form.Control as="select" name="category" required>
+                                    <option value="Body Part">Body Part</option>
+                                    <option value="Engine Part">Engine Part</option>
+                                    <option value="Electrical Components">Electrical Components</option>
+                                    <option value="Suspension Parts">Suspension Parts</option>
+                                    <option value="Transmission Parts">Transmission Parts</option>
+                                </Form.Control>
+                            </Form.Group>
 
                             <Form.Group className="mb-4">
                                 <Form.Label>Price ($)</Form.Label>
@@ -309,7 +296,6 @@ const Inventory = () => {
                                     placeholder="Enter price"
                                 />
                             </Form.Group>
-
 
                             <div className="d-flex justify-content-end gap-2">
                                 <Button variant="secondary" onClick={handleClose}>
@@ -323,19 +309,14 @@ const Inventory = () => {
                                 </Button>
                             </div>
                         </Form>
-
                     )}
-
                 </Modal.Body>
             </StyledModal>
         </StyledContainer>
     );
 };
 
-
 export default Inventory;
-
-
 
 // Styled Components
 const StyledContainer = styled(Container)`
@@ -343,7 +324,6 @@ const StyledContainer = styled(Container)`
   background: #FFFFFF;
   min-height: 100vh;
 `;
-
 
 const StyledCard = styled(Card)`
   border: none;
@@ -353,14 +333,12 @@ const StyledCard = styled(Card)`
   background: #FFFFFF;
 `;
 
-
 const StyledHeader = styled.h2`
   color: #DAA520;
   font-weight: bold;
   margin-bottom: 1.5rem;
   font-size: 2.5rem;
 `;
-
 
 const StyledTable = styled(Table)`
   background: #FFFFFF;
@@ -372,18 +350,15 @@ const StyledTable = styled(Table)`
     border: none;
   }
 
-
   td {
     vertical-align: middle;
     color: #000000;
   }
 
-
   tbody tr:hover {
     background-color: rgba(218, 165, 32, 0.1);
   }
 `;
-
 
 const ActionButton = styled(Button)`
   margin: 0 0.3rem;
@@ -401,7 +376,6 @@ const ActionButton = styled(Button)`
   }
 `;
 
-
 const StyledModal = styled(Modal)`
   .modal-header {
     background-color: #DAA520;
@@ -409,22 +383,18 @@ const StyledModal = styled(Modal)`
     border-bottom: none;
   }
 
-
   .modal-title {
     font-weight: bold;
   }
-
 
   .modal-content {
     border-radius: 15px;
   }
 `;
 
-
 const ImagePreview = styled.img`
   max-width: 100px;
   height: auto;
   margin: 10px 0;
-  border-radius: 5px;`;
-
-
+  border-radius: 5px;
+`;

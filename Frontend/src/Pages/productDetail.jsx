@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Nav } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-//import '../Pages/PagesCSS/ProductDetail.css';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
-import Reviews from './Reviews.jsx';
 import { useCart } from '../context/CartContext'; // Import cart context
 
 const ProductDetail = () => {
@@ -75,6 +73,9 @@ const ProductDetail = () => {
       </>
     );
   }
+
+  console.log('Active Tab:', activeTab);
+  console.log('Product Description:', product.description);
 
   return (
     <>
@@ -163,7 +164,7 @@ const ProductDetail = () => {
 
           <div className="tab-content mt-3">
             {activeTab === 'description' && (
-              <div className="tab-pane">
+              <div className="tab-pane active">
                 <p>{product.description}</p>
               </div>
             )}
