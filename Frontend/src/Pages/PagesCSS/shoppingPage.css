@@ -437,49 +437,17 @@ main {
     color: #000;
   }
 
-  .sidebar { 
-    position: absolute; /* Make the sidebar position absolute */
-    left: 10px;
-    top: 0; 
-    width: 250px;
-    height: 90%;
-    background-color: #f4f4f4; 
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
-
-  .sidebar.open {
-    display: flex;
+  .sidebar{
+    float: left;
+    margin-right: 20px; 
+    width: 250px; 
+    padding: 10px; 
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   }
-
-  .cart-dropdown {
-    width: 300px;
-    height: 70vh;
-  }
-
-  .cart-item-image {
-    width: 40px;
-    height: 40px;
-    margin-right: 20px;
-  }
-
-  .cart-item-details {
-    padding: 15px;
-  }
-
-  .benefits {
-    justify-content: center; /* Center the items on tablets */
-  }
-
-  .benefit {
-    padding: 20px; /* Adjust padding for smaller screens */
-    min-width: 200px; /* Allow a smaller minimum width */
-    max-width: 300px; /* Keep a max width for alignment */
-  }
-
-  .benefit svg {
-    font-size: 30px; /* Reduce icon size for better fit */
-  }
-}
+  
 
 @media (max-width: 480px) {
   .cart-dropdown {
