@@ -80,10 +80,10 @@ app.get('/profile', AuthMiddleware, (req, res) => {
 // Notification routes
 app.use('/api/notifications', NotificationRoutes);
 
-// Protect the profile route (example for a protected route)
-app.get('/profile', authMiddleware, (req, res) => {
-    res.json({ message: `Welcome, ${req.user.userId}!` });
-});
+// // Protect the profile route (example for a protected route)
+// app.get('/profile', authMiddleware, (req, res) => {
+//     res.json({ message: `Welcome, ${req.user.userId}!` });
+// });
 
 // Protect the admin dashboard route (example for an admin route)
 app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {

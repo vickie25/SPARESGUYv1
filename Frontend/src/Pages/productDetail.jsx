@@ -4,7 +4,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
-import Reviews from './Reviews.jsx';
 import { useCart } from '../context/CartContext'; // Import cart context
 import './PagesCSS/productDetail.css'; // Import your CSS file
 
