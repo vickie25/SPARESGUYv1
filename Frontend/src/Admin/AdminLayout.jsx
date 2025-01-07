@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { 
-  FaChartBar, 
-  FaBox, 
-  FaUsers, 
-  FaShoppingCart, 
-  FaCog, 
+// import { FaChartBar } from 'react-icons/fa';
+import Dashboard from './AdminDashboard';
+import {
+  FaChartBar,
+  FaBox,
+  FaUsers,
+  FaShoppingCart,
+  FaCog,
   FaTags,
   FaClipboardList,
   FaComments,
@@ -18,6 +20,12 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
+
+
+const sections = [
+  { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard', content: <Dashboard /> },
+  // Add other sections here
+];
 
 
 const AdminLayout = () => {
@@ -44,7 +52,7 @@ const AdminLayout = () => {
 
   return (
     <>
-      <AdminHeader /> 
+      <AdminHeader />
       <Container fluid className="p-0">
         <Row className="g-0">
           <ToggleButton
@@ -87,7 +95,7 @@ const AdminLayout = () => {
                     { path: '/logout', icon: <FaSignOutAlt />, text: 'Logout' }
                   ].map((item, index) => (
                     <NavItemStyled key={index} collapsed={isCollapsed}>
-                      <Link 
+                      <Link
                         to={item.path}
                         className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
                       >
@@ -114,9 +122,9 @@ const AdminLayout = () => {
             </SidebarContainer>
           </AnimatePresence>
 
-          <MainContent 
+          <MainContent
             className={`ms-auto ${isMobile ? 'w-100' : ''}`}
-            style={{ 
+            style={{
               marginLeft: isMobile ? '0' : (isCollapsed ? '70px' : '250px'),
               padding: '2rem'
             }}
@@ -128,6 +136,7 @@ const AdminLayout = () => {
             >
               <Outlet />
             </motion.div>
+
           </MainContent>
         </Row>
       </Container>
