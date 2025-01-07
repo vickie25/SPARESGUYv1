@@ -64,8 +64,6 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="admin/reports" element={<Reports />} />
     <Route path="admin/header/notification" element={<Notification />} />
     <Route path="logout" element={<Logout />} />
-
-
   </Route>
 ));
 
