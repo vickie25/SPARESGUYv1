@@ -216,7 +216,13 @@ const UserProfile = () => {
               <div className="grid-container">
                 {getCurrentPageItems().map((item, index) => (
                   <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
-                    <CiSquareMinus onClick={() => handleRemoveFromWishlist(item.productId)} style={{ color: 'red' }} />
+                    <CiSquareMinus
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveFromWishlist(item.productId);
+                      }}
+                      style={{ color: 'red' }}
+                    />
                     <Link to={`/product/${item.productId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <div className="product-image-container">
                         {item.image ? (
@@ -234,7 +240,6 @@ const UserProfile = () => {
                     >
                       Add to Cart
                     </button>
-
                   </div>
                 ))}
               </div>
