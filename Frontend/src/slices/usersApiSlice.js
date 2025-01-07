@@ -19,12 +19,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: user,
             }),
         }),
+        
         getUserProfile: builder.query({
             query: () => ({
                 url: `${PROFILE_URL}`, // Ensure PROFILE_URL is correctly defined
                 method: 'GET',
             }),
         }),
+
         updateUserProfile: builder.mutation({
             query: (user) => ({
                 url: `${PROFILE_URL}`,
