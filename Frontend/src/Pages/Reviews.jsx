@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
+import description from './description.jsx';  
 import './PagesCSS/Reviews.css';
 
 const Reviews = () => {
