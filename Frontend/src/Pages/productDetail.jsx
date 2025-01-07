@@ -1,184 +1,107 @@
-import React, { useState, useEffect } from 'react';
-import { Row, Col, Nav } from 'react-bootstrap';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Row, Col, Button, Nav, Tab, Form } from 'react-bootstrap';
 import axios from 'axios';
-import Header from '../Homepage/Header.jsx';
-import Footer from '../Homepage/Footer.jsx';
-import { useCart } from '../context/CartContext'; // Import cart context
+import ProductTabs from './ProductTabs';
+import RelatedProducts from './RelatedProducts'; 
 
-const ProductDetail = () => {
-  const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState('description');
+const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { addToCart } = useCart(); // Use cart context
+  const [activeTab, setActiveTab] = useState('description');
 
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        console.log(`Fetching product details for ID: ${id}`);
-        const response = await axios.get(`http://localhost:8000/api/products/${id}`);
-        console.log('Product details fetched:', response.data);
-        setProduct(response.data);
-        setError(null);
-      } catch (error) {
-        console.error('Error fetching product details:', error.response ? error.response.data : error.message);
-        setError('An error occurred while fetching product details.');
-      }
-    };
-
-    if (id) {
-      fetchProductDetails();
-    }
-  }, [id]);
-
-  const handleQuantityChange = (change) => {
-    setQuantity(prev => Math.max(1, prev + change));
-  };
-
-  const handleAddToCart = () => {
-    if (product) {
-      addToCart({
-        _id: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-        quantity: quantity
-      });
+  // Handle quantity increment and decrement
+  const handleQuantityChange = (type) => {
+    if (type === 'increment') {
+      setQuantity((prev) => prev + 1);
+    } else if (type === 'decrement' && quantity > 1) {
+      setQuantity((prev) => prev - 1);
     }
   };
 
-  if (error) {
-    return (
-      <>
-        <Header />
-        <div className="container mt-4">
-          <div className="alert alert-danger">{error}</div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!product) {
-    return (
-      <>
-        <Header />
-        <div className="container mt-4">
-          <div className="text-center">Loading...</div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  console.log('Active Tab:', activeTab);
-  console.log('Product Description:', product.description);
+  const addToCart = () => {
+    // Add to cart logic (e.g., API call)
+    console.log('Product added to cart:', { product, quantity });
+  };
 
   return (
-    <>
-      <Header />
-      <main>
-        <div className="container mt-4">
-          <nav aria-label="breadcrumb">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
-              <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
-            </ol>
-          </nav>
+    <div className="product-details container mt-4">
+      {/* Breadcrumb */}
+      <div className="breadcrumb mb-3">
+        <a href="/">Home</a> / <a href="/products">Products</a> / {product.name}
+      </div>
 
-          <Row>
-            <Col md={6}>
-              <div className="product-image-container">
-                {product.image ? (
-                  <img
-                    src={`http://localhost:8000${product.image}`}
-                    alt={product.name}
-                    className="img-fluid"
-                    style={{ maxHeight: '400px', width: 'auto' }}
-                  />
-                ) : (
-                  <div className="image-placeholder">Image not available</div>
-                )}
-              </div>
-            </Col>
-            <Col md={6}>
-              <h1>{product.name}</h1>
-              <p className="text-muted">{product.description}</p>
-              <p className="price"><strong>Ksh {product.price}</strong></p>
-              <p>
-                <span className="badge bg-success">In Stock</span>
-              </p>
+      {/* Product Section */}
+      <Row>
+        {/* Product Image */}
+        <Col md={6}>
+          <img
+            src={`http://localhost:8000${product.image}`}
+            alt={product.name}
+            className="img-fluid rounded shadow"
+          />
+        </Col>
 
-              <div className="quantity-control d-flex align-items-center mb-3">
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => handleQuantityChange(-1)}
-                >
-                  -
-                </button>
-                <input
-                  type="text"
-                  className="form-control w-25 text-center mx-2"
-                  value={quantity}
-                  readOnly
-                />
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={() => handleQuantityChange(1)}
-                >
-                  +
-                </button>
-              </div>
+        <Col md={6}>
+          <h2 className="product-title">{product.name}</h2>
+          <p className="text-muted">{product.description}</p>
+          <h4 className="product-price text-success">Ksh {product.price}</h4>
+          <p className={product.inStock ? 'text-success' : 'text-danger'}>
+            {product.inStock ? 'In Stock' : 'Out of Stock'}
+          </p>
 
-              <button
-                className="btn btn-dark"
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </button>
-            </Col>
-          </Row>
+          <div className="quantity-controls my-3">
+            <Button
+              variant="outline-secondary"
+              onClick={() => handleQuantityChange('decrement')}
+              disabled={quantity <= 1}
+            >
+              -
+            </Button>
+            <span className="mx-2">{quantity}</span>
+            <Button
+              variant="outline-secondary"
+              onClick={() => handleQuantityChange('increment')}
+            >
+              +
+            </Button>
+          </div>
 
-          <Nav variant="tabs" activeKey={activeTab} className="mt-4">
+          <Button
+            variant="primary"
+            onClick={addToCart}
+            disabled={!product.inStock}
+          >
+            Add to Cart
+          </Button>
+        </Col>
+      </Row>
+
+      {/* Tabs Section */}
+      <div className="product-tabs mt-4">
+        <Tab.Container activeKey={activeTab}>
+          <Nav variant="tabs" onSelect={(tab) => setActiveTab(tab)}>
             <Nav.Item>
-              <Nav.Link
-                eventKey="description"
-                onClick={() => setActiveTab('description')}
-              >
-                Description
-              </Nav.Link>
+              <Nav.Link eventKey="description">Description</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link
-                eventKey="reviews"
-                onClick={() => setActiveTab('reviews')}
-              >
-                Reviews
-              </Nav.Link>
+              <Nav.Link eventKey="reviews">Reviews</Nav.Link>
             </Nav.Item>
           </Nav>
 
-          <div className="tab-content mt-3">
-            {activeTab === 'description' && (
-              <div className="tab-pane active">
-                <p>{product.description}</p>
-              </div>
-            )}
-            {activeTab === 'reviews' && (
-              <div className="tab-pane active">
-                <Reviews productId={product._id} />
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </>
+          <Tab.Content className="mt-3">
+            <Tab.Pane eventKey="description">
+              <p>{product.fullDescription || 'No additional details available.'}</p>
+            </Tab.Pane>
+            <Tab.Pane eventKey="reviews">
+              <Reviews productId={product._id} />
+            </Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
+      </div>
+
+      {/* Related Products */}
+      <RelatedProducts productId={product._id} />
+    </div>
   );
 };
 
-export default ProductDetail;
+export default ProductDetails;
