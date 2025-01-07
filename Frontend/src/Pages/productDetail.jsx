@@ -78,16 +78,15 @@ const ProductDetail = () => {
   return (
     <>
       <Header />
+      <nav aria-label="breadcrumb" className="breadcrumb-nav">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><a href="/">Home</a></li>
+          <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
+          <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+        </ol>
+      </nav>
       <main>
         <div className="container mt-4">
-          <nav aria-label="breadcrumb" className="breadcrumb-nav">
-            <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="/">Home</a></li>
-              <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
-              <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
-            </ol>
-          </nav>
-
           <div className="product-details-container">
             <Row className="product-details">
               <Col md={6}>
