@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Nav, Tab, Form } from 'react-bootstrap';
 import axios from 'axios';
+
 import ProductTabs from './ProductTabs';
 import RelatedProducts from './RelatedProducts'; 
+
+import Header from '../Homepage/Header.jsx';
+import Footer from '../Homepage/Footer.jsx';
+import { useCart } from '../context/CartContext'; // Import cart context
+import './PagesCSS/productDetail.css'; // Import your CSS file
 
 const ProductDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
@@ -21,6 +27,7 @@ const ProductDetails = ({ product }) => {
     // Add to cart logic (e.g., API call)
     console.log('Product added to cart:', { product, quantity });
   };
+
 
   return (
     <div className="product-details container mt-4">
@@ -101,6 +108,133 @@ const ProductDetails = ({ product }) => {
       {/* Related Products */}
       <RelatedProducts productId={product._id} />
     </div>
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div className="container mt-4">
+          <div className="alert alert-danger">{error}</div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  if (!product) {
+    return (
+      <>
+        <Header />
+        <div className="container mt-4">
+          <div className="text-center">Loading...</div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+      <nav aria-label="breadcrumb" className="breadcrumb-nav">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><a href="/">Home</a></li>
+          <li className="breadcrumb-item"><a href="/shop">Shop</a></li>
+          <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+        </ol>
+      </nav>
+      <main>
+        <div className="container mt-4">
+          <div className="product-details-container">
+            <Row className="product-details">
+              <Col md={6}>
+                <div className="product-image-container">
+                  {product.image ? (
+                    <img
+                      src={`http://localhost:8000${product.image}`}
+                      alt={product.name}
+                      className="img-fluid"
+                      style={{ maxHeight: '400px', width: 'auto' }}
+                    />
+                  ) : (
+                    <div className="image-placeholder">Image not available</div>
+                  )}
+                </div>
+              </Col>
+              <Col md={6}>
+                <h1>{product.name}</h1>
+                <p className="text-muted">{product.description}</p>
+                <p className="price"><strong>Ksh {product.price}</strong></p>
+                <p>
+                  <span className="badge bg-success">In Stock</span>
+                </p>
+
+                <div className="quantity-control d-flex align-items-center mb-3">
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => handleQuantityChange(-1)}
+                  >
+                    -
+                  </button>
+                  <input
+                    type="text"
+                    className="form-control w-25 text-center mx-2"
+                    value={quantity}
+                    readOnly
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => handleQuantityChange(1)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  className="btn btn-dark"
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </button>
+              </Col>
+            </Row>
+
+            <Nav variant="tabs" activeKey={activeTab} className="mt-4">
+              <Nav.Item>
+                <Nav.Link
+                  eventKey="description"
+                  onClick={() => setActiveTab('description')}
+                >
+                  Description
+                </Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
+                <Nav.Link
+                  eventKey="reviews"
+                  onClick={() => setActiveTab('reviews')}
+                >
+                  Reviews
+                </Nav.Link>
+              </Nav.Item>
+            </Nav>
+
+            <div className="tab-content mt-3">
+              {activeTab === 'description' && (
+                <div className="tab-pane active">
+                  <p>{product.description}</p>
+                </div>
+              )}
+              {activeTab === 'reviews' && (
+                <div className="tab-pane active">
+                  <Reviews productId={product._id} />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 };
 
