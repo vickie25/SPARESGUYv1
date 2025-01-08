@@ -76,7 +76,7 @@ const AboutUs = () => {
           <p>Vinn Odhiambo - Backend Developer</p>
           {selectedMember === 'Vinn' && (
             <div className="member-details">
-              <p>Vinn has a strong background in server-side development with over 5 years of experience. He is an expert in Node.js, Express, and database management systems like MongoDB and PostgreSQL. Vinn has successfully developed and maintained several backend systems, ensuring their reliability and scalability. His deep understanding of server architecture and API design makes him a crucial member of the team. Vinn's analytical skills and attention to detail ensure that all backend operations run smoothly and efficiently.</p>
+              <p>Vinn has a strong background in server-side development with over 5 years of experience. She is an expert in Node.js, Express, and database management systems like MongoDB and PostgreSQL. Vinn has successfully developed and maintained several backend systems, ensuring their reliability and scalability. His deep understanding of server architecture and API design makes him a crucial member of the team. Vinn's analytical skills and attention to detail ensure that all backend operations run smoothly and efficiently.</p>
             </div>
           )}
         </div>
