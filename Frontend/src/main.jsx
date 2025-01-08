@@ -45,7 +45,9 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="product/:id" element={<ProductDetail />} />
     <Route path="product-tabs" element={<ProductTabs />} />
     <Route path="cart" element={<CartPage />} />
+
     {/* <Route path="review" element={<Review />} /> */}
+
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
     <Route path="UserProf" element={<UserProfile />} />
@@ -55,6 +57,9 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="ContactUs" element={<ContactUs />} />
     <Route path="AboutUs" element={<AboutUs />} />
+
+    /* Admin Routes */
+    
     <Route path="admin" element={<AdminLayout />} />
     <Route path="admin/dashboard" element={<AdminDashboard />} />
     <Route path="admin/inventory" element={<Inventory />} />
