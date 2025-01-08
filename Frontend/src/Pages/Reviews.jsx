@@ -14,12 +14,11 @@ const Reviews = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch reviews when the component mounts
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('/api/reviews'); // Replace with your actual API endpoint
+        const response = await fetch('/api/reviews');
         if (!response.ok) throw new Error('Failed to fetch reviews');
         const data = await response.json();
         setReviews(data);
@@ -45,23 +44,24 @@ const Reviews = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newReview = { ...formData };
-
-    try {
-      const response = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newReview),
-      });
-
-      if (!response.ok) throw new Error('Failed to submit review');
-
-      const savedReview = await response.json();
-      setReviews([...reviews, savedReview]); // Update state with new review
-      setFormData({ name: '', email: '', review: '', rating: 0 });
-      alert('Review submitted!');
-    } catch (err) {
-      setError(err.message);
-    }
+try {
+  const response = await fetch('/api/reviews', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newReview),
+  });
+  if (!response.ok) {
+    const errorDetails = await response.json();
+    throw new Error(errorDetails.message || 'Failed to submit review');
+  }
+  const savedReview = await response.json();
+  setReviews([...reviews, savedReview]);
+  setFormData({ name: '', email: '', review: '', rating: 0 }); 
+  alert('Review submitted!');
+} catch (error) {
+  console.error('Error submitting review:', error.message);
+  alert(`Error: ${error.message}`);
+}
   };
 
   return (
