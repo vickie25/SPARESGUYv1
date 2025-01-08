@@ -117,43 +117,40 @@ main {
   overflow-y: auto;
 }
 
+/* Add a margin between the grid-section and the sidebar */
+
 .grid-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  gap: 10px;
-  min-height: 500px; /* Ensure the section has a minimum height */
-  position: relative; /* Make sure the pagination sticks within this section */
-  padding-bottom: 100px; /* Adds space so pagination doesn't overlap content */
+  margin-left: 270px; /* Adjust the value to create space for the sidebar */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Adds spacing between grid items */
 }
 
+/* Adjust grid-item height to a semi-medium size */
 .grid-item {
-  background-color: #fff;
-  color: #000;
-  padding: 20px;
-  text-align: center;
-  margin: 20px 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  min-height: 400px;
+  width: 250px; /* Adjust the width for uniformity */
+  height: 350px; /* Semi-medium size */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures content fits well */
+  border: 1px solid #ddd; /* Optional: adds a subtle border */
+  padding: 10px; /* Adds padding for spacing inside the box */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  border-radius: 5px; /* Optional rounded corners */
 }
 
 .product-image-container {
-  width: 100%;
-  height: 300px;
+  flex-grow: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  border-radius: 5px;
-  margin-bottom: 30px;
-  background-color: #f0f0f0;
+  justify-content: flex-end; /* Aligns the image to the right */
 }
+
 
 .product-image {
   max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
+  max-height: 200px; /* Ensures image does not overflow */
+  object-fit: contain; /* Keeps image proportions */
 }
 
 .image-placeholder {
@@ -173,37 +170,34 @@ main {
 }
 
 .add-to-cart-button {
-  background-color: #333231;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
+   background-color: #333231;
+   cursor: pointer;
+   color: #fff;
+   border: none;
+   padding: 8px 12px;
+   text-align: center;
+   margin-top: 5px;
+   border-radius: 4px;
 }
-
-.add-to-cart-button:hover {
+  .add-to-cart-button:hover {
   background-color: #000;
 }
-
 /* Base styles */
 .page-wrap {
   position: relative;
-  overflow: hidden; /* Prevents content from scrolling when the overlay is active */
+  overflow: hidden;
 }
-
-/* Overlay that appears when cart dropdown is open */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(100, 100, 100, 0.2); /* Semi-transparent background */
-  z-index: 90; /* Make sure it appears above the content but below the cart */
-  backdrop-filter: blur(1px); /* Apply the blur effect */
+  background-color: rgba(100, 100, 100, 0.2); 
+  z-index: 90;
+  backdrop-filter: blur(1px); 
   pointer-events: none; /* Disable interactions with the overlay */
 }
-
 /* Cart Icon and Count */
 .cart-icon-container {
   position: relative;
@@ -443,53 +437,17 @@ main {
     color: #000;
   }
 
-  .sidebar {
-    display: none;
-    flex-direction: column;
-    background-color: #f4f4f4;
-    color: #000;
-    width: 250px;
-    padding: 20px;
-    position: absolute;
-    left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
+  .sidebar{
+    float: left;
+    margin-right: 20px; 
+    width: 250px; 
+    padding: 10px; 
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   }
-
-  .sidebar.open {
-    display: flex;
-  }
-
-  .cart-dropdown {
-    width: 300px;
-    height: 70vh;
-  }
-
-  .cart-item-image {
-    width: 40px;
-    height: 40px;
-    margin-right: 20px;
-  }
-
-  .cart-item-details {
-    padding: 15px;
-  }
-
-  .benefits {
-    justify-content: center; /* Center the items on tablets */
-  }
-
-  .benefit {
-    padding: 20px; /* Adjust padding for smaller screens */
-    min-width: 200px; /* Allow a smaller minimum width */
-    max-width: 300px; /* Keep a max width for alignment */
-  }
-
-  .benefit svg {
-    font-size: 30px; /* Reduce icon size for better fit */
-  }
-}
+  
 
 @media (max-width: 480px) {
   .cart-dropdown {
@@ -608,4 +566,5 @@ header {
   .nav-list li {
     margin: 0.5rem 0;
   }
+}
 }

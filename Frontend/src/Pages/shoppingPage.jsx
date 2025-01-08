@@ -1,20 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
-import "./PagesCSS/shoppingPage.css";
-import { IoCheckboxOutline, IoSquareOutline, IoFilterOutline } from "react-icons/io5";
-import { PiNumberSquareOneLight, PiNumberSquareTwoLight, PiNumberSquareThreeLight } from "react-icons/pi";
+import { Container, Row, Col, Form, Button, Card, Pagination } from 'react-bootstrap';
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import Slider from 'rc-slider';
-import { HiOutlineTrophy } from "react-icons/hi2";
-import { HiOutlineCheckBadge } from "react-icons/hi2";
-import { BiSupport } from "react-icons/bi";
-import { RiHandCoinFill } from "react-icons/ri";
-import { MdFavoriteBorder } from "react-icons/md";
-import { MdFavorite } from "react-icons/md";
+import { IoFilter } from "react-icons/io5";
 import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer';
 import Header from '../Homepage/Header';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
 import { SearchContext } from '../context/SearchContext';
@@ -26,19 +19,13 @@ const ShoppingPage = () => {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const context = useContext(SearchContext);
   const searchQuery = context?.searchQuery || '';
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [checkedCategories, setCheckedCategories] = useState([]);
+  const [checkedBrands, setCheckedBrands] = useState([]);
+  const [checkedConditions, setCheckedConditions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [priceRange, setPriceRange] = useState([0, 100000]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const productsPerPage = 9;
-  const itemsPerPage = 9;
-  const [isFilterApplied, setIsFilterApplied] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,273 +40,182 @@ const ShoppingPage = () => {
     fetchProducts();
   }, []);
 
-
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    const filtered = products.filter((product) => {
+      const isCategoryMatch = checkedCategories.length === 0 || checkedCategories.includes(product.category);
+      const isBrandMatch = checkedBrands.length === 0 || checkedBrands.includes(product.brand);
+      const isConditionMatch = checkedConditions.length === 0 || checkedConditions.includes(product.condition);
+      const isPriceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    product.price >= priceRange[0] && product.price <= priceRange[1]
-  );
+      return isCategoryMatch && isBrandMatch && isConditionMatch && isPriceMatch;
+    });
+    setFilteredProducts(filtered);
+  }, [checkedCategories, checkedBrands, checkedConditions, priceRange, products]);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const handlePriceChange = (range) => setPriceRange(range);
 
-  const toggleCategory = async (condition) => {
-    const newCheckedCategories = checkedCategories.includes(condition)
-      ? checkedCategories.filter((cat) => cat !== condition)
-      : [...checkedCategories, condition];
-
-    setCheckedCategories(newCheckedCategories);
-
-    if (newCheckedCategories.includes(condition)) {
-      const response = await axios.get('/api/items', { params: { condition } });
-      setFilteredItems(response.data);
-    } else {
-      setFilteredItems([]);
-    }
-  };
-
-  const handlePriceChange = (range) => {
-    setPriceRange(range);
-  };
-
-  const calculateSubtotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  const handlePageChange = (page) => setCurrentPage(page);
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
-  const startIndex = indexOfFirstProduct + 1;
-  const endIndex = Math.min(indexOfLastProduct, filteredProducts.length);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
-
-  const isInWishlist = (itemId) => {
-    return wishlist.some(item => item.productId === itemId);
-  };
-
-
-  useEffect(() => {
-    if (cart.length > 0) {
-      const updateCartInDatabase = async () => {
-        const productData = {
-          products: cart.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity,
-          })),
-          totalAmount: calculateSubtotal(),
-          paymentMethod: 'Credit/Debit',
-        };
-
-        console.log('Preparing to send the following product data:', productData);
-
-        try {
-          const response = await axios.post('http://localhost:8000/api/cart/save', productData, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          console.log('Cart updated and saved to database successfully!', response.data);
-        } catch (error) {
-          if (error.response) {
-            console.error('Error updating cart in database', error.response.data);
-            console.error('Status:', error.response.status);
-            console.error('Headers:', error.response.headers);
-          } else if (error.request) {
-            console.error('No response received:', error.request);
-          } else {
-            console.error('Error setting up request:', error.message);
-          }
-        }
-      };
-
-      updateCartInDatabase();
-    }
-  }, [cart, calculateSubtotal]);
-
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
-  const handlePageChange = (page) => {
-    if (page > 0 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
-
-
+  const isInWishlist = (itemId) => wishlist.some(item => item.productId === itemId);
   return (
-    <div className="page-wrap">
-      <header>
-        <Header />
-      </header>
-      {isDropdownVisible && <div className="mask"></div>}
-      <div className='page-filter-showing'>
-        <div className='page-location'>
-          <h2>{location.pathname}</h2>
-          {!isFilterApplied && searchQuery === '' && <p>All products</p>}
-        </div>
-        <div className='filter-showing'>
-
-
-          <div className="showing-info">
-            {/* Filter text with an icon */}
-            <div className="showing-ico" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <IoFilterOutline />  Filter
+    <div>
+      <Header />
+      <Container>
+        <Row className="my-3">
+          <Col md={3}>
+            <div className="mb-4">
+              <h5 className="mb-3">Categories</h5>
+              {['Service Parts', 'Interchangeable parts', 'Second Hand'].map((category) => (
+                <Form.Check
+                  key={category}
+                  type="checkbox"
+                  label={category}
+                  className="mb-2"
+                  checked={checkedCategories.includes(category)}
+                  onChange={() =>
+                    setCheckedCategories((prev) =>
+                      prev.includes(category)
+                        ? prev.filter((c) => c !== category)
+                        : [...prev, category]
+                    )
+                  }
+                />
+              ))}
             </div>
 
-            {/* Vertical line */}
-            <span className="vertical-line"></span>
-
-            {/* Showing text */}
-            <p>Showing {startIndex} -- {endIndex} of {filteredProducts.length}</p>
-
-          </div>
-        </div>
-      </div>
-
-      <main className={isDropdownVisible ? 'blur' : ''}>
-        <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-          <div className="categories-container">
-            <h3>Product Categories</h3>
-            <ul>
-              {['Body Parts', 'Engine Parts', 'Electrical Components', 'Suspension Parts', 'Transmission Parts'].map((category) => (
-                <li key={category} onClick={() => toggleCategory(category)}>
-                  {checkedCategories.includes(category) ? <IoCheckboxOutline /> : <IoSquareOutline />} {category}
-                </li>
+            <div className="mb-4">
+              <h5 className="mb-3">Brands</h5>
+              {[
+                'Toyota',
+                'Hero Genuine Parts',
+                'Suzuki Genuine Parts',
+                'Honda Genuine Parts',
+                'Yamaha Genuine Parts',
+              ].map((brand) => (
+                <Form.Check
+                  key={brand}
+                  type="checkbox"
+                  label={brand}
+                  className="mb-2"
+                  checked={checkedBrands.includes(brand)}
+                  onChange={() =>
+                    setCheckedBrands((prev) =>
+                      prev.includes(brand)
+                        ? prev.filter((b) => b !== brand)
+                        : [...prev, brand]
+                    )
+                  }
+                />
               ))}
-            </ul>
-          </div>
+            </div>
 
-          <div className="categories-container">
-            <h3>Filter by brand</h3>
-            <ul>
-              {['Nissan', 'Subaru', 'Hyundai', 'Toyota', 'Vovlo', 'Mercedes-Benz'].map((brand) => (
-                <li key={brand} onClick={() => toggleCategory(brand)}>
-                  {checkedCategories.includes(brand) ? <IoCheckboxOutline /> : <IoSquareOutline />} {brand}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="categories-container">
-            <h3>Filter by price range</h3>
-            <Slider
-              range
-              min={0}
-              max={100000}
-              defaultValue={[0, 100000]}
-              value={priceRange}
-              onChange={handlePriceChange}
-              trackStyle={{ backgroundColor: 'black' }}
-              handleStyle={{ borderColor: 'black', backgroundColor: 'black' }}
-              railStyle={{ backgroundColor: '#ccc' }}
-            />
-            <div>Price: Ksh{priceRange[0]} - Ksh{priceRange[1]}</div>
-          </div>
-          <div className="categories-container">
-            <h3>Filter by condition</h3>
-            <ul>
+            <div className="mb-4">
+              <h5 className="mb-3">Condition</h5>
               {['New', 'Used', 'Refurbished'].map((condition) => (
-                <li key={condition} onClick={() => toggleCategory(condition)}>
-                  {checkedCategories.includes(condition) ? <IoCheckboxOutline /> : <IoSquareOutline />} {condition}
-                </li>
+                <Form.Check
+                  key={condition}
+                  type="checkbox"
+                  label={condition}
+                  className="mb-2"
+                  checked={checkedConditions.includes(condition)}
+                  onChange={() =>
+                    setCheckedConditions((prev) =>
+                      prev.includes(condition)
+                        ? prev.filter((c) => c !== condition)
+                        : [...prev, condition]
+                    )
+                  }
+                />
               ))}
-            </ul>
-
-          </div>
-        </aside>
-
-        <section className="grid-section">
-          <div style={{ fontSize: '24px' }} className="filter-icon" onClick={toggleSidebar}>
-            Filter< IoFilterOutline />
-          </div>
-
-          {currentProducts.map((item, index) => (
-            <div key={index} className="grid-item" style={{ cursor: 'pointer' }}>
-              {isInWishlist(item._id) ? (
-                <MdFavorite onClick={() => removeFromWishlist(item._id)} style={{ color: 'red' }} />
-              ) : (
-                <MdFavoriteBorder onClick={() => addToWishlist(item)} />
-              )}
-              <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="product-image-container">
-                  {item.image ? (
-                    <img src={`http://localhost:8000${item.image}`} alt={item.name} className="product-image" />
-                  ) : (
-                    <span className="image-placeholder">Image not available</span>
-                  )}
-                </div>
-                <p className="product-name">{item.name}</p>
-                <p className="product-cost" style={{ color: '#000', fontSize: '1.2em', fontWeight: 'regular' }}>Ksh {item.price}</p>
-              </Link>
-              <button className="add-to-cart-button" onClick={(e) => { e.stopPropagation(); addToCart({ ...item, quantity: 1 }); }}>
-                Add to Cart
-              </button>
-            </div>
-          ))}
-
-          {filteredProducts.length === 0 && searchQuery && (
-            <div className="no-results">
-              <p>No products found matching "{searchQuery}"</p>
-            </div>
-          )}
-          <div className="grid-pagination">
-            <div className="pagination-arrows" onClick={() => handlePageChange(currentPage - 1)}>
-              {currentPage > 1 && <IoIosArrowRoundBack />}
             </div>
 
-            {[...Array(totalPages)].map((_, pageIndex) => (
-              <div
-                key={pageIndex + 1}
-                className={`grid-number ${currentPage === pageIndex + 1 ? "active" : ""}`}
-                onClick={() => handlePageChange(pageIndex + 1)}
+            <div className="mb-4">
+              <h5 className="mb-3">Price Range</h5>
+              <Slider
+                range
+                min={0}
+                max={100000}
+                value={priceRange}
+                onChange={handlePriceChange}
+                marks={{ 0: '0', 50000: '50K', 100000: '100K' }}
+              />
+              <p className="mt-2">Price: Ksh {priceRange[0]} - Ksh {priceRange[1]}</p>
+            </div>
+          </Col>
+
+          <Col md={9}>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <Link to="/shop" className="btn btn-link">Shop</Link>
+              <Link to="/All products" className="btn btn-link">All products</Link>
+              <IoFilter className="text-primary" size={24} />
+            </div>
+            <Row>
+              {currentProducts.map((product) => (
+                <Col lg={4} md={6} sm={12} className="mb-4" key={product._id}>
+                  <Card>
+                    {isInWishlist(product._id) ? (
+                      <MdFavorite
+                        className="text-danger position-absolute m-2"
+                        onClick={() => removeFromWishlist(product._id)}
+                      />
+                    ) : (
+                      <MdFavoriteBorder
+                        className="position-absolute m-2"
+                        onClick={() => addToWishlist(product)}
+                      />
+                    )}
+                    <Link
+                      to={`/product/${product._id}`}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                      <Card.Img
+                        variant="top"
+                        src={`http://localhost:8000${product.image}`}
+                        alt={product.name}
+                      />
+                      <Card.Body>
+                        <Card.Title>{product.name}</Card.Title>
+                        <Card.Text>Ksh {product.price}</Card.Text>
+                      </Card.Body>
+                    </Link>
+                    <Button
+                      variant="primary"
+                      onClick={() => addToCart({ ...product, quantity: 1 })}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+            {filteredProducts.length === 0 && <p>No products match your search criteria.</p>}
+
+            <Pagination className="justify-content-center">
+              <Pagination.Prev
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
               >
-                {pageIndex === 0 && <PiNumberSquareOneLight />}
-                {pageIndex === 1 && <PiNumberSquareTwoLight />}
-                {pageIndex === 2 && <PiNumberSquareThreeLight />}
-              </div>
-            ))}
-
-            <div className="pagination-arrows" onClick={() => handlePageChange(currentPage + 1)}>
-              {currentPage < totalPages && <IoIosArrowRoundForward />}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <div className="benefits">
-        <div className='benefit'>
-          <HiOutlineTrophy /><div className="text"><h3>High Quality</h3>
-            <p>Crafted from top materials</p></div>
-        </div>
-        <div className='benefit'>
-          <HiOutlineCheckBadge /><div className="text"><h3>Warranty Protection</h3>
-            <p>Over 2 years</p></div></div>
-        <div className='benefit'>
-          <RiHandCoinFill />
-          <div className="text"><h3>Free Shipping</h3>
-            <p>Order over 150</p>
-          </div>
-        </div>
-        <div className='benefit'>
-          <BiSupport /><div className="text"><h3>24 / 7 Support</h3>
-            <p>Dedicated support</p></div>
-        </div>
-      </div>
-
-
-      <footer>
-        <Footer />
-      </footer>
-    </div>
-
+                <IoIosArrowRoundBack />
+              </Pagination.Prev>
+              <Pagination.Item active>{currentPage}</Pagination.Item>
+              <Pagination.Next
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                <IoIosArrowRoundForward />
+              </Pagination.Next>
+            </Pagination>
+          </Col>
+        </Row>
+      </Container >
+      <Footer />
+    </div >
   );
 };
 

@@ -1,39 +1,30 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FaTrash } from 'react-icons/fa';
 import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import { useCart } from '../context/CartContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useCreateOrderMutation } from '../slices/CheckoutApiSlice'; // Import the API slice
-//import { CartContext } from '../context/CartContext'; // Assuming CartContext is available
-// import { useUser } from './UserContext';
-// import moment from 'moment'; 
+import { useCreateOrderMutation } from '../slices/CheckoutApiSlice';
+import moment from 'moment';
 
 const Checkout = () => {
   const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, calculateGrandTotal } = useCart();
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
-  // Discount code state
   const [discountCode, setDiscountCode] = useState('');
   const [discountError, setDiscountError] = useState('');
 
+  // Fetch user info from localStorage
   useEffect(() => {
-    // Fetch userInfo from localStorage and parse it
     const storedUserInfo = localStorage.getItem('userInfo');
     if (storedUserInfo) {
-      setUserInfo(JSON.parse(storedUserInfo)); 
-    } else {
-      console.log("No user info found in localStorage");
+      setUserInfo(JSON.parse(storedUserInfo));
     }
-  }, [navigate]);
+  }, []);
 
-  // console.log(userInfo?.data?.user_id);
-  // console.log(userInfo);
-
-  // Use createOrder mutation from API slice
   const [createOrder] = useCreateOrderMutation();
 
-  // Apply discount code
   const applyDiscount = () => {
     if (discountCode === 'SAVE35') {
       setDiscountError('');
@@ -42,49 +33,63 @@ const Checkout = () => {
     }
   };
 
-  // Proceed to checkout
-  const handleProceedToCheckout = async () => {
-    // Make sure userInfo is available
-    if (!userInfo) {
-      return alert('Please log in to proceed.');
+  const handleProceedToCheckout = () => {
+    if (cart.length === 0) {
+      alert('Your cart is empty. Add items to proceed.');
+      return;
     }
-
-    // Extract cart product data and calculate total
-    const cartProducts = cart.map(item => ({
-      productId: item.productId,
-      quantity: item.quantity,
-      price: item.price,
-      name: item?.name || "just A name"
-    }));
-
-    const totalAmount = calculateGrandTotal().toFixed(2);
-
-    // Get current date formatted (optional)
-    const orderDate = moment().format('DD/MM/YYYY'); // Format date as '14/01/2024.'
-
-    try {
-      // Call createOrder API to create the order
-      const res = await createOrder({
-        customerId: userInfo?.data?.user_id, // Dynamically get customer ID
-        cartItems: cartProducts,
-        totalAmount: totalAmount,
-        discountApplied: discountCode === 'SAVE35' ? 35 : 0, // Apply discount if valid
-        orderDate: orderDate, 
-      });
-      console.log(userInfo?.data?.user_id);
-      console.log(userInfo);
-      console.log('This is the response:', res);
-
-      const orderId = res?.data._id
-      console.log(orderId, "this is just an Id")
-      // Optionally, you can redirect to the order confirmation page
-      navigate(`/payment/${orderId}`);
-
-    } catch (error) {
-      console.error('Error creating order:', error);
-    }
+  
+    console.log('Proceeding to checkout...');
+    // Navigate to the checkout page (if needed) or trigger order logic
+    handleCreateOrder();
   };
+  const handleCreateOrder = async () => {
+    try {
+        if (!userInfo) {
+            return alert('Please log in to place an order.');
+        }
+        if (!cartProducts || cartProducts.length === 0) {
+            return alert('Your cart is empty. Please add items to your cart.');
+        }
 
+        if (!totalAmount || totalAmount <= 0) {
+            return alert('Invalid total amount. Please review your cart.');
+        }
+
+        // Prepare the data for the order
+        const orderData = {
+            customerId: userInfo?.data?.user_id, 
+            cartItems: cartProducts,            
+            totalAmount: totalAmount,         
+            discountApplied: discountCode === 'SAVE35' ? 35 : 0, // Discount logic
+        };
+
+        // Make an API call to the backend to create the order
+        const res = await axios.post('/api/orders', orderData);
+
+        // If order creation is successful, redirect to payment page
+        if (res?.data) {
+            console.log('Order created successfully:', res.data);
+            const orderId = res.data._id; // Extract order ID from response
+
+            // Redirect user to Payment Page with Order ID
+            navigate(`/payment/${orderId}`);
+        } else {
+            console.error('Order creation failed:', res);
+            alert('Failed to place the order. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error creating order:', error);
+        alert('An error occurred while placing the order.');
+    }
+};
+
+  
+  // Trigger order creation only when the component mounts (optional)
+  //useEffect(() => {
+    // Uncomment this if you want to auto-create the order on mount
+    // handleCreateOrder();
+ // }, []); // Empty dependency array ensures it runs only once
   return (
     <>
       <Header />
@@ -135,8 +140,12 @@ const Checkout = () => {
             <h4>Subtotal: <strong>Ksh{calculateSubtotal().toFixed(2)}</strong></h4>
             <h4>Discount Applied: <strong>Ksh{discount.amount.toFixed(2)}</strong></h4>
             <h4>Grand Total: <strong>Ksh{calculateGrandTotal().toFixed(2)}</strong></h4>
-            <button className="btn btn-dark mt-3" onClick={handleProceedToCheckout}>Proceed to Checkout</button>
-          </div>
+
+            {/* Place Order Button */}
+            <button className="btn btn-success mt-3 me-2"  onClick={handleCreateOrder} >   Place Order </button>
+          
+      <button className="btn btn-dark mt-3"  onClick={handleProceedToCheckout} > Proceed to Checkout </button>
+       </div>
         </div>
       </div>
       <Footer />
