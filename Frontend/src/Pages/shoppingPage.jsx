@@ -63,6 +63,7 @@ const ShoppingPage = () => {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const isInWishlist = (itemId) => wishlist.some(item => item.productId === itemId);
+
   return (
     <div>
       <Header />
@@ -70,7 +71,7 @@ const ShoppingPage = () => {
         <Row className="my-3">
           <Col md={3}>
             <div className="mb-4">
-              <h5 className="mb-3">Categories</h5>
+              <h5 className="mb-3"><b>Categories</b></h5>
               {['Service Parts', 'Interchangeable parts', 'Second Hand'].map((category) => (
                 <Form.Check
                   key={category}
@@ -89,34 +90,35 @@ const ShoppingPage = () => {
               ))}
             </div>
 
-            <div className="mb-4">
-              <h5 className="mb-3">Brands</h5>
-              {[
-                'Toyota',
-                'Hero Genuine Parts',
-                'Suzuki Genuine Parts',
-                'Honda Genuine Parts',
-                'Yamaha Genuine Parts',
-              ].map((brand) => (
-                <Form.Check
-                  key={brand}
-                  type="checkbox"
-                  label={brand}
-                  className="mb-2"
-                  checked={checkedBrands.includes(brand)}
-                  onChange={() =>
-                    setCheckedBrands((prev) =>
-                      prev.includes(brand)
-                        ? prev.filter((b) => b !== brand)
-                        : [...prev, brand]
-                    )
-                  }
-                />
-              ))}
-            </div>
+            {/* Brands */}
+            <div className="mb-4 checkbox-container">
+  <h5 className="mb-3"><b>Brands</b></h5>
+  {[
+    'Toyota',
+    'Hero Genuine Parts',
+    'Suzuki Genuine Parts',
+    'Honda Genuine Parts',
+    'Yamaha Genuine Parts',
+  ].map((brand) => (
+    <Form.Check
+      key={brand}
+      type="checkbox"
+      label={brand}
+      className="mb-2"
+      checked={checkedBrands.includes(brand)}
+      onChange={() =>
+        setCheckedBrands((prev) =>
+          prev.includes(brand)
+            ? prev.filter((b) => b !== brand)
+            : [...prev, brand]
+        )
+      }
+    />
+  ))}
+</div>
 
             <div className="mb-4">
-              <h5 className="mb-3">Condition</h5>
+              <h5 className="mb-3"><b>Condition</b></h5>
               {['New', 'Used', 'Refurbished'].map((condition) => (
                 <Form.Check
                   key={condition}
@@ -135,8 +137,9 @@ const ShoppingPage = () => {
               ))}
             </div>
 
+            {/* Price Range */}
             <div className="mb-4">
-              <h5 className="mb-3">Price Range</h5>
+              <h5 className="mb-3"><b>Price Range</b></h5>
               <Slider
                 range
                 min={0}
@@ -149,6 +152,7 @@ const ShoppingPage = () => {
             </div>
           </Col>
 
+          {/* Products Section */}
           <Col md={9}>
             <div className="d-flex justify-content-between align-items-center mb-3">
               <Link to="/shop" className="btn btn-link">Shop</Link>
@@ -158,7 +162,7 @@ const ShoppingPage = () => {
             <Row>
               {currentProducts.map((product) => (
                 <Col lg={4} md={6} sm={12} className="mb-4" key={product._id}>
-                  <Card>
+                  <Card className="h-100 d-flex flex-column justify-content-between">
                     {isInWishlist(product._id) ? (
                       <MdFavorite
                         className="text-danger position-absolute m-2"
@@ -178,18 +182,22 @@ const ShoppingPage = () => {
                         variant="top"
                         src={`http://localhost:8000${product.image}`}
                         alt={product.name}
+                        className="card-img-top"
                       />
-                      <Card.Body>
+                      <Card.Body className="text-center">
                         <Card.Title>{product.name}</Card.Title>
                         <Card.Text>Ksh {product.price}</Card.Text>
                       </Card.Body>
                     </Link>
                     <Button
-                      variant="primary"
-                      onClick={() => addToCart({ ...product, quantity: 1 })}
-                    >
-                      Add to Cart
-                    </Button>
+                  variant="primary"
+                  onClick={() => addToCart({ ...product, quantity: 1 })}
+                  className="mt-auto"
+                  style={{ backgroundColor: 'black', borderColor: 'black' }}
+                >
+                  Add to Cart
+              </Button>
+
                   </Card>
                 </Col>
               ))}
