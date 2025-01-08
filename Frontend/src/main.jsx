@@ -45,6 +45,11 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="product/:id" element={<ProductDetail />} />
     <Route path="product-tabs" element={<ProductTabs />} />
     <Route path="cart" element={<CartPage />} />
+
+
+    {/* <Route path="review" element={<Review />} /> */}
+
+
     <Route path="review" element={<Review />} /> 
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
@@ -52,6 +57,19 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="confirmation" element={<PaymentConfirmation />} />
     <Route path="ContactUs" element={<ContactUs />} />
     <Route path="AboutUs" element={<AboutUs />} />
+
+
+    /* Admin Routes */
+    
+    <Route path="admin" element={<AdminLayout />} />
+    <Route path="admin/dashboard" element={<AdminDashboard />} />
+    <Route path="admin/inventory" element={<Inventory />} />
+    <Route path="admin/customers" element={<Customers />} />
+    <Route path="admin/orders" element={<Order />} />
+    <Route path="admin/categories" element={<Categories />} />
+    <Route path="admin/reports" element={<Reports />} />
+    <Route path="admin/header/notification" element={<Notification />} />
+
     <Route path="admin" element={<AdminLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<AdminDashboard />} />
@@ -62,6 +80,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
       <Route path="reports" element={<Reports />} />
       <Route path="header/notification" element={<Notification />} />
     </Route>
+
     <Route path="logout" element={<Logout />} />
   </Route>
 ));
