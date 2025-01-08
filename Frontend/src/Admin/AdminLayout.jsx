@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+
+// import { FaChartBar } from 'react-icons/fa';
+import Dashboard from './AdminDashboard';
+
 import {
   FaChartBar,
   FaBox,
@@ -18,6 +22,12 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
+
+
+const sections = [
+  { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard', content: <Dashboard /> },
+  // Add other sections here
+];
 
 
 const AdminLayout = () => {
@@ -128,6 +138,7 @@ const AdminLayout = () => {
             >
               <Outlet />
             </motion.div>
+
           </MainContent>
         </Row>
       </Container>
