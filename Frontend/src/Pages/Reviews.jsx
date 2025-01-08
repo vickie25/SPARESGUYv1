@@ -4,11 +4,13 @@ import './PagesCSS/Reviews.css';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
-  const [rating, setRating] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    review: '',
+    rating: 0,
+  });
   const [hover, setHover] = useState(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [review, setReview] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,11 +20,12 @@ const Reviews = () => {
       try {
         setIsLoading(true);
         const response = await fetch('/api/reviews'); // Replace with your actual API endpoint
+        if (!response.ok) throw new Error('Failed to fetch reviews');
         const data = await response.json();
         setReviews(data);
         setIsLoading(false);
       } catch (err) {
-        setError('Failed to load reviews');
+        setError(err.message);
         setIsLoading(false);
       }
     };
@@ -30,9 +33,18 @@ const Reviews = () => {
     fetchReviews();
   }, []);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleRatingChange = (rating) => {
+    setFormData((prev) => ({ ...prev, rating }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newReview = { name, email, reviewText: review, rating };
+    const newReview = { ...formData };
 
     try {
       const response = await fetch('/api/reviews', {
@@ -45,13 +57,10 @@ const Reviews = () => {
 
       const savedReview = await response.json();
       setReviews([...reviews, savedReview]); // Update state with new review
-      setName('');
-      setEmail('');
-      setReview('');
-      setRating(0);
+      setFormData({ name: '', email: '', review: '', rating: 0 });
       alert('Review submitted!');
     } catch (err) {
-      setError('Failed to submit review');
+      setError(err.message);
     }
   };
 
@@ -60,7 +69,7 @@ const Reviews = () => {
       <h2>Customer Reviews</h2>
 
       {isLoading && <p>Loading reviews...</p>}
-      {error && <p>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       <div className="reviews-list">
         {reviews.map((review) => (
@@ -90,22 +99,24 @@ const Reviews = () => {
       </div>
 
       <div className="add-review">
-        <h3>Add your review</h3>
+        <h3>Add Your Review</h3>
         <form onSubmit={handleSubmit}>
           <div className="rating-input">
             <label>Your Rating</label>
             <div className="stars">
-              {Array(5).fill().map((_, i) => (
-                <FaStar
-                  key={i}
-                  size={24}
-                  color={i < (hover || rating) ? '#ffc107' : '#e4e5e9'}
-                  onMouseEnter={() => setHover(i + 1)}
-                  onMouseLeave={() => setHover(null)}
-                  onClick={() => setRating(i + 1)}
-                  style={{ cursor: 'pointer' }}
-                />
-              ))}
+              {Array(5)
+                .fill()
+                .map((_, i) => (
+                  <FaStar
+                    key={i}
+                    size={24}
+                    color={i < (hover || formData.rating) ? '#ffc107' : '#e4e5e9'}
+                    onMouseEnter={() => setHover(i + 1)}
+                    onMouseLeave={() => setHover(null)}
+                    onClick={() => handleRatingChange(i + 1)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ))}
             </div>
           </div>
 
@@ -113,8 +124,9 @@ const Reviews = () => {
             <label>Name</label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               placeholder="Enter Your Name"
               required
             />
@@ -124,8 +136,9 @@ const Reviews = () => {
             <label>Email Address</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
               placeholder="Enter Your Email"
               required
             />
@@ -134,8 +147,9 @@ const Reviews = () => {
           <div className="input-field">
             <label>Your Review</label>
             <textarea
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
+              name="review"
+              value={formData.review}
+              onChange={handleInputChange}
               placeholder="Enter Your Review"
               required
             />

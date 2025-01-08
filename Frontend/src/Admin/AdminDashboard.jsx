@@ -122,4 +122,4 @@ const StatNumber = styled.h2`
 const StatLabel = styled.p`
   color: #666;
   margin: 0;
-`;
+`; 
