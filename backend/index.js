@@ -4,7 +4,7 @@ import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import productRoutes from './routes/productRoutes.js';
-import relatedProductsRoutes from './routes/relatedProductsRoutes.js'
+// import relatedProductsRoutes from './routes/relatedProductsRoutes.js'
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 import AuthMiddleware from './Middleware/AuthMiddleware.js';
@@ -48,8 +48,8 @@ app.use('/api/users', userRoutes);
 // Product routes
 app.use('/api/products', productRoutes);
 
-// Product routes
-app.use('/api/products/related', relatedProductRoutes);
+// related Product routes
+// app.use('/api/products/related', relatedProductRoutes);
 
 
 // ContactUs routes

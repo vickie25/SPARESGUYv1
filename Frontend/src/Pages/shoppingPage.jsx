@@ -63,7 +63,6 @@ const ShoppingPage = () => {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const isInWishlist = (itemId) => wishlist.some(item => item.productId === itemId);
-
   return (
     <div>
       <Header />
