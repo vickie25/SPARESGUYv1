@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import description from "./description";
 import Reviews from "./Reviews";
+import description from './description';
 
-const ProductTabs = () => {
+const ProductTabs = ({ productDescription, additionalInfo, productReviews }) => {
   const [activeTab, setActiveTab] = useState("description");
 
   return (
@@ -51,26 +51,23 @@ const ProductTabs = () => {
 
       <div style={{ padding: "20px" }}>
         {activeTab === "description" && (
-        <div>
-            <h2>description</h2>
-            <p>Enhance your driving visibility with our premium Car Headlight, designed for optimal performance and safety. This high-quality headlight offers bright, clear illumination, ensuring excellent road visibility even in low-light or harsh weather conditions.</p>
-            <description/>
-        </div>
+          <div>
+            <h2>Description</h2>
+            <p>{productDescription}</p>
+          </div>
         )}
         {activeTab === "additionalInfo" && (
           <div>
             <h2>Additional Information</h2>
-            <p>Here you can include details like technical specifications.</p>
+            <p>{additionalInfo}</p>
           </div>
         )}
         {activeTab === "reviews" && (
           <div>
             <h2>Reviews</h2>
-            <Reviews/>
+            <Reviews reviews={productReviews} />
           </div>
-         )}
-
-
+        )}
       </div>
     </div>
   );
