@@ -73,49 +73,53 @@ const ShoppingPage = () => {
             <div className="mb-4">
               <h5 className="mb-3"><b>Categories</b></h5>
               {['Service Parts', 'Interchangeable parts', 'Second Hand'].map((category) => (
+                <div className="mb-2 d-flex align-items-center" key={category}>
+                  <Form.Check
+                    type="checkbox"
+                    label={category}
+                    checked={checkedCategories.includes(category)}
+                    onChange={() =>
+                      setCheckedCategories((prev) =>
+                        prev.includes(category)
+                          ? prev.filter((c) => c !== category)
+                          : [...prev, category]
+                      )
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
+
+
+
+
+            {/* Brands */}
+            <div className="mb-4 checkbox-container">
+              <h5 className="mb-3"><b>Brands</b></h5>
+              {[
+                'Toyota',
+                'Hero Genuine Parts',
+                'Suzuki Genuine Parts',
+                'Honda Genuine Parts',
+                'Yamaha Genuine Parts',
+              ].map((brand) => (
                 <Form.Check
-                  key={category}
+                  key={brand}
                   type="checkbox"
-                  label={category}
+                  label={brand}
                   className="mb-2"
-                  checked={checkedCategories.includes(category)}
+                  checked={checkedBrands.includes(brand)}
                   onChange={() =>
-                    setCheckedCategories((prev) =>
-                      prev.includes(category)
-                        ? prev.filter((c) => c !== category)
-                        : [...prev, category]
+                    setCheckedBrands((prev) =>
+                      prev.includes(brand)
+                        ? prev.filter((b) => b !== brand)
+                        : [...prev, brand]
                     )
                   }
                 />
               ))}
             </div>
-
-            {/* Brands */}
-            <div className="mb-4 checkbox-container">
-  <h5 className="mb-3"><b>Brands</b></h5>
-  {[
-    'Toyota',
-    'Hero Genuine Parts',
-    'Suzuki Genuine Parts',
-    'Honda Genuine Parts',
-    'Yamaha Genuine Parts',
-  ].map((brand) => (
-    <Form.Check
-      key={brand}
-      type="checkbox"
-      label={brand}
-      className="mb-2"
-      checked={checkedBrands.includes(brand)}
-      onChange={() =>
-        setCheckedBrands((prev) =>
-          prev.includes(brand)
-            ? prev.filter((b) => b !== brand)
-            : [...prev, brand]
-        )
-      }
-    />
-  ))}
-</div>
 
             <div className="mb-4">
               <h5 className="mb-3"><b>Condition</b></h5>
@@ -190,13 +194,13 @@ const ShoppingPage = () => {
                       </Card.Body>
                     </Link>
                     <Button
-                  variant="primary"
-                  onClick={() => addToCart({ ...product, quantity: 1 })}
-                  className="mt-auto"
-                  style={{ backgroundColor: 'black', borderColor: 'black' }}
-                >
-                  Add to Cart
-              </Button>
+                      variant="primary"
+                      onClick={() => addToCart({ ...product, quantity: 1 })}
+                      className="mt-auto"
+                      style={{ backgroundColor: 'black', borderColor: 'black' }}
+                    >
+                      Add to Cart
+                    </Button>
 
                   </Card>
                 </Col>
