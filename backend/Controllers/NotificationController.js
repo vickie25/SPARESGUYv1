@@ -1,11 +1,8 @@
-import NotificationModel from '../Models/NotificationModel.js';  // Correct path to NotificationModel
+import NotificationModel from '../Models/NotificationModel.js';
 
-// Create a new notification
 export const createNotification = async (req, res) => {
   try {
     const { userId, message, type } = req.body;
-
-    // Ensure all required fields are provided
     if (!userId || !message || !type) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
@@ -24,7 +21,6 @@ export const createNotification = async (req, res) => {
   }
 };
 
-// Get notifications for a user
 export const getNotifications = async (req, res) => {
   try {
     const notifications = await NotificationModel.find({ user: req.params.userId });
@@ -40,7 +36,6 @@ export const getNotifications = async (req, res) => {
   }
 };
 
-// Mark a notification as read
 export const markAsRead = async (req, res) => {
   try {
     const notification = await NotificationModel.findById(req.params.notificationId);
@@ -59,7 +54,6 @@ export const markAsRead = async (req, res) => {
   }
 };
 
-// Default export for use in routes
 export default {
   createNotification,
   getNotifications,
