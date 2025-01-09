@@ -12,13 +12,14 @@ const authMiddleware = async (req, res, next) => {
     console.log(key, 'This is the key');
 
     if (!token) {
-        return res.status(401).json({ message: 'Authentication error: Token not provided' });
+        return res.status(401).json({ message: 'Authentication error: Token not provided' });  
     }
 
     try {
         const decoded = jwt.verify(token, key);
         console.log(decoded, 'This is the decoded token');
-        const user = await User.findOne({ email: decoded.email });
+        console.log(decoded.id, 'This is the decoded email');
+        const user = await User.findOne({ email: decoded.id });
         console.log(user, 'This is the user');
         req.user = user;
         next();
