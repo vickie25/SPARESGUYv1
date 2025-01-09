@@ -1,3 +1,4 @@
+
 import express from 'express';
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
@@ -20,10 +21,13 @@ import NotificationRoutes from './routes/NotificationRoutes.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
+
 dotenv.config();
+
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+
 
 // Middleware
 app.use(cors()); // Enable CORS for all routes
@@ -31,50 +35,67 @@ app.use(bodyParser.json());
 app.use(cookieParser()); // To parse cookies from the request
 app.use(express.json()); // Make sure body data can be parsed
 
+
 // Serve files in the uploads directory
 app.use('/uploads', express.static('uploads'));
 
+
 // Connect to the database
 connectDB();
+
 
 // Root route
 app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
 
+
 // User routes
 app.use('/api/users', userRoutes);
 
+
 // Product routes
 app.use('/api/products', productRoutes);
+
 
 // related Product routes
 // app.use('/api/products/related', relatedProductRoutes);
 
 
+
+
 // ContactUs routes
 app.use('/api/contact', contactRoutes);
+
 
 // Cart routes
 app.use('/api/cart', cartRoutes);
 
+
 // Payment routes
 app.use('/api/payments', paymentInfoRoutes);
+
 
 // Order routes
 app.use('/api/order', OrderRoutes);
 
+
 // Review routes
 app.use('/api/review', ReviewRoutes);
+
 
 // Checkout routes
 app.use('/api/checkout', CheckoutRoutes);
 
+
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes);
 
+
 // Category routes
 app.use('/api/categories', CategoryRoutes);
+
+
 
 
 // Protect the profile route
@@ -82,26 +103,34 @@ app.get('/profile', AuthMiddleware, (req, res) => {
     res.json({ message: `Welcome, ${req.user.userId}!` });
 });
 
+
 // Notification routes
 app.use('/api/notifications', NotificationRoutes);
+
 
 // // Protect the profile route (example for a protected route)
 // app.get('/profile', authMiddleware, (req, res) => {
 //     res.json({ message: `Welcome, ${req.user.userId}!` });
 // });
 
+
 // Protect the admin dashboard route (example for an admin route)
 app.get('/admin/dashboard', authMiddleware, requireAdmin, (req, res) => {
 
+
     res.json({ message: 'Welcome to the admin dashboard' });
 });
+
 
 // PayPal configuration endpoint
 app.get('/api/config/paypal', (req, res) => res.send({
     clientId: process.env.PAYPAL_CLIENT_ID
 }));
 
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
