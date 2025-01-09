@@ -1,5 +1,4 @@
 //a model for user registration and login
-
 import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema({
