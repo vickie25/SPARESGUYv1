@@ -142,28 +142,10 @@ const ShoppingPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mb-4">
-                  <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Condition</h5>
-                  {['New', 'Used', 'Refurbished'].map((condition) => (
-                    <div key={condition} className="d-flex align-items-center mb-2">
-                      <Form.Check
-                        type="checkbox"
-                        checked={checkedConditions.includes(condition)}
-                        onChange={() =>
-                          setCheckedConditions((prev) =>
-                            prev.includes(condition)
-                              ? prev.filter((c) => c !== condition)
-                              : [...prev, condition]
-                          )
-                        }
-                      />
-                      <span className="ms-2">{condition}</span>
-                    </div>
-                  ))}
-                </div>
+            
 
               <div className="mb-4">
-                <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Price Range</h5>
+            <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Price Range</h5>
                 <Slider
                   range
                   min={0}
