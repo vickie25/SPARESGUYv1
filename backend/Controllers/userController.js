@@ -14,7 +14,7 @@ dotenv.config()
 export const registerUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        const role = "admin"; // Default role is 'customer'
+        const role = "customer"; // Default role is 'customer'
 
         console.log("This is the name:", name);
         console.log("This is the role:", role);
@@ -85,7 +85,7 @@ export const loginUser = async (req, res) => {
         generateToken(res, user.email);
 
         // Return a success message instead of the token
-        res.json({ message: "User logged in successfully" });
+        res.json({ user, message: "Login successful" });
 
 
     } catch (error) {
