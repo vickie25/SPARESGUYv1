@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
     console.log(key, 'This is the key');
 
     if (!token) {
-        return res.status(401).json({ message: 'Authentication error: Token not provided' });
+        return res.status(401).json({ message: 'Authentication error: Token not provided' });  
     }
 
     try {
