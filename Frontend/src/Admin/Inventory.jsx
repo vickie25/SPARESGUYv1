@@ -11,7 +11,8 @@ import {
 } from '../slices/productApiSlice';
 
 const Inventory = () => {
-    const { data: parts, isLoading } = useGetProductsQuery();
+    const { data: parts, isLoading, refetch } = useGetProductsQuery();
+    console.log(parts, "Make sure the parts exixts with ID"); // Add this line to inspect the parts data
     const [createProduct] = useCreateProductMutation();
     const [updateProduct] = useUpdateProductMutation();
     const [deleteProduct] = useDeleteProductMutation();
@@ -91,10 +92,12 @@ const Inventory = () => {
     };
 
     const handleDelete = async (id) => {
+        console.log('Deleting product with ID:', id);
         if (window.confirm('Are you sure you want to delete this item?')) {
             try {
                 await deleteProduct(id).unwrap();
                 alert('Product successfully deleted!');
+                refetch();
             } catch (error) {
                 console.error('Error deleting product:', error);
                 alert(`Failed to delete product: ${error?.data?.error || 'Unknown error'}`);
@@ -125,6 +128,7 @@ const Inventory = () => {
                     <StyledTable responsive hover>
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Image</th>
                                 <th>Name</th>
                                 <th>Quantity</th>
@@ -135,7 +139,10 @@ const Inventory = () => {
                         </thead>
                         <tbody>
                             {parts?.map(part => (
-                                <tr key={part.id}> {/* Add key prop */}
+                                <tr key={part._id}> {/* Add key prop */}
+                                <td>
+                                    {part._id}
+                                </td>
                                     <td>
                                         {part.image ? (
                                             <ImagePreview src={part.image} alt={part.name} />
@@ -158,7 +165,7 @@ const Inventory = () => {
 
                                         <ActionButton
                                             variant="danger"
-                                            onClick={() => handleDelete(part.id)}
+                                            onClick={() => handleDelete(part._id)}
                                         >
                                             <FaTrash /> Delete
                                         </ActionButton>
@@ -272,6 +279,7 @@ const Inventory = () => {
                                 <Form.Control as="select" name="fuelType" required>
                                     <option value="Petrol">Petrol</option>
                                     <option value="Diesel">Diesel</option>
+                                    <option value="Gasoline">Gasoline</option>
                                 </Form.Control>
                             </Form.Group>
 
