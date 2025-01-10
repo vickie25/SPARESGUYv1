@@ -19,14 +19,19 @@ const AboutUs = () => {
 
   return (
     <div>
-      <Header />
-      <div className="Banner-About" style={{ backgroundImage: `url(${car})` }}>
-        <h1>About Us At My Spares Guy</h1>
-        <p>
-          At My Spares Guy, we combine expertise and passion to deliver reliable, high-quality car parts. <br />
-          Our mission is to keep you on the road with trusted solutions and exceptional service.
-        </p>
-      </div>
+  <div className="Banner-About" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', backgroundSize: 'cover' }}>
+  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: `url(${car})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'brightness(0.7) blur(5px)', zIndex: 0 }}></div>
+  <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+    <h1>About Us At My Spares Guy</h1>
+    <p>
+      At My Spares Guy, we combine expertise and passion to deliver reliable, high-quality car parts. <br />
+      Our mission is to keep you on the road with trusted solutions and exceptional service.
+    </p>
+  </div>
+</div>
+
+
+
       <div className="statistics-content">
         <div className="container">
           <div className="image-section">

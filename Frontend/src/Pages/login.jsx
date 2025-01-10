@@ -27,16 +27,18 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-
+  
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
       return;
     }
-
+  
     try {
       const credentials = { email, password };
       const res = await loginUser(credentials).unwrap();
+      const role = res.user.role;
+
       toast.success('Login successful! Redirecting...', {
         position: "top-right",
         autoClose: 2000,
@@ -45,9 +47,17 @@ const LoginPage = () => {
         pauseOnHover: true,
         draggable: true,
       });
+
+      localStorage.setItem('role', role);
+  
       setTimeout(() => {
-        navigate('/shop');
+        if (role === 'admin') {
+          navigate('/admin/dashboard'); // Redirect admin to admin dashboard
+        } else {
+          navigate('/shop'); // Redirect customer to shop
+        }
       }, 2000);
+  
       console.log('Login successful:', res);
     } catch (err) {
       toast.error(err?.data?.message || 'Login failed. Please try again.', {
@@ -61,7 +71,7 @@ const LoginPage = () => {
       console.error('Login failed:', err);
     }
   };
-
+  
   return (
     <Container fluid className="vh-100 p-0">
       <Row className="h-100 m-0">
@@ -180,7 +190,14 @@ const LoginPage = () => {
       </Row>
       <ToastContainer />
 
-      <style>
+      
+    </Container>
+  );
+};
+
+export default LoginPage;
+
+<style>
         {`
           @keyframes spin {
             from { transform: rotate(0deg); }
@@ -209,8 +226,3 @@ const LoginPage = () => {
           }
         `}
       </style>
-    </Container>
-  );
-};
-
-export default LoginPage;

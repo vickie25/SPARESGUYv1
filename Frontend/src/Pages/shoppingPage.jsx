@@ -142,28 +142,10 @@ const ShoppingPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mb-4">
-                  <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Condition</h5>
-                  {['New', 'Used', 'Refurbished'].map((condition) => (
-                    <div key={condition} className="d-flex align-items-center mb-2">
-                      <Form.Check
-                        type="checkbox"
-                        checked={checkedConditions.includes(condition)}
-                        onChange={() =>
-                          setCheckedConditions((prev) =>
-                            prev.includes(condition)
-                              ? prev.filter((c) => c !== condition)
-                              : [...prev, condition]
-                          )
-                        }
-                      />
-                      <span className="ms-2">{condition}</span>
-                    </div>
-                  ))}
-                </div>
+            
 
               <div className="mb-4">
-                <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Price Range</h5>
+            <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Price Range</h5>
                 <Slider
                   range
                   min={0}
@@ -188,58 +170,56 @@ const ShoppingPage = () => {
   </div>
 </Col>
 
-            <Row>
-              {currentProducts.map((product) => (
-                <Col lg={4} md={6} sm={12} className="mb-4" key={product._id}>
-                  <Card className="h-100 d-flex flex-column justify-content-between">
-                    {isInWishlist(product._id) ? (
-                      <MdFavorite
-                        className="text-danger position-absolute m-2"
-                        onClick={() => removeFromWishlist(product._id)}
-                      />
-                    ) : (
-                      <MdFavoriteBorder
-                        className="position-absolute m-2"
-                        onClick={() => addToWishlist(product)}
-                      />
-                    )}
-                    <Link
-                      to={`/product/${product._id}`}
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                    >
-                      <Card.Img
-                        variant="top"
-                        src={`http://localhost:8000${product.image}`}
-                        alt={product.name}
-                        className="card-img-top"
-                      />
-                      <Card.Body className="text-center">
-                        <Card.Title>{product.name}</Card.Title>
-                        <Card.Text>Ksh {product.price}</Card.Text>
-                      </Card.Body>
-                    </Link>
-                    <Button
-                      variant="primary"
-                      onClick={() => addToCart({ ...product, quantity: 1 })}
-                      className="mt-auto"
-                      style={{ backgroundColor: 'black', borderColor: 'black' }}
-                    >
-                      Add to Cart
-                    </Button>
+<Row>
+  {currentProducts.map((product) => (
+    <Col lg={4} md={6} sm={12} className="mb-4" key={product._id}>
+      <Card className="h-100 d-flex flex-column justify-content-between" style={{ height: '500px' }}>
+        {isInWishlist(product._id) ? (
+          <MdFavorite
+            className="text-danger position-absolute m-2"
+            style={{ right: '0' }}
+            onClick={() => removeFromWishlist(product._id)}
+          />
+        ) : (
+          <MdFavoriteBorder
+            className="position-absolute m-2"
+            style={{ right: '0' }}
+            onClick={() => addToWishlist(product)}
+          />
+        )}
+        <Link
+          to={`/product/${product._id}`}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <Card.Img
+            variant="top"
+            src={`http://localhost:8000${product.image}`}
+            alt={product.name}
+            className="card-img-top"
+          />
+          <Card.Body className="text-center"style={{ height: '350px' }} >
+            <Card.Title>{product.name}</Card.Title>
+            <Card.Text>Ksh {product.price}</Card.Text>
+          </Card.Body>
+        </Link>
+        <Button
+          variant="primary"
+          onClick={() => addToCart({ ...product, quantity: 1 })}
+          className="mt-auto"
+          style={{ backgroundColor: 'black', borderColor: 'black' }}
+        >
+          Add to Cart
+        </Button>
+      </Card>
+    </Col>
+  ))}
+</Row>
 
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-           
-
-
-
-            
+                  
             {filteredProducts.length === 0 && <p>No products match your search criteria.</p>}
 
             <Pagination className="justify-content-center">
-              <Pagination.Prev
+              <Pagination.Prev style={{ backgroundColor: '#DAA520', color: '#000000' }}
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
@@ -249,9 +229,11 @@ const ShoppingPage = () => {
                 {currentPage}
               </Pagination.Item>
               <Pagination.Next
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
+  onClick={() => handlePageChange(currentPage + 1)}
+  disabled={currentPage === totalPages}
+  style={{ backgroundColor: 'goldenrod' }}
+>
+
                 <IoIosArrowRoundForward style={{ color: '#000000' }} />
               </Pagination.Next>
             </Pagination>
