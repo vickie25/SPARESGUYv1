@@ -77,7 +77,7 @@ app.use('/api/payments', paymentInfoRoutes);
 
 
 // Order routes
-app.use('/api/order', OrderRoutes);
+app.use('/api/orders', OrderRoutes);
 
 
 // Review routes
