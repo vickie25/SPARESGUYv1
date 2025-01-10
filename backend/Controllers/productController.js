@@ -55,7 +55,7 @@ export const getAllProducts = async (req, res) => {
 //access public
 export const getProductById = async (req, res) => {
   const { id } = req.params;
-  console.log('Received ID:', id);
+  console.log('Received ID:', id)
 
   try {
     const product = await Product.findById(id);
