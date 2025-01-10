@@ -60,15 +60,6 @@ const routes = createBrowserRouter(createRoutesFromElements(
 
 
     /* Admin Routes */
-    
-    <Route path="admin" element={<AdminLayout />} />
-    <Route path="admin/dashboard" element={<AdminDashboard />} />
-    <Route path="admin/inventory" element={<Inventory />} />
-    <Route path="admin/customers" element={<Customers />} />
-    <Route path="admin/orders" element={<Order />} />
-    <Route path="admin/categories" element={<Categories />} />
-    <Route path="admin/reports" element={<Reports />} />
-    <Route path="admin/header/notification" element={<Notification />} />
 
     <Route path="admin" element={<AdminLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
@@ -80,7 +71,6 @@ const routes = createBrowserRouter(createRoutesFromElements(
       <Route path="reports" element={<Reports />} />
       <Route path="header/notification" element={<Notification />} />
     </Route>
-
     <Route path="logout" element={<Logout />} />
   </Route>
 ));
