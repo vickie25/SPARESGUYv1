@@ -13,6 +13,7 @@ import ProductDetail from './Pages/productDetail.jsx';
 import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
+import description from './Pages/description.jsx';
 import ProductTabs from './Pages/ProductTabs.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
 import ContactUs from './Pages/ContactUs.jsx';
@@ -47,9 +48,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="cart" element={<CartPage />} />
 
 
-    {/* <Route path="review" element={<Review />} /> */}
-
-
+    <Route path="description" element={<description />} />
     <Route path="review" element={<Review />} /> 
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
