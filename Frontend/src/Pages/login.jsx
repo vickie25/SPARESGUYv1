@@ -37,6 +37,7 @@ const LoginPage = () => {
     try {
       const credentials = { email, password };
       const res = await loginUser(credentials).unwrap();
+      console.log(res, "response of logged user")
       const role = res.user.role;
 
       toast.success('Login successful! Redirecting...', {
@@ -48,7 +49,13 @@ const LoginPage = () => {
         draggable: true,
       });
 
-      localStorage.setItem('role', role);
+     // Convert the user object to a JSON string and store it
+localStorage.setItem('userInfo', JSON.stringify(res.user));
+
+// Retrieve and parse the stored JSON string back to an object
+const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+console.log(userInfo); // Now you should get your user object
+
   
       setTimeout(() => {
         if (role === 'admin') {
