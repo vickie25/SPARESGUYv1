@@ -13,6 +13,7 @@ import ProductDetail from './Pages/productDetail.jsx';
 import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
+import description from './Pages/description.jsx';
 import ProductTabs from './Pages/ProductTabs.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
 import ContactUs from './Pages/ContactUs.jsx';
@@ -34,7 +35,9 @@ import Order from './Admin/Order.jsx';
 import Categories from './Admin/Categories.jsx';
 import Reports from './Admin/Reports.jsx';
 import Logout from './Admin/Logout.jsx';
+// import settings from ;
 import Notification from './Admin/Header/Notification.jsx';
+import Success from './Pages/Success.jsx';
 
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -45,11 +48,10 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="product/:id" element={<ProductDetail />} />
     <Route path="product-tabs" element={<ProductTabs />} />
     <Route path="cart" element={<CartPage />} />
+    <Route path='/success' element={<Success />} />
 
 
-    {/* <Route path="review" element={<Review />} /> */}
-
-
+    <Route path="description" element={<description />} />
     <Route path="review" element={<Review />} /> 
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
