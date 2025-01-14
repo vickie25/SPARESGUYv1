@@ -187,21 +187,29 @@ const ShoppingPage = () => {
             onClick={() => addToWishlist(product)}
           />
         )}
-        <Link
-          to={`/product/${product._id}`}
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
+        <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <Card.Img
             variant="top"
             src={`http://localhost:8000${product.image}`}
             alt={product.name}
             className="card-img-top"
+            style={{
+              objectFit: 'cover',
+              height: '200px',
+              borderRadius: '8px 8px 0 0',
+            }}
           />
-          <Card.Body className="text-center"style={{ height: '350px' }} >
-            <Card.Title>{product.name}</Card.Title>
-            <Card.Text>Ksh {product.price}</Card.Text>
+          {/* Card Body */}
+          <Card.Body className="text-center">
+            <Card.Title style={{ fontSize: '1.1rem', fontWeight: '600' }}>
+              {product.name}
+            </Card.Title>
+            <Card.Text style={{ color: '#28a745', fontWeight: '500', fontSize: '1rem' }}>
+              Ksh {product.price}
+            </Card.Text>
           </Card.Body>
         </Link>
+
         <Button
           variant="primary"
           onClick={() => addToCart({ ...product, quantity: 1 })}
