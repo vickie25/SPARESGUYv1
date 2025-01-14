@@ -6,36 +6,29 @@ import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews';
 import Description from './description';
-import './PagesCSS/productDetail.css';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('description');
-  const handleTabSelect = (key) => {
-    setActiveTab(key);
-  };
+  const handleTabSelect = (key) => setActiveTab(key);
 
   const [cart, setCart] = useState(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart'));
     return savedCart || [];
   });
 
-  // const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [cartCount, setCartCount] = useState(0);
-  const [isAdded, setIsAdded] = useState(false);  // Track if product is added to cart
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
-    console.log('Fetching product with ID:', id);
     setLoading(true);
     fetch(`/api/products/${id}`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
       .then((data) => {
@@ -47,7 +40,6 @@ const ProductDetails = () => {
         setLoading(false);
       });
 
-    // Fetch reviews
     fetch(`/api/products/${id}/reviews`)
       .then((res) => res.json())
       .then((data) => Reviews(data))
@@ -55,38 +47,29 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleQuantityChange = (action) => {
-    if (action === 'increment') {
-      setQuantity(quantity + 1);
-    } else if (action === 'decrement' && quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    if (action === 'increment') setQuantity(quantity + 1);
+    else if (action === 'decrement' && quantity > 1) setQuantity(quantity - 1);
   };
 
   const handleAddToCart = () => {
     const cartItem = { ...product, quantity };
     setCartCount(cartCount + quantity);
-
-    // Update localStorage to persist cart state
     setCart((prevCart) => {
       const updatedCart = [...prevCart, cartItem];
-      localStorage.setItem('cart', JSON.stringify(updatedCart));  // Store updated cart in localStorage
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
       return updatedCart;
     });
 
-    // Option: Send to backend
     fetch('/api/cart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(cartItem),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log('Product added to cart:', data);
-        setIsAdded(true); // Set isAdded to true once the product is added
-      })
+      .then(() => setIsAdded(true))
       .catch((error) => {
         console.error('Error:', error);
-        setIsAdded(false); // Reset isAdded if there's an error
+        setIsAdded(false);
       });
   };
 
@@ -106,9 +89,7 @@ const ProductDetails = () => {
     return (
       <>
         <Header cartCount={cartCount} />
-        <div className="container mt-4">
-          <div className="text-center">Loading...</div>
-        </div>
+        <div className="container mt-4 text-center">Loading...</div>
         <Footer />
       </>
     );
@@ -118,39 +99,44 @@ const ProductDetails = () => {
     <>
       <Header cartCount={cartCount} />
       <div className="container mt-4">
-        {/* Breadcrumb */}
-        <nav aria-label="breadcrumb" className="breadcrumb-nav">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item"><a href="/">Home</a></li>
-            <li className="breadcrumb-item"><a href="/products">shop</a></li>
-            <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
-          </ol>
-        </nav>
-
-        {/* Product Section */}
         <Row>
-          {/* Product Image */}
+          {/* Left Column */}
           <Col md={6}>
+            <nav aria-label="breadcrumb" className="breadcrumb-nav mb-3">
+              <ol className="breadcrumb" style={{ fontSize: '0.9rem' }}>
+                <li className="breadcrumb-item"><a href="/">Home</a></li>
+                <li className="breadcrumb-item"><a href="/products">Shop</a></li>
+                <li className="breadcrumb-item active" aria-current="page">{product.name}</li>
+              </ol>
+            </nav>
             {product.image ? (
               <img
                 src={`http://localhost:8000${product.image}`}
                 alt={product.name}
-                className="img-fluid rounded shadow"
+                className="img-fluid rounded shadow mb-2"
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                  objectFit: 'cover',
+                }}
               />
             ) : (
               <div className="image-placeholder">Image not available</div>
             )}
+            <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
+              {product.name}
+            </h1>
           </Col>
 
+          {/* Right Column */}
           <Col md={6}>
-            <h2 className="product-title">{product.name}</h2>
+            <h4 className="product-title">{product.name}</h4>
             <p className="text-muted">{product.description}</p>
             <h4 className="product-price text-success">Ksh {product.price}</h4>
             <p className={product.inStock ? 'text-success' : 'text-danger'}>
               {product.inStock ? 'In Stock' : 'Out of Stock'}
             </p>
-
-            <div className="quantity-controls my-3">
+            <div className="quantity-controls my-3 d-flex align-items-center">
               <Button
                 variant="outline-secondary"
                 onClick={() => handleQuantityChange('decrement')}
@@ -159,40 +145,31 @@ const ProductDetails = () => {
                 -
               </Button>
               <span className="mx-2">{quantity}</span>
-              <Button
-                variant="outline-secondary"
-                onClick={() => handleQuantityChange('increment')}
-              >
+              <Button variant="outline-secondary" onClick={() => handleQuantityChange('increment')}>
                 +
               </Button>
             </div>
-            <Button onClick={handleAddToCart} disabled={isAdded}>
+            <Button onClick={handleAddToCart} disabled={isAdded} className="mt-2">
               {isAdded ? 'Added to Cart' : 'Add to Cart'}
             </Button>
+            <div className="product-tabs mt-4">
+              <Tab.Container activeKey={activeTab}>
+                <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
+                  <Nav.Item>
+                    <Nav.Link eventKey="description">Description</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="reviews">Reviews</Nav.Link>
+                  </Nav.Item>
+                </Nav>
+                <Tab.Content className="mt-3">
+                  {activeTab === 'description' ? <Description /> : <Reviews />}
+                </Tab.Content>
+              </Tab.Container>
+            </div>
           </Col>
         </Row>
-        <div className="product-tabs mt-4">
-          <Tab.Container activeKey={activeTab}>
-            <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
-              <Nav.Item>
-                <Nav.Link eventKey="description">Description</Nav.Link>
-              </Nav.Item>
-              {activeTab === 'description' && (
-                <Description /> 
-              )}
-              <Nav.Item>
-                <Nav.Link eventKey="reviews">Reviews</Nav.Link>
-              </Nav.Item>
-            </Nav>
-            {activeTab === 'reviews' && <Reviews />}
-            <Tab.Content className="mt-3">
-              <Tab.Pane eventKey="description">
-              </Tab.Pane>
-            </Tab.Content>
-          </Tab.Container>
-          <RelatedProducts/>
-        </div>
-        
+        <RelatedProducts />
       </div>
       <Footer />
     </>
