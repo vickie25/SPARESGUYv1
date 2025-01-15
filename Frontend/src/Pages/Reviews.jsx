@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import './PagesCSS/Reviews.css';
 
 const Reviews = () => {
@@ -44,38 +45,38 @@ const Reviews = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newReview = { ...formData };
-try {
-  const response = await fetch('/api/reviews', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newReview),
-  });
-  if (!response.ok) {
-    const errorDetails = await response.json();
-    throw new Error(errorDetails.message || 'Failed to submit review');
-  }
-  const savedReview = await response.json();
-  setReviews([...reviews, savedReview]);
-  setFormData({ name: '', email: '', review: '', rating: 0 }); 
-  alert('Review submitted!');
-} catch (error) {
-  console.error('Error submitting review:', error.message);
-  alert(`Error: ${error.message}`);
-}
+    try {
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newReview),
+      }); qq3
+      if (!response.ok) {
+        const errorDetails = await response.json();
+        throw new Error(errorDetails.message || 'Failed to submit review');
+      }
+      const savedReview = await response.json();
+      setReviews([...reviews, savedReview]);
+      setFormData({ name: '', email: '', review: '', rating: 0 });
+      alert('Review submitted!');
+    } catch (error) {
+      console.error('Error submitting review:', error.message);
+      alert(`Error: ${error.message}`);
+    }
   };
 
   return (
-    <div className="review-section">
+    <Container fluid className="review-section py-4">
       <h2>Customer Reviews</h2>
 
       {isLoading && <p>Loading reviews...</p>}
       {error && <p className="error">{error}</p>}
 
-      <div className="reviews-list">
+      <Row className="reviews-list">
         {reviews.map((review) => (
-          <div className="review" key={review.id}>
-            <div className="review-header">
-              <div className="profile">
+          <Col md={4} className="review mb-4" key={review.id}>
+            <div className="review-header d-flex align-items-center">
+              <div className="profile me-3">
                 <div className="profile-img"></div>
                 <div className="profile-name">{review.name}</div>
               </div>
@@ -94,15 +95,15 @@ try {
             <div className="review-footer">
               <span>Posted on {review.datePosted}</span>
             </div>
-          </div>
+          </Col>
         ))}
-      </div>
+      </Row>
 
-      <div className="add-review">
+      <div className="add-review mt-4">
         <h3>Add Your Review</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="rating-input">
-            <label>Your Rating</label>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formRating">
+            <Form.Label>Your Rating</Form.Label>
             <div className="stars">
               {Array(5)
                 .fill()
@@ -118,11 +119,11 @@ try {
                   />
                 ))}
             </div>
-          </div>
+          </Form.Group>
 
-          <div className="input-field">
-            <label>Name</label>
-            <input
+          <Form.Group controlId="formName" className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
               type="text"
               name="name"
               value={formData.name}
@@ -130,11 +131,11 @@ try {
               placeholder="Enter Your Name"
               required
             />
-          </div>
+          </Form.Group>
 
-          <div className="input-field">
-            <label>Email Address</label>
-            <input
+          <Form.Group controlId="formEmail" className="mb-3">
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
               type="email"
               name="email"
               value={formData.email}
@@ -142,23 +143,25 @@ try {
               placeholder="Enter Your Email"
               required
             />
-          </div>
+          </Form.Group>
 
-          <div className="input-field">
-            <label>Your Review</label>
-            <textarea
+          <Form.Group controlId="formReview" className="mb-3">
+            <Form.Label>Your Review</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
               name="review"
               value={formData.review}
               onChange={handleInputChange}
               placeholder="Enter Your Review"
               required
             />
-          </div>
+          </Form.Group>
 
-          <button type="submit">Submit</button>
-        </form>
+          <Button type="submit" variant="primary">Submit</Button>
+        </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 

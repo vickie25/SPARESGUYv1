@@ -26,6 +26,7 @@ import styled from 'styled-components';
 
 const sections = [
   { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard', content: <Dashboard /> },
+  
   // Add other sections here
 ];
 
