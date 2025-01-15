@@ -50,7 +50,7 @@ const Reviews = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReview),
-      });
+      }); qq3
       if (!response.ok) {
         const errorDetails = await response.json();
         throw new Error(errorDetails.message || 'Failed to submit review');
