@@ -19,6 +19,7 @@ const AboutUs = () => {
 
   return (
     <div>
+      <Header/>
   <div className="Banner-About" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', backgroundSize: 'cover' }}>
   <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: `url(${car})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'brightness(0.7) blur(5px)', zIndex: 0 }}></div>
   <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
