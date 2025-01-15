@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Row, Col, Button, Nav, Tab, Form } from 'react-bootstrap';
 import axios from 'axios';
-import ProductTabs from './ProductTabs';
+import ProductTabs from './ProductTabs'; 
 import RelatedProducts from './RelatedProducts';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
