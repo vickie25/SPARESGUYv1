@@ -120,7 +120,7 @@ const Inventory = () => {
                                 className="add-button"
                                 onClick={() => handleShow(null)}
                             >
-                                <FaPlus /> Add New Part
+                                <FaPlus /> Add New Product
                             </ActionButton>
                         </Col>
                     </Row>
@@ -179,7 +179,7 @@ const Inventory = () => {
 
             <StyledModal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{currentPart ? 'Edit Part' : 'Add New Part'}</Modal.Title>
+                    <Modal.Title>{currentPart ? 'Edit Part' : 'Add New Product'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {isLoading ? (
@@ -204,6 +204,17 @@ const Inventory = () => {
                                     defaultValue={currentPart ? currentPart.name : ''}
                                     required
                                     placeholder="Enter part name"
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3">
+                                <Form.Label>Quantity</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    name="name"
+                                    defaultValue={currentPart ? currentPart.name : ''}
+                                    required
+                                    placeholder="enter quantity"
                                 />
                             </Form.Group>
 
@@ -280,6 +291,7 @@ const Inventory = () => {
                                     <option value="Petrol">Petrol</option>
                                     <option value="Diesel">Diesel</option>
                                     <option value="Gasoline">Gasoline</option>
+                                    <option value="All  applicable">All  applicable</option>
                                 </Form.Control>
                             </Form.Group>
 
@@ -295,7 +307,7 @@ const Inventory = () => {
                             </Form.Group>
 
                             <Form.Group className="mb-4">
-                                <Form.Label>Price ($)</Form.Label>
+                                <Form.Label>Price (Ksh)</Form.Label>
                                 <Form.Control
                                     type="number"
                                     name="price"

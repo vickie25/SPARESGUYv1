@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { IoCheckboxOutline, IoSquareOutline } from 'react-icons/io5';
-import Slider from 'react-slider'; // Ensure this is correct
+import Slider from 'react-slider'; 
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const ProductFilter = ({ products, onFilterChange }) => {
     const [checkedCategories, setCheckedCategories] = useState([]);
     const [priceRange, setPriceRange] = useState([0, 100000]);
-    const [userInfo, setUserInfo] = useState(null); // This should come from your user state
+    const [userInfo, setUserInfo] = useState(null); 
     const navigate = useNavigate();
 
     const toggleCategory = (category) => {
