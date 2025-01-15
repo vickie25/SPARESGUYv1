@@ -5,7 +5,7 @@ import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import productRoutes from './routes/productRoutes.js';
-// import relatedProductsRoutes from './routes/relatedProductsRoutes.js'
+import relatedProductsRoutes from './routes/relatedProductsRoutes.js'
 import CategoryRoutes from './routes/CategoryRoutes.js';
 import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
 import AuthMiddleware from './Middleware/AuthMiddleware.js';
@@ -59,7 +59,7 @@ app.use('/api/products', productRoutes);
 
 
 // related Product routes
-// app.use('/api/products/related', relatedProductRoutes);
+app.use('/api/', relatedProductsRoutes);
 
 
 

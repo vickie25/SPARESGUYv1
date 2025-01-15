@@ -14,6 +14,12 @@ const authMiddleware = async (req, res, next) => {
     if (!token) {
         return res.status(401).json({ message: 'Authentication error: Token not provided' });  
     }
+    const validateObjectId = (req, res, next) => {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+          return res.status(400).json({ error: "Invalid product ID" });
+        }
+        next();
+      };
 
     try {
         const decoded = jwt.verify(token, key);
