@@ -135,13 +135,23 @@ input {
 
 .edit-button {
   border-radius: 10px;
-  color:black;
-  background-color:goldenrod;
+  color: black; 
+  background-color: goldenrod; 
 }
+
+.edit-button:hover {
+  color: goldenrod; 
+  background-color: black; 
+}
+
 .save-button {
   border-radius: 10px;
   color:black;
   background-color:goldenrod;
+}
+.save-button:hover {
+  color: goldenrod; 
+  background-color: black; 
 }
 
 /* Container for the entire grid */
