@@ -99,11 +99,11 @@ main {
 
 .userdetails {
   width: 80%;
-  justiify-content: center;
+  justify-content: center;
 }
 
 .details {
-  width: 90%;
+  width: 50%;
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Two equal columns */
   grid-gap: 20px;
@@ -135,9 +135,13 @@ input {
 
 .edit-button {
   border-radius: 10px;
+  color:black;
+  background-color:goldenrod;
 }
 .save-button {
   border-radius: 10px;
+  color:black;
+  background-color:goldenrod;
 }
 
 /* Container for the entire grid */
@@ -284,7 +288,6 @@ input {
 
 .appearance,
 .language,
-.2fa,
 .email-not {
   background-color: white;
 }
