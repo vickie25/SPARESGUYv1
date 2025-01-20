@@ -48,7 +48,7 @@ const StatisticItem = ({ number, label, icon: Icon }) => {
 const StatisticsBar = () => {
   const stats = [
     { number: '3', label: 'Years Market Lead', icon: FaChartLine },
-    { number: '34K', label: 'Product Delivery In The World', icon: FaShippingFast },
+    { number: '34K', label: 'Product Delivery Nationwide', icon: FaShippingFast },
     { number: '34K', label: 'Satisfied Customers', icon: FaSmile }
   ];
 
@@ -62,7 +62,6 @@ const StatisticsBar = () => {
     </Container>
   );
 };
-
 // At the end of StatisticsBar.jsx
 export default StatisticsBar;
 
