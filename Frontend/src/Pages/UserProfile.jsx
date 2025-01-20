@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from './UserContext';
 
 
-
+ 
 
 const UserProfile = () => {
   const { wishlist, removeFromWishlist } = useWishlist();
