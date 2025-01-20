@@ -1,3 +1,4 @@
+import { BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,17 +27,21 @@ import Payement from './Pages/Payement.jsx'; // import PaymentConfirmation from 
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
 import AboutUs from './Pages/AboutUs.jsx';
-import { BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
+
+
+// Admin Routes
 import AdminLayout from './Admin/AdminLayout.jsx';
 import AdminDashboard from './Admin/AdminDashboard.jsx';
 import Inventory from './Admin/Inventory.jsx';
+import Notifications from './Admin/Notifications.jsx';
 import Customers from './Admin/Customer.jsx';
 import Order from './Admin/Order.jsx';
 import Categories from './Admin/Categories.jsx';
 import Reports from './Admin/Reports.jsx';
 import Logout from './Admin/Logout.jsx';
-// import settings from ;
-import Notification from './Admin/Header/Notification.jsx';
+import Reviews from './Pages/Reviews.jsx';
+import HeaderNotification from './Admin/Header/HeaderNotification.jsx'
+import Settings from './Admin/Settings.jsx';
 import Success from './Pages/Success.jsx';
 
 const routes = createBrowserRouter(createRoutesFromElements(
@@ -70,8 +75,11 @@ const routes = createBrowserRouter(createRoutesFromElements(
       <Route path="customers" element={<Customers />} />
       <Route path="orders" element={<Order />} />
       <Route path="categories" element={<Categories />} />
+      <Route path="notifications" element={<Notifications />} />
       <Route path="reports" element={<Reports />} />
-      <Route path="header/notification" element={<Notification />} />
+      <Route path="header/notification" element={<HeaderNotification />} />
+      <Route path="reviews" element={<Reviews />} />
+      <Route path="settings" element={<Settings />} />
     </Route>
     <Route path="logout" element={<Logout />} />
   </Route>
