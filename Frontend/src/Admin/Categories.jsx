@@ -3,46 +3,7 @@ import { Container, Row, Col, Table, Button, Modal, Form, Badge } from 'react-bo
 import { FaPlus, FaEdit, FaTrashAlt, FaImage, FaEye } from 'react-icons/fa';
 import styled from 'styled-components';
 
-// Styled Components
-const PageTitle = styled.h2`
-  color: #DAA520;
-  font-weight: bold;
-  margin-bottom: 2rem;
-  text-align: center;
-`;
 
-const CategoryTable = styled(Table)`
-  background-color: #FFFFFF;
-  border-radius: 8px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  .table th, .table td {
-    vertical-align: middle;
-  }
-`;
-
-const ActionButton = styled(Button)`
-  background-color: #DAA520;
-  border: none;
-  color: #FFFFFF;
-  &:hover {
-    background-color: #c7911f;
-    color: #FFFFFF;
-  }
-  margin-right: 8px;
-`;
-
-const CategoryImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  margin-right: 10px;
-`;
-
-const CategoryBadge = styled(Badge)`
-  &.badge-info {
-    background-color: #17a2b8;
-  }
-`;
 
 const CategoryItem = ({ category, onEdit, onDelete }) => {
   return (
@@ -218,3 +179,46 @@ const CategoriesPage = () => {
 };
 
 export default CategoriesPage;
+
+
+// Styled Components
+
+const PageTitle = styled.h2`
+  color: #DAA520;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+`;
+
+const CategoryTable = styled(Table)`
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  .table th, .table td {
+    vertical-align: middle;
+  }
+`;
+
+const ActionButton = styled(Button)`
+  background-color: #DAA520;
+  border: none;
+  color: #FFFFFF;
+  &:hover {
+    background-color: #c7911f;
+    color: #FFFFFF;
+  }
+  margin-right: 8px;
+`;
+
+const CategoryImage = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+`;
+
+const CategoryBadge = styled(Badge)`
+  &.badge-info {
+    background-color: #17a2b8;
+  }
+`; 
