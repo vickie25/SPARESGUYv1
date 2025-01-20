@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaBell } from 'react-icons/fa';
 import axios from 'axios';
 
-const Notification = ({ userId }) => {
+const HeaderNotification = ({ userId }) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -60,4 +60,4 @@ const Notification = ({ userId }) => {
   );
 };
 
-export default Notification;
+export default HeaderNotification;
