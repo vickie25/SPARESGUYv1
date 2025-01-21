@@ -20,6 +20,8 @@ import { requireAdmin } from './Middleware/roleMiddleware.js';
 import NotificationRoutes from './routes/NotificationRoutes.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 
 dotenv.config();
@@ -43,16 +45,17 @@ app.use('/uploads', express.static('uploads'));
 // Connect to the database
 connectDB();
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendPath = path.join(__dirname, '../frontend/dist'); // Adjust the path if needed
+app.use(express.static(frontendPath));
 
-// Root route
-app.get('/', (req, res) => {
-    res.send('Welcome to the API');
+// Fallback for React SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
-
 
 // User routes
 app.use('/api/users', userRoutes);
-
 
 // Product routes
 app.use('/api/products', productRoutes);
@@ -61,42 +64,29 @@ app.use('/api/products', productRoutes);
 // related Product routes
 app.use('/api/', relatedProductsRoutes);
 
-
-
-
 // ContactUs routes
 app.use('/api/contact', contactRoutes);
-
 
 // Cart routes
 app.use('/api/cart', cartRoutes);
 
-
 // Payment routes
 app.use('/api/payments', paymentInfoRoutes);
-
 
 // Order routes
 app.use('/api/orders', OrderRoutes);
 
-
 // Review routes
 app.use('/api/review', ReviewRoutes);
-
 
 // Checkout routes
 app.use('/api/checkout', CheckoutRoutes);
 
-
 // Delivery routes
 app.use('/api/delivery', deliveryScheRoutes);
 
-
 // Category routes
 app.use('/api/categories', CategoryRoutes);
-
-
-
 
 // Protect the profile route
 app.get('/profile', AuthMiddleware, (req, res) => {
