@@ -27,6 +27,8 @@ import Payement from './Pages/Payement.jsx'; // import PaymentConfirmation from 
 import { CartProvider } from './context/CartContext.jsx';
 import { SearchProvider } from './context/SearchContext';
 import AboutUs from './Pages/AboutUs.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 // Admin Routes
