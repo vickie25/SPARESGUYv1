@@ -46,7 +46,7 @@ app.use('/uploads', express.static('uploads'));
 connectDB();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const frontendPath = path.join(__dirname, '../frontend/dist'); // Adjust the path if needed
+const frontendPath = path.join(__dirname, '../Frontend/dist'); // Adjust the path if needed
 app.use(express.static(frontendPath));
 
 // Fallback for React SPA
