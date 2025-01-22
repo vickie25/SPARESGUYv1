@@ -28,16 +28,16 @@ const ShoppingPage = () => {
   const productsPerPage = 9;
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('/api/products');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
+    fetch('/api/products')
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProducts(data); // Ensure data is an array
+        } else {
+          console.error('Expected an array but got:', data);
+        }
+      })
+      .catch((error) => console.error('Error fetching products:', error));
   }, []);
 
   useEffect(() => {
