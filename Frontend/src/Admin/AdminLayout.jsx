@@ -26,7 +26,7 @@ import styled from 'styled-components';
 
 const sections = [
   { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard', content: <Dashboard /> },
-  
+ 
   // Add other sections here
 ];
 
@@ -81,7 +81,7 @@ const AdminLayout = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                   >
-                    MYSPARES GUY
+                    MY SPARES GUY
                   </BrandTitle>
                 )}
                 <Nav className="flex-column">
