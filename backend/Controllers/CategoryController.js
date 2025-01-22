@@ -54,3 +54,8 @@ export const updateCategory = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 }
+
+//delete a category
+//route DELETE /api/categories/:id
+//access private/admin
+
