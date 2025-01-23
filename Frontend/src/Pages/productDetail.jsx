@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Nav, Tab } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+
+import RelatedProducts from './relatedProducts';
+
 // import RelatedProducts from './RelatedProducts';
+
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews';
