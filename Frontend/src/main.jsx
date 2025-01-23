@@ -57,7 +57,6 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="cart" element={<CartPage />} />
     <Route path='/success' element={<Success />} />
 
-
     <Route path="description" element={<description />} />
     <Route path="review" element={<Review />} /> 
     <Route path="checkout" element={<Checkout />} />
