@@ -3,7 +3,7 @@ import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom"; // To get productId from the URL
 
-const  `RelatedProducts = () => {
+const  RelatedProducts = () => {
   const { productId } = useParams(); // Get productId from the URL
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [error, setError] = useState("");
