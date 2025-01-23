@@ -47,7 +47,7 @@ import Settings from './Admin/Settings.jsx';
 import Success from './Pages/Success.jsx';
 
 const routes = createBrowserRouter(createRoutesFromElements(
-  <Route path="/" element={<App />}>
+    <Route path="/" element={<App />}>
     <Route index element={<Homepage />} />
     <Route path="login" element={<Login />} />
     <Route path="registration" element={<Registration />} />
@@ -56,7 +56,6 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path="product-tabs" element={<ProductTabs />} />
     <Route path="cart" element={<CartPage />} />
     <Route path='/success' element={<Success />} />
-
 
     <Route path="description" element={<description />} />
     <Route path="review" element={<Review />} /> 
@@ -70,7 +69,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
 
     /* Admin Routes */
 
-    <Route path="admin" element={<AdminLayout />}>
+      <Route path="admin" element={<AdminLayout />}>
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<AdminDashboard />} />
       <Route path="inventory" element={<Inventory />} />

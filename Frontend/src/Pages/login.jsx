@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLoginUserMutation } from '../slices/usersApiSlice';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
@@ -14,6 +14,15 @@ const LoginPage = () => {
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
   const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [user, setUser] = useState(null); // To manage logged-in user state
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const storedUser = JSON.parse(localStorage.getItem('userInfo'));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +49,10 @@ const LoginPage = () => {
       console.log(res, "response of logged user")
       const role = res.user.role;
 
+       // Save user to localStorage and state
+       localStorage.setItem('userInfo', JSON.stringify(res.user));
+       setUser(res.user);
+
       toast.success('Login successful! Redirecting...', {
         position: "top-right",
         autoClose: 2000,
@@ -50,13 +63,13 @@ const LoginPage = () => {
       });
 
      // Convert the user object to a JSON string and store it
-localStorage.setItem('userInfo', JSON.stringify(res.user));
+// localStorage.setItem('userInfo', JSON.stringify(res.user));
 
 // Retrieve and parse the stored JSON string back to an object
 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 console.log(userInfo); // Now you should get your user object
 
-  
+   // Redirect based on role
       setTimeout(() => {
         if (role === 'admin') {
           navigate('/admin/dashboard'); // Redirect admin to admin dashboard
@@ -78,10 +91,18 @@ console.log(userInfo); // Now you should get your user object
       console.error('Login failed:', err);
     }
   };
+
+  const handleLogout = () => {
+    // Clear user data on logout
+    localStorage.removeItem('userInfo');
+    setUser(null);
+    navigate('/'); // Redirect to homepage or login
+  };
   
   return (
     <Container fluid className="vh-100 p-0">
       <Row className="h-100 m-0">
+                 {/* Left Section */}       
         <Col md={6} className="p-0 d-flex align-items-center justify-content-center position-relative overflow-hidden">
           <div className="h-100 w-100 position-absolute" 
                style={{
@@ -99,9 +120,31 @@ console.log(userInfo); // Now you should get your user object
             </div>
           </div>
         </Col>
+                     {/* Right Section */}
 
         <Col md={6} className="d-flex align-items-center justify-content-center" 
              style={{ background: '#000000' }}>
+              {user ? ( 
+                <Card className="shadow-lg border-0 text-center p-4" style={{ width: '90%', maxWidth: '450px', borderRadius: '15px', background: '#FFFFFF', border: '1px solid #DAA520' }}>
+                <Card.Body>
+                  <h3 className="text-center mb-3">Welcome, {user.name}!</h3>
+                  <p className="text-muted">You are logged in as a {user.role}.</p>
+                  <Button
+                    variant="custom"
+                    onClick={handleLogout}
+                    className="w-100 py-2 custom-button"
+                    style={{
+                      borderRadius: '8px',
+                      background: '#000000',
+                      color: '#FFFFFF',
+                      border: '1px solid #DAA520',
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </Card.Body>
+              </Card>
+            ) : (
           <Card className="shadow-lg border-0" 
                 style={{ 
                   width: '90%', 
@@ -193,6 +236,7 @@ console.log(userInfo); // Now you should get your user object
               </Form>
             </Card.Body>
           </Card>
+            )}
         </Col>
       </Row>
       <ToastContainer />

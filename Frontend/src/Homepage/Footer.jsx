@@ -20,6 +20,13 @@ const Footer = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const socialLinks = [
+    { icon: BsFacebook, url: 'https://www.facebook.com/APBCAfrica/' },
+    { icon: BsTwitter, url: 'https://twitter.com/yourprofile' },
+    { icon: BsInstagram, url: 'https://www.instagram.com/yourprofile' },
+    { icon: BsLinkedin, url: 'https://www.linkedin.com/in/apbc-africa-it-103814307/' },
+  ];
+
   return (
     <Container fluid style={{ backgroundColor: '#000000', color: '#FFFFFF', paddingTop: '3rem' }}>
       <Container>
@@ -40,17 +47,18 @@ const Footer = () => {
               </a>
             </div>
             <div className="social-icons d-flex gap-3 mb-3">
-              {[BsFacebook, BsTwitter, BsInstagram, BsLinkedin].map((Icon, index) => (
-                <Icon 
-                  key={index}
-                  style={{ 
-                    cursor: 'pointer', 
-                    fontSize: '1.5rem',
-                    color: '#DAA520',
-                    transition: 'transform 0.3s ease'
-                  }}
-                  className="social-icon"
-                />
+              {socialLinks.map(({ icon: Icon, url }, index) => (
+                <a href={url} target="_blank" rel="noopener noreferrer" key={index}>
+                  <Icon 
+                    style={{ 
+                      cursor: 'pointer', 
+                      fontSize: '1.5rem',
+                      color: '#DAA520',
+                      transition: 'transform 0.3s ease'
+                    }}
+                    className="social-icon"
+                  />
+                </a>
               ))}
             </div>
           </Col>
@@ -136,7 +144,7 @@ const Footer = () => {
         {/* Footer Bottom */}
         <Row className="py-3 align-items-center">
           <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
-            <small>&copy; {currentYear} My Spares Guy. All rights reserved.</small>
+            <small>&copy; {currentYear} My Spares Guy.    All rights reserved.</small>
           </Col>
           <Col md={6}>
             <div className="d-flex justify-content-center justify-content-md-end gap-4">
