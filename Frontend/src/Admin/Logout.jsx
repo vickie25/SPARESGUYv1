@@ -4,6 +4,60 @@ import { FaSignOutAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';  // Updated import
 import styled from 'styled-components';
 
+const Logout = () => {
+  const [showModal, setShowModal] = useState(false); // Manages modal visibility state.
+  const navigate = useNavigate(); // React Router hook for navigation.
+
+  // Logout function: Clears auth token and navigates to login page.
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); // Removes the authentication token.
+    navigate('/login'); // Redirects to the login page.
+  };
+
+  // Function to toggle modal visibility.
+  const toggleModal = () => {
+    setShowModal(!showModal); // Inverts the current modal state.
+  };
+
+  return (
+    <Container fluid>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          {/* Page Title */}
+          <PageTitle>Admin Logout</PageTitle>
+
+          {/* Logout Button */}
+          <LogoutButton onClick={toggleModal}>
+            <FaSignOutAlt style={{ marginRight: '8px' }} />
+            Logout
+          </LogoutButton>
+
+          {/* Confirmation Modal */}
+          <Modal show={showModal} onHide={toggleModal} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                <Icon />
+                Are you sure you want to log out?
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ConfirmationText>
+                You will be logged out of your admin session. Any unsaved data may be lost.
+              </ConfirmationText>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={toggleModal}>Cancel</Button>
+              <Button variant="danger" onClick={handleLogout}>Yes, Logout</Button>
+            </Modal.Footer>
+          </Modal>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default Logout;
+
 // Styled Components
 const LogoutButton = styled(Button)`
   background-color: #DAA520;
@@ -36,61 +90,3 @@ const Icon = styled(FaExclamationTriangle)`
   font-size: 3rem;
   margin-bottom: 20px;
 `;
-
-const Logout = () => {
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const navigate = useNavigate();  // Using the useNavigate hook for navigation
-
-  // Handle the logout action
-  const handleLogout = () => {
-    // You can add your logout logic here (e.g., clearing session storage, tokens)
-    localStorage.removeItem('authToken'); // Example: Remove auth token from localStorage
-    navigate('/login');  // Redirect to the login page after logging out
-  };
-
-  // Toggle modal visibility
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
-
-  return (
-    <Container fluid>
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <PageTitle>Admin Logout</PageTitle>
-
-          {/* Logout Button */}
-          <LogoutButton onClick={toggleModal}>
-            <FaSignOutAlt style={{ marginRight: '8px' }} />
-            Logout
-          </LogoutButton>
-
-          {/* Logout Confirmation Modal */}
-          <Modal show={showModal} onHide={toggleModal} centered>
-            <Modal.Header closeButton>
-              <Modal.Title>
-                <Icon />
-                Are you sure you want to log out?
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <ConfirmationText>
-                You will be logged out of your admin session. Any unsaved data may be lost.
-              </ConfirmationText>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={toggleModal}>
-                Cancel
-              </Button>
-              <Button variant="danger" onClick={handleLogout}>
-                Yes, Logout
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
-
-export default Logout;

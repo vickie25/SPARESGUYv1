@@ -66,16 +66,22 @@ const ShoppingPage = () => {
 
   return (
     <div>
-      <Header />
+      <Header /> {/* Renders the header of the application, which may include navigation, branding, or search functionality */}
+
       <Container>
         <Row className="my-3">
-          <Col md={3}>
+          <Col md={3}> {/*filter Section*/}
+
+            {/*Filter by heading*/}
             <div className="mb-4">
               <h4 style={{ fontWeight: 'bold', textAlign: 'left' }}>Filter by</h4>
               <hr />
+
+              {/*categories Filter*/}
               <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Categories</h5>
               {['Service Parts', 'Interchangeable parts', 'Second Hand'].map((category) => (
                 <div key={category} className="d-flex align-items-center mb-2">
+                  {/*checkbox for selecting categories */}
                   <Form.Check
                     type="checkbox"
                     checked={checkedCategories.includes(category)}
@@ -89,10 +95,13 @@ const ShoppingPage = () => {
                     style={{ accentColor: '#DAA520' }}
                     inputProps={{ style: { accentColor: '#DAA520' } }}
                   />
-                  <span className="ms-2">{category}</span>
+                  <span className="ms-2">{category}</span> 
                 </div>
               ))}
             </div>
+
+            {/*Brands filter*/}
+
             <div className="mb-4">
               <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Brands</h5>
               {[
@@ -121,6 +130,8 @@ const ShoppingPage = () => {
               ))}
             </div>
 
+              {/*copndition Filter*/}
+
             <div className="mb-4">
               <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Condition</h5>
               {['New', 'Used', 'Refurbished'].map((condition) => (
@@ -143,6 +154,7 @@ const ShoppingPage = () => {
               ))}
             </div>
 
+              {/* Price Range Filter */}
 
             <div className="mb-4">
               <h5 className="mb-3" style={{ fontWeight: 'bold', textAlign: 'left' }}>Price Range</h5>
@@ -165,32 +177,40 @@ const ShoppingPage = () => {
 
           {/* Products Section */}
           <Col md={9}>
+          {/*wrapper for navigation links to "Shop" and "All Products"*/}
             <Col md={9}>
               <div className="d-flex justify-content-between align-items-center mb-3">
+                {/* link to shop page*/}
                 <Link to="/shop" className="btn btn-link" style={{ color: 'goldenrod' }}>Shop</Link>
+                {/*Link to All Products*/}
                 <Link to="/All products" className="btn btn-link" style={{ color: 'goldenrod' }}>All products</Link>
               </div>
             </Col>
 
+              {/*Row to display Products*/}
             <Row>
+              {/*map through the current products and display each one*/}
               {currentProducts.map((product) => (
                 <Col lg={4} md={6} sm={12} className="mb-4" key={product._id}>
+                  {/*product Card*/}
                   <Card className="h-100 d-flex flex-column justify-content-between shadow-lg" style={{ height: '500px', borderRadius: '10px', overflow: 'hidden' }}>
+                    {/*Display the heart icon based on whether the product is in the wishlist*/}
                     {isInWishlist(product._id) ? (
                       <MdFavorite
                         className="text-danger position-absolute m-2"
                         style={{ right: '0', zIndex: 1 }}
-                        onClick={() => removeFromWishlist(product._id)}
+                        onClick={() => removeFromWishlist(product._id)} //Remove from wishlist when clicked
                       />
                     ) : (
                       <MdFavoriteBorder
                         className="position-absolute m-2"
                         style={{ right: '0', zIndex: 1 }}
-                        onClick={() => addToWishlist(product)}
+                        onClick={() => addToWishlist(product)} //Add to wishlist when clicked
                       />
                     )}
-
+                    {/*link to the product detail page */}
                     <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      {/*Product Image*/}
                       <Card.Img
                         variant="top"
                         src={`http://localhost:8000${product.image}`}
@@ -206,18 +226,20 @@ const ShoppingPage = () => {
 
                       {/* Card Body */}
                       <Card.Body className="text-center">
+                        {/*Product Name */}
                         <Card.Title style={{ fontSize: '1.2rem', fontWeight: '700', color: '#333' }}>
                           {product.name}
                         </Card.Title>
+                        {/*Product Price*/}
                         <Card.Text style={{ color: '#28a745', fontWeight: '600', fontSize: '1rem' }}>
                           Ksh {product.price}
                         </Card.Text>
                       </Card.Body>
                     </Link>
-
+                        {/*Add to Cart Button*/}
                     <Button
                       variant="primary"
-                      onClick={() => addToCart({ ...product, quantity: 1 })}
+                      onClick={() => addToCart({ ...product, quantity: 1 })} //Add product to cart with quantity 1
                       className="mt-auto"
                       style={{ backgroundColor: '#000', borderColor: '#000', transition: 'background-color 0.3s' }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#444'}
@@ -231,19 +253,26 @@ const ShoppingPage = () => {
               ))}
             </Row>
 
-
+              {/* Message when no products match the search criteria*/}
             {filteredProducts.length === 0 && <p>No products match your search criteria.</p>}
 
+              {/*pagination Controls */}
             <Pagination className="justify-content-center">
+              {/*previous page Button*/}
               <Pagination.Prev style={{ backgroundColor: '#DAA520', color: '#000000' }}
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)} //change to previous page
+                disabled={currentPage === 1} // Disable if on first page 
               >
-                <IoIosArrowRoundBack style={{ color: '#000000' }} />
+
+                <IoIosArrowRoundBack style={{ color: '#000000' }} /> {/*Back arrow Icon*/}
               </Pagination.Prev>
+
+              {/*current page display*/}
               <Pagination.Item active style={{ backgroundColor: '#DAA520', color: '#000000' }}>
-                {currentPage}
+                {currentPage} {/*show the current page number*/}
               </Pagination.Item>
+
+              {/*Next page Button*/}
               <Pagination.Next
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}

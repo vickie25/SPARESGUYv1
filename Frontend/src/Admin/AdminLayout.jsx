@@ -24,40 +24,50 @@ import AdminHeader from './AdminHeader';
 import styled from 'styled-components';
 
 
+// Import necessary libraries and components
 const sections = [
   { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard', content: <Dashboard /> },
- 
   // Add other sections here
 ];
 
-
 const AdminLayout = () => {
+  // State to track whether the sidebar is collapsed or expanded
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // State to track if the viewport is mobile-sized
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Access the current route location for determining active links
   const location = useLocation();
 
+  // Effect to handle screen resizing and update the mobile state accordingly
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 768); // Update isMobile for smaller screens
       if (window.innerWidth > 768) {
-        setIsCollapsed(false);
+        setIsCollapsed(false); // Expand sidebar for larger screens
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize); // Attach event listener
+    return () => window.removeEventListener('resize', handleResize); // Clean up listener
   }, []);
 
+  // Sidebar animation configurations
   const sidebarVariants = {
-    expanded: { width: isMobile ? '250px' : '250px' },
-    collapsed: { width: isMobile ? '0' : '70px' }
+    expanded: { width: isMobile ? '250px' : '250px' }, // Sidebar width when expanded
+    collapsed: { width: isMobile ? '0' : '70px' }, // Sidebar width when collapsed
   };
 
   return (
     <>
+      {/* Admin Header Component */}
       <AdminHeader />
+
+      {/* Main container for layout */}
       <Container fluid className="p-0">
         <Row className="g-0">
+          {/* Button to toggle sidebar visibility */}
           <ToggleButton
             ismobile={isMobile.toString()}
             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -65,16 +75,18 @@ const AdminLayout = () => {
             {isCollapsed ? <FaBars /> : <FaTimes />}
           </ToggleButton>
 
+          {/* Sidebar with animation */}
           <AnimatePresence>
             <SidebarContainer
-              initial={false}
-              animate={isCollapsed ? 'collapsed' : 'expanded'}
+              initial={false} // Prevent initial animation
+              animate={isCollapsed ? 'collapsed' : 'expanded'} // Use variants based on isCollapsed
               variants={sidebarVariants}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }} // Smooth transition
               ismobile={isMobile.toString()}
               iscollapsed={isCollapsed.toString()}
             >
               <div className="py-4 px-3">
+                {/* Brand title (shown only when sidebar is expanded) */}
                 {!isCollapsed && (
                   <BrandTitle
                     initial={{ opacity: 0, y: -20 }}
@@ -84,8 +96,11 @@ const AdminLayout = () => {
                     MY SPARES GUY
                   </BrandTitle>
                 )}
+
+                {/* Sidebar navigation */}
                 <Nav className="flex-column">
                   {[
+                    // List of navigation items
                     { path: '/admin/dashboard', icon: <FaChartBar />, text: 'Dashboard' },
                     { path: '/admin/inventory', icon: <FaBox />, text: 'Inventory' },
                     { path: '/admin/customers', icon: <FaUsers />, text: 'Customers' },
@@ -95,7 +110,7 @@ const AdminLayout = () => {
                     { path: '/admin/reviews', icon: <FaComments />, text: 'Reviews' },
                     { path: '/admin/notifications', icon: <FaBell />, text: 'Notifications' },
                     { path: '/admin/settings', icon: <FaCog />, text: 'Settings' },
-                    { path: '/logout', icon: <FaSignOutAlt />, text: 'Logout' }
+                    { path: '/logout', icon: <FaSignOutAlt />, text: 'Logout' },
                   ].map((item, index) => (
                     <NavItemStyled key={index} collapsed={isCollapsed}>
                       <Link
@@ -103,8 +118,8 @@ const AdminLayout = () => {
                         className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
                       >
                         <motion.span
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.95 }}
+                          whileHover={{ scale: 1.1 }} // Icon hover effect
+                          whileTap={{ scale: 0.95 }} // Icon tap effect
                         >
                           {item.icon}
                         </motion.span>
@@ -114,7 +129,7 @@ const AdminLayout = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
                           >
-                            {item.text}
+                            {item.text} {/* Text for each navigation item */}
                           </motion.span>
                         )}
                       </Link>
@@ -125,21 +140,22 @@ const AdminLayout = () => {
             </SidebarContainer>
           </AnimatePresence>
 
+          {/* Main content area */}
           <MainContent
-            className={`ms-auto ${isMobile ? 'w-100' : ''}`}
+            className={`ms-auto ${isMobile ? 'w-100' : ''}`} // Adjust for mobile view
             style={{
-              marginLeft: isMobile ? '0' : (isCollapsed ? '70px' : '250px'),
-              padding: '2rem'
+              marginLeft: isMobile ? '0' : (isCollapsed ? '70px' : '250px'), // Adjust margin based on sidebar state
+              padding: '2rem', // Content padding
             }}
           >
+            {/* Transition effect for content area */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Outlet />
+              <Outlet /> {/* Renders the routed component */}
             </motion.div>
-
           </MainContent>
         </Row>
       </Container>

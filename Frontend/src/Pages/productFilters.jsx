@@ -66,10 +66,10 @@ const ProductFilter = ({ products, onFilterChange }) => {
                 const orderId = res.data._id;
                 navigate(`/payment/${orderId}`);
             } else {
-                alert('Failed to place the order. Please try again.');
+                alert('Failed to place the order. please try again.');
             }
         } catch (error) {
-            alert('An error occurred while placing the order.');
+            alert('An error occurred while placing the order.');``
         }
     };
 
