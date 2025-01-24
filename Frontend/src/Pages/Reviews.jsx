@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
+
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import './PagesCSS/Reviews.css';
+
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -49,7 +54,10 @@ const Reviews = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newReview),
+
       });
+
+
       if (!response.ok) {
         const errorDetails = await response.json();
         throw new Error(errorDetails.message || 'Failed to submit review');
@@ -112,6 +120,37 @@ const Reviews = () => {
                 </div>
               </Card.Body>
             </Card>
+
+    <Container fluid className="review-section py-4">
+      <h2>Customer Reviews</h2>
+
+      {isLoading && <p>Loading reviews...</p>}
+      {error && <p className="error">{error}</p>}
+
+      <Row className="reviews-list">
+        {reviews.map((review) => (
+          <Col md={4} className="review mb-4" key={review.id}>
+            <div className="review-header d-flex align-items-center">
+              <div className="profile me-3">
+                <div className="profile-img"></div>
+                <div className="profile-name">{review.name}</div>
+              </div>
+              <div className="rating">
+                {Array(5)
+                  .fill()
+                  .map((_, i) => (
+                    <FaStar
+                      key={i}
+                      color={i < review.rating ? '#ffc107' : '#e4e5e9'}
+                    />
+                  ))}
+              </div>
+            </div>
+            <p>{review.reviewText}</p>
+            <div className="review-footer">
+              <span>Posted on {review.datePosted}</span>
+            </div>
+
           </Col>
         ))}
       </Row>
@@ -133,12 +172,24 @@ const Reviews = () => {
           <Form.Group controlId="formRating" className="mb-3">
             <Form.Label>Your Rating</Form.Label>
             <div className="stars d-flex gap-2">
+
+      <div className="add-review mt-4">
+        <h3>Add Your Review</h3>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formRating">
+            <Form.Label>Your Rating</Form.Label>
+            <div className="stars">
+
               {Array(5)
                 .fill()
                 .map((_, i) => (
                   <FaStar
                     key={i}
+
                     size={32}
+
+                    size={24}
+
                     color={i < (hover || formData.rating) ? '#ffc107' : '#e4e5e9'}
                     onMouseEnter={() => setHover(i + 1)}
                     onMouseLeave={() => setHover(null)}
@@ -158,12 +209,14 @@ const Reviews = () => {
               onChange={handleInputChange}
               placeholder="Enter Your Name"
               required
+
               style={{
                 padding: '12px',
                 fontSize: '16px',
                 borderRadius: '8px',
                 border: '1px solid #ddd',
               }}
+
             />
           </Form.Group>
 
@@ -176,6 +229,7 @@ const Reviews = () => {
               onChange={handleInputChange}
               placeholder="Enter Your Email"
               required
+
               style={{
                 padding: '12px',
                 fontSize: '16px',
@@ -190,11 +244,22 @@ const Reviews = () => {
             <Form.Control
               as="textarea"
               rows={4}
+
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formReview" className="mb-3">
+            <Form.Label>Your Review</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+
               name="review"
               value={formData.review}
               onChange={handleInputChange}
               placeholder="Enter Your Review"
               required
+
               style={{
                 padding: '12px',
                 fontSize: '16px',
@@ -220,6 +285,12 @@ const Reviews = () => {
           >
             Submit Review
           </Button>
+
+            />
+          </Form.Group>
+
+          <Button type="submit" variant="primary">Submit</Button>
+
         </Form>
       </div>
     </Container>

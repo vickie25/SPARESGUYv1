@@ -1,12 +1,39 @@
+
 import express from 'express';
+
 import mongoose from 'mongoose';
 import passport from 'passport';
 import googleAuth from './routes/googleAuth.js'; // Importing the Google authentication route
+
+import connectDB from './Config/db.js';
+import userRoutes from './routes/userRoutes.js';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import productRoutes from './routes/productRoutes.js';
+import relatedProductsRoutes from './routes/relatedProductsRoutes.js'
+import CategoryRoutes from './routes/CategoryRoutes.js';
+import paymentInfoRoutes from './routes/paymentInfoRoutes.js';
+import AuthMiddleware from './Middleware/AuthMiddleware.js';
+import authMiddleware from './Middleware/AuthMiddleware.js';
+import cartRoutes from './routes/cartRoutes.js';
+import ReviewRoutes from './routes/ReviewRoutes.js';
+import OrderRoutes from './routes/OrderRoutes.js';
+import CheckoutRoutes from './routes/CheckoutRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
+import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
+import { requireAdmin } from './Middleware/roleMiddleware.js';
+import NotificationRoutes from './routes/NotificationRoutes.js';
+
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
 
 
 
@@ -20,6 +47,11 @@ console.log("Google Client Secret:", process.env.GOOGLE_CLIENT_SECRET);
 // Middleware
 app.use(express.json());
 app.use(passport.initialize());
+
+const PORT = process.env.PORT || 8000;
+
+
+// Middleware
 
 app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
@@ -124,3 +156,4 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
         });
     })
     .catch(err => console.error(err));
+

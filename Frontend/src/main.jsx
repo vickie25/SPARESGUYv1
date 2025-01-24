@@ -14,7 +14,11 @@ import ProductDetail from './Pages/productDetail.jsx';
 import PaymentConfirmation from './Pages/PaymentConfirmation.jsx';
 import CartPage from './Pages/cartPage.jsx';
 import Review from './Pages/Reviews.jsx';
+
 import Description from './Pages/description.jsx';
+
+import description from './Pages/description.jsx';
+
 import ProductTabs from './Pages/ProductTabs.jsx';
 import UserProfile from './Pages/UserProfile.jsx';
 import ContactUs from './Pages/ContactUs.jsx';
@@ -40,12 +44,15 @@ import Customers from './Admin/Customer.jsx';
 import Order from './Admin/Order.jsx';
 import Categories from './Admin/Categories.jsx';
 import Reports from './Admin/Reports.jsx';
+
 import AdminHeader from './Admin/AdminHeader.jsx';
+
 import Logout from './Admin/Logout.jsx';
 import Reviews from './Pages/Reviews.jsx';
 import HeaderNotification from './Admin/Header/HeaderNotification.jsx'
 import Settings from './Admin/Settings.jsx';
 import Success from './Pages/Success.jsx';
+
 import Discount from './Pages/Discount.jsx';
 const clientId = '881796254664-fc8l2k6pvsa02fe1fql5jqdjrihnpbvm.apps.googleusercontent.com';
 const routes = createBrowserRouter(createRoutesFromElements(
@@ -60,6 +67,21 @@ const routes = createBrowserRouter(createRoutesFromElements(
     <Route path='/success' element={<Success />} />
 
     <Route path="description" element={<Description />} />
+
+
+const routes = createBrowserRouter(createRoutesFromElements(
+    <Route path="/" element={<App />}>
+    <Route index element={<Homepage />} />
+    <Route path="login" element={<Login />} />
+    <Route path="registration" element={<Registration />} />
+    <Route path="shop" element={<Shop />} />
+    <Route path="product/:id" element={<ProductDetail />} />
+    <Route path="product-tabs" element={<ProductTabs />} />
+    <Route path="cart" element={<CartPage />} />
+    <Route path='/success' element={<Success />} />
+
+    <Route path="description" element={<description />} />
+
     <Route path="review" element={<Review />} /> 
     <Route path="checkout" element={<Checkout />} />
     <Route path="payment/:orderId" element={<Payement />} />
@@ -78,12 +100,19 @@ const routes = createBrowserRouter(createRoutesFromElements(
       <Route path="customers" element={<Customers />} />
       <Route path="orders" element={<Order />} />
       <Route path="categories" element={<Categories />} />
+
     <Route path="reports" element={<Reports />} />
+
+      <Route path="notifications" element={<Notifications />} />
+      <Route path="reports" element={<Reports />} />
+
       <Route path="header/notification" element={<HeaderNotification />} />
       <Route path="reviews" element={<Reviews />} />
       <Route path="settings" element={<Settings />} />
     </Route>
+
      <Route path="Admin/AdminHeader" element={<AdminHeader />} />
+
     <Route path="logout" element={<Logout />} />
   </Route>
 ));
@@ -91,7 +120,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
-      
+
       <Provider store={store}>
         <CartProvider>
           <SearchProvider>

@@ -8,6 +8,7 @@ export const createOrder = async (req, res) => {
 
         // Calculate the total amount from cart items
         const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
         //checking if the discount is applied
         if (discountCode) {
             const discount = await discount.findOne({ code: discount });
@@ -22,6 +23,7 @@ export const createOrder = async (req, res) => {
                 await discount.save();
                 }
             }
+
 
         const newOrder = new Order({
             customerId,

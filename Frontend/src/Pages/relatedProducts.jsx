@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 
+
 const relatedProducts = () => {
+
+import { useParams } from "react-router-dom"; // To get productId from the URL
+
+const  RelatedProducts = () => {
+
   const { productId } = useParams(); // Get productId from the URL
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [error, setError] = useState("");
@@ -15,7 +21,11 @@ const relatedProducts = () => {
 
     // Fetch related products from the backend
     axios
+
       .get(`/related/${productId}`)
+
+      .get(`http://localhost:8000/api/products/related/${productId}`)
+
       .then((response) => {
         if (response.data.length === 0) {
           setError("No related products found.");
@@ -52,4 +62,7 @@ const relatedProducts = () => {
   );
 };
 
+
 export default relatedProducts;
+
+export default RelatedProducts;

@@ -20,3 +20,6 @@ discountSchema.methods.isValid = function () {
 // module.exports = mongoose.model('Discount', discountSchema);
 
 export default discountSchema;
+
+module.exports = mongoose.model('Discount', discountSchema);
+
