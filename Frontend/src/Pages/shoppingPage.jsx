@@ -3,10 +3,18 @@ import { Container, Row, Col, Form, Button, Card, Pagination } from 'react-boots
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import Slider from 'rc-slider';
+
+import { useParams } from "react-router-dom";
+import 'rc-slider/assets/index.css';
+import Footer from '../Homepage/Footer';
+import Header from '../Homepage/Header';
+import RelatedProducts from './relatedProducts';
+
 import { IoFilter } from "react-icons/io5";
 import 'rc-slider/assets/index.css';
 import Footer from '../Homepage/Footer';
 import Header from '../Homepage/Header';
+
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useCart } from '../context/CartContext';
@@ -26,6 +34,8 @@ const ShoppingPage = () => {
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const productsPerPage = 9;
+
+  const {Id } = useParams();
 
   useEffect(() => {
     fetch('/api/products')
@@ -257,6 +267,9 @@ const ShoppingPage = () => {
           </Col>
         </Row>
       </Container >
+
+      <div><RelatedProducts  productId={Id}/></div>
+
       <Footer />
     </div >
   );

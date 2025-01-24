@@ -1,19 +1,39 @@
+
 //a model for user registration and login
+
 import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: false, 
     },
-    
+
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
+
+        required: false, 
+    },
+    role: {
+        type: String,
+        enum: ['customer', 'admin'], 
+        default: 'customer', 
+    },
+    googleId: {
+        type: String, 
+        unique: true,
+        sparse: true, 
+    },
+    picture: {
+        type: String, 
+    },
+}, { timestamps: true });
+
         required: true
     },
     role: {
@@ -24,7 +44,7 @@ const userSchema = new Schema({
 
 });
 
+
 const User = model('User', userSchema);
 
 export default User;
-
