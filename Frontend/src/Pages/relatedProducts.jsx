@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
-
-const relatedProducts = ({ productId }) => {
+const RelatedProducts = () => {
+  const { productId } = useParams(); // Get productId from the URL
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [error, setError] = useState("");
 

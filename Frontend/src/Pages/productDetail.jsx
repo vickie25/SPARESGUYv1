@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Button, Nav, Tab } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';import RelatedProducts from './relatedProducts';
 import Header from '../Homepage/Header.jsx';
 import Footer from '../Homepage/Footer.jsx';
 import Reviews from './Reviews';
@@ -11,16 +11,18 @@ const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState('description');
   const handleTabSelect = (key) => setActiveTab(key);
 
-  const [cart, setCart] = useState(() => {
+  const [cartCount, setCartCount] = useState(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart'));
-    return savedCart || [];
+    return savedCart ? savedCart.reduce((acc, item) => acc + item.quantity, 0) : 0;
   });
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [cartCount, setCartCount] = useState(0);
+
+  // const [cartCount, setCartCount] = useState(0);
+
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
@@ -128,6 +130,7 @@ const ProductDetails = () => {
           </Col>
 
           {/* Right Column */}
+          
           <Col md={6}>
             <h4 className="product-title">{product.name}</h4>
             <p className="text-muted">{product.description}</p>
@@ -168,6 +171,7 @@ const ProductDetails = () => {
             </div>
           </Col>
         </Row>
+      <RelatedProducts />
       </div>
       <Footer />
     </>
