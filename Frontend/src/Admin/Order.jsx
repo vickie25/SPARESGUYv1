@@ -152,7 +152,7 @@ const OrderPage = () => {
         
 
           <PageTitle>Manage Orders</PageTitle>
-          <Button
+          <Button style={{ backgroundColor: "goldenrod", borderColor: "goldenrod" }} 
             variant="success"
             onClick={() => {
               setNewOrder({
@@ -165,7 +165,8 @@ const OrderPage = () => {
               setShowModal(true); // Show modal for adding a new order
             }}
           >
-            <FaPlus /> Add New Order
+            <FaPlus /> 
+            Add New Order
           </Button>
 
           {/* Table displaying all orders */}
@@ -258,7 +259,7 @@ const OrderPage = () => {
                   <Form.Control type="file" onChange={handleImageChange} />
                 </Form.Group>
 
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit"  style={{ backgroundColor: "goldenrod", borderColor: "goldenrod" }}>
                   {currentOrder ? 'Save Changes' : 'Add Order'}
                 </Button>
               </Form>

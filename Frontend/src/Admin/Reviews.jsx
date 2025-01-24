@@ -117,7 +117,8 @@ const AdminReviews = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" style={{ backgroundColor: "goldenrod", borderColor: "goldenrod" }}
+           onClick={() => setShowModal(false)}>
             Close
           </Button>
         </Modal.Footer>
