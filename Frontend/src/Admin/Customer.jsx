@@ -166,7 +166,7 @@ const Customers = () => {
                             ))}
                         </tbody>
                     </StyledTable>
-
+                   
                     {/* Pagination */}
                     <div className="d-flex justify-content-center">
                         <Pagination>
@@ -354,3 +354,10 @@ const FilterSection = styled.div`
     padding: 1rem;
     background-color: #f8f9fa;
     border-radius: 8px;`;
+    const handleClick = (event) => {
+        event.target.style.backgroundColor = 'goldenrod';
+        event.target.style.borderColor = 'goldenrod';
+        handleClose(); // If you want to keep the existing handleClose functionality
+    };
+    
+   
