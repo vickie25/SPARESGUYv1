@@ -30,76 +30,92 @@ const Dashboard = () => {
 
   return (
     <Container fluid>
-      <h2 className="mb-4">Dashboard Overview</h2>
-      <Row className="g-4 mb-4">
-        <Col xs={12} sm={6} lg={3}>
-          <DashboardCard>
-            <Row>
-              <Col>
-                <FaChartLine color="#DAA520" size="2rem" />
-              </Col>
-              <Col xs="auto">
-                <StatLabel>Revenue</StatLabel>
-                <StatNumber>Ksh{stats?.revenue.toLocaleString()}</StatNumber>
-                <span style={{ color: '#28A745' }}>
-                  <FaArrowUp /> {stats?.revenueChange}%
-                </span>
-              </Col>
-            </Row>
-          </DashboardCard>
-        </Col>
-        {/* Add more Stat Cards */}
-      </Row>
-      <Row className="mb-4">
-        <Col xs={12} lg={8}>
-          <DashboardCard className="h-100">
-            <h5 className="mb-4">Revenue Overview</h5>
-            {/* Add Chart */}
-          </DashboardCard>
-        </Col>
-        <Col xs={12} lg={4}>
-          <DashboardCard className="h-100">
-            <h5 className="mb-4">Recent Activity</h5>
-            {/* Activity Feed */}
-          </DashboardCard>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12}>
-          <DashboardCard>
-            <h5 className="mb-4">Recent Orders</h5>
-            <Table responsive hover>
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                  <th>Amount</th>
-                  <th>Actions</th>
+    {/* Dashboard Header */}
+    <h2 className="mb-4">Dashboard Overview</h2>
+  
+    {/* Row for Statistics Cards */}
+    <Row className="g-4 mb-4">
+      <Col xs={12} sm={6} lg={3}>
+        {/* Revenue Stat Card */}
+        <DashboardCard>
+          <Row>
+            {/* Icon Section */}
+            <Col>
+              <FaChartLine color="#DAA520" size="2rem" />
+            </Col>
+            {/* Statistic Section */}
+            <Col xs="auto">
+              <StatLabel>Revenue</StatLabel>
+              <StatNumber>Ksh{stats?.revenue.toLocaleString()}</StatNumber>
+              <span style={{ color: '#28A745' }}>
+                <FaArrowUp /> {stats?.revenueChange}%
+              </span>
+            </Col>
+          </Row>
+        </DashboardCard>
+      </Col>
+      {/* Add more Stat Cards here for other metrics like Orders, Customers, etc. */}
+    </Row>
+  
+    {/* Row for Revenue Overview Chart and Recent Activity */}
+    <Row className="mb-4">
+      {/* Revenue Overview Section */}
+      <Col xs={12} lg={8}>
+        <DashboardCard className="h-100">
+          <h5 className="mb-4">Revenue Overview</h5>
+          {/* Placeholder for Revenue Chart */}
+        </DashboardCard>
+      </Col>
+  
+      {/* Recent Activity Section */}
+      <Col xs={12} lg={4}>
+        <DashboardCard className="h-100">
+          <h5 className="mb-4">Recent Activity</h5>
+          {/* Placeholder for Activity Feed */}
+        </DashboardCard>
+      </Col>
+    </Row>
+  
+    {/* Row for Recent Orders Table */}
+    <Row>
+      <Col xs={12}>
+        <DashboardCard>
+          <h5 className="mb-4">Recent Orders</h5>
+          {/* Responsive Table for Orders */}
+          <Table responsive hover>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Map through recent orders to display them in the table */}
+              {recentOrders.map(order => (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+                  <td>{order.customer}</td>
+                  <td>{order.date}</td>
+                  <td>{order.status}</td>
+                  <td>{order.amount}</td>
+                  <td>
+                    {/* Action Button to View Order Details */}
+                    <Button variant="outline-primary" size="sm">View</Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {recentOrders.map(order => (
-                  <tr key={order.id}>
-                    <td>{order.id}</td>
-                    <td>{order.customer}</td>
-                    <td>{order.date}</td>
-                    <td>{order.status}</td>
-                    <td>{order.amount}</td>
-                    <td>
-                      <Button variant="outline-primary" size="sm">View</Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </DashboardCard>
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+              ))}
+            </tbody>
+          </Table>
+        </DashboardCard>
+      </Col>
+    </Row>
+  </Container>
+  )
+}  
 
 export default Dashboard;
 

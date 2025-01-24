@@ -167,7 +167,7 @@ const Inventory = () => {
                                             variant="danger"
                                             onClick={() => handleDelete(part._id)}
                                         >
-                                            <FaTrash /> Delete
+                                            <FaTrash/> Delete
                                         </ActionButton>
                                     </td>
                                 </tr>
