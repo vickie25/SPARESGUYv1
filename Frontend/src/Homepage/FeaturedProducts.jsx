@@ -82,9 +82,9 @@ const FeaturedProducts = () => {
   }, []);
 
   useEffect(() => {
+    const endDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
     const interval = setInterval(() => {
       const now = new Date();
-      const endDate = new Date('2024-12-31T23:59:59');
       const timeDifference = endDate - now;
 
       if (timeDifference <= 0) {

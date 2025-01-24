@@ -1,14 +1,5 @@
-import React, { useState, useContext } from 'react';
-import {
-  Navbar,
-  Nav,
-  Container,
-  Form,
-  InputGroup,
-  Badge,
-  Button,
-  Offcanvas
-} from 'react-bootstrap';
+import React, { useState, useContext, useEffect } from 'react';
+import { Navbar, Nav, Container, Form, InputGroup, Badge, Button, Offcanvas } from 'react-bootstrap';
 import { FaBars, FaRegHeart, FaRegUser, FaSearch } from 'react-icons/fa';
 import { BsCart3 } from 'react-icons/bs';
 import { MdOutlineNotificationsNone } from "react-icons/md";
@@ -20,9 +11,18 @@ import CartDropdown from '../Pages/CartDropdown';
 const Header = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null); // State to store logged-in user details
   const { searchQuery, setSearchQuery } = useContext(SearchContext);
   const { cart } = useCart();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Retrieve user data from localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setLoggedInUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleWishlistClick = () => {
     navigate('/UserProf', { state: { section: 'wishlist' } });
@@ -37,6 +37,12 @@ const Header = () => {
   };
 
   const toggleDropdown = () => setIsDropdownVisible(!isDropdownVisible);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Clear user data from storage
+    setLoggedInUser(null); // Reset logged-in user state
+    navigate('/login');
+  };
 
   // Close dropdown when clicking outside
   const handleClickOutside = (event) => {
@@ -73,7 +79,12 @@ const Header = () => {
       >
         <Container fluid>
           <Navbar.Brand as={Link} to="/" className="fw-bold fs-4" style={{ color: '#FFFFFF' }}>
-            LOGO
+            <img
+              src="../../public/SparesGuyLogo.png" // Replace with the actual path to your logo
+              alt="Spares Guy Logo"
+              class="img-fluid" // Add this class for responsiveness
+              style={{ height: '40px', width: 'auto' }} // Adjust height and width as needed
+            />
           </Navbar.Brand>
 
           <div className="d-flex align-items-center gap-3 d-lg-none">
@@ -187,24 +198,40 @@ const Header = () => {
                   <MdOutlineNotificationsNone size={24} />
                 </Button>
 
-                <Nav.Link
-                  as={Link}
-                  to="/UserProf"
-                  className="p-1"
-                  style={{ color: '#FFFFFF' }}
-                >
-                  <FaRegUser size={22} />
-                </Nav.Link>
+                <Nav className="justify-content-end align-items-center gap-3">
 
-                <Nav.Link
-                  as={Link}
-                  to="/login"
-                  className="btn rounded-pill px-4"
-                  style={{ backgroundColor: '#DAA520', color: '#FFFFFF' }}
-                >
-                  Login
-                </Nav.Link>
+                  {loggedInUser ? (
+                    <>
+                      <Nav.Link
+                        as={Link}
+                        to="/UserProf"
+                        className="p-1"
+                        style={{ color: '#FFFFFF' }}
+                      >
+                        Welcome, {loggedInUser.name} {/* Display logged-in user name */}
+                      </Nav.Link>
+                      <Button
+                        variant="link"
+                        onClick={handleLogout}
+                        className="btn rounded-pill px-4"
+                        style={{ backgroundColor: '#DAA520', color: '#FFFFFF' }}
+                      >
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <Nav.Link
+                      as={Link}
+                      to="/login"
+                      className="btn rounded-pill px-4"
+                      style={{ backgroundColor: '#DAA520', color: '#FFFFFF' }}
+                    >
+                      Login
+                    </Nav.Link>
+                  )}
+                </Nav>
               </Nav>
+
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>
