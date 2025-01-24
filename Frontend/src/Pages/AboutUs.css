@@ -1,0 +1,95 @@
+body {
+    background-color: white; /* Set background color to white */
+  }
+  
+  .Team {
+    padding: 20px;
+  }
+  
+  .team-member {
+    position: relative;
+    cursor: pointer;
+    margin: 20px;
+    text-align: center;
+    transition: transform 0.3s; /* Smooth scaling effect on hover */
+  }
+  
+  .team-member:hover {
+    transform: scale(1.05); /* Slightly enlarge the member on hover */
+  }
+  
+  .member-details {
+    background-color: white; /* Background for member details */
+    padding: 10px;
+    border: 1px solid #DAA520; /* Border color matching your theme */
+    position: absolute;
+    bottom: -70px; /* Position it below the team member */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px; /* Set a width for the details */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow effect */
+    z-index: 10; /* Ensure it appears above other elements */
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth transition */
+  }
+  
+  .team-member:hover .member-details {
+    opacity: 1; /* Show details on hover */
+    visibility: visible; /* Make it visible */
+  }
+  .statistics-content {
+    display: flex;
+    justify-content: center; /* Center the content */
+    opacity: 0; /* Start hidden for fade-in effect */
+    animation: fadeIn 1s forwards; /* Fade-in animation */
+  }
+  
+  .container {
+    display: flex; /* Align items horizontally */
+    justify-content: space-between; /* Space out image and text */
+    width: 100%; /* Full width */
+  }
+  
+  .image-section {
+    flex: 1; /* Allow the image section to take equal space */
+    animation: slideInLeft 1s forwards; /* Slide in from left */
+  }
+  
+  .text-section {
+    flex: 1; /* Allow the text section to take equal space */
+    animation: slideInRight 1s forwards; /* Slide in from right */
+    opacity: 0; /* Start hidden for fade-in effect */
+    animation-delay: 0.5s; /* Delay animation for text */
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%); /* Start from the left */
+      opacity: 0; /* Start hidden */
+    }
+    to {
+      transform: translateX(0); /* End at the original position */
+      opacity: 1; /* Fully visible */
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%); /* Start from the right */
+      opacity: 0; /* Start hidden */
+    }
+    to {
+      transform: translateX(0); /* End at the original position */
+      opacity: 1; /* Fully visible */
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0; /* Start hidden */
+    }
+    to {
+      opacity: 1; /* Fully visible */
+    }
+  }
