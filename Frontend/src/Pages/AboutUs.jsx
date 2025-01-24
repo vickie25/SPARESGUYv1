@@ -33,21 +33,21 @@ const AboutUs = () => {
 
 
 
-      <div className="statistics-content">
-        <div className="container">
-          <div className="image-section">
-            <img src={overview} alt="Overview" />
-          </div>
-          <div className="text-section">
-            <p>My Spares Guy is a trusted provider of high-quality car spare parts, dedicated to helping customers keep their vehicles running smoothly and efficiently. With a deep understanding of the automotive industry, we specialize in offering a wide range of spare parts for all major car brands and models.</p>
-          </div>
-          <div className="stat-item">
-            <p><span className="black">3 </span><br /><span className="yellow">Years Market <br /> Lead</span></p><br />
-            <p><span className="black">34K+</span> <br /> <span className="yellow">Product Delivery <br />In The World</span></p><br />
-            <p><span className="black">34K+ <br /></span> <span className="yellow">Satisfied <br /> Customers </span></p>
-          </div>
-        </div>
-      </div>
+<div className="statistics-content">
+  <div className="container">
+    <div className="image-section slide-in-image">
+      <img src={overview} alt="Overview" />
+    </div>
+    <div className="text-section slide-in-text">
+      <p>My Spares Guy is a trusted provider of high-quality car spare parts, dedicated to helping customers keep their vehicles running smoothly and efficiently...</p>
+    </div>
+    <div className="stat-item">
+      <p><span className="black">3+ </span><br /><span className="yellow">Years Market Lead</span></p><br />
+      <p><span className="black">34K+</span> <br /> <span className="yellow">Product Delivery <br />In The World</span></p><br/>
+      <p><span className="black">34K+ <br /></span> <span className="yellow">Satisfied <br /> Customers </span></p>
+    </div>
+  </div>
+</div>
       <div className="Team">
         <h2 className="teamh">Meet Our Team</h2>
         <div className="team-member" onClick={() => handleClick('David')}>
