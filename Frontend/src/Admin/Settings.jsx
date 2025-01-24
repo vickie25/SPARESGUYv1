@@ -40,7 +40,7 @@ const Settings = () => {
       <h2>Admin Settings</h2>
       <Tabs defaultActiveKey="general" id="settings-tabs" className="mb-3">
         {/* General Settings */}
-        <Tab eventKey="general" title="General" tabClassName="custom-tab">
+        <Tab eventKey="general" title={<span style={{ backgroundColor: "goldenrod", padding: "5px 10px", borderRadius: "5px" }}>General</span>} tabClassName="custom-tab">
           <Card>
             <Card.Body>
             <h5 style={{ backgroundColor: "#DAA520", color: "white", padding: "10px", borderRadius: "5px" }}>
@@ -96,30 +96,31 @@ const Settings = () => {
                     }
                   />
                 </Form.Group>
-                <Button onClick={() => handleSave("General Settings")}>Save Changes</Button>
+                <Button onClick={() => handleSave("General Settings")} style={{backgroundColor: "goldenrod", borderColor: "goldenrod", color: "white", padding: "10px 20px" }}>Save Changes</Button>
               </Form>
             </Card.Body>
           </Card>
         </Tab>
 
         {/* User Management */}
-        <Tab eventKey="users" title="User Management">
+        <Tab eventKey="users" title={<span style={{ color:"black", backgroundColor: "goldenrod", padding: "5px 10px", borderRadius: "5px" }}>User Management</span>} tabClassName="custom-tab">
           <Card>
             <Card.Body>
             <h5 style={{ backgroundColor: "#DAA520", color: "white", padding: "10px", borderRadius: "5px" }}>
       User Management
     </h5>
               <Form>
-                <Form.Check
+                <Form.Check 
                   type="switch"
                   id="allow-registration"
                   label="Allow User Registration"
                   checked={userSettings.allowUserRegistration}
-                  onChange={() =>
+                  onChange={() => 
                     setUserSettings({
                       ...userSettings,
                       allowUserRegistration: !userSettings.allowUserRegistration,
                     })
+            
                   }
                 />
                 <Form.Check
@@ -134,14 +135,14 @@ const Settings = () => {
                     })
                   }
                 />
-                <Button onClick={() => handleSave("User Management")}>Save Changes</Button>
+                <Button onClick={() => handleSave("User Management")} style={{backgroundColor: "goldenrod", borderColor: "goldenrod", color: "white", padding: "10px 20px" }}>Save Changes</Button>
               </Form>
             </Card.Body>
           </Card>
         </Tab>
 
         {/* Product & Inventory */}
-        <Tab eventKey="inventory" title="Inventory">
+        <Tab eventKey="inventory" title={<span style={{ color:"black", backgroundColor: "goldenrod", padding: "5px 10px", borderRadius: "5px" }}>Inventory</span>}>
           <Card>
             <Card.Body>
             <h5 style={{ backgroundColor: "#DAA520", color: "white", padding: "10px", borderRadius: "5px" }}>
@@ -174,14 +175,14 @@ const Settings = () => {
                     }
                   />
                 </Form.Group>
-                <Button onClick={() => handleSave("Inventory Settings")}>Save Changes</Button>
+                <Button onClick={() => handleSave("Inventory Settings")} style={{backgroundColor: "goldenrod", borderColor: "goldenrod", color: "white", padding: "10px 20px" }}>Save Changes</Button>
               </Form>
             </Card.Body>
           </Card>
         </Tab>
 
         {/* Payment & Orders */}
-        <Tab eventKey="payment" title="Payment & Orders">
+        <Tab eventKey="payment"title={<span style={{ color:"black", backgroundColor: "goldenrod", padding: "5px 10px", borderRadius: "5px" }}>Payment $ Orders</span>}>
           <Card>
             <Card.Body>
             <h5 style={{ backgroundColor: "#DAA520", color: "white", padding: "10px", borderRadius: "5px" }}>
@@ -224,16 +225,20 @@ const Settings = () => {
                         cancellationPolicy: e.target.value,
                       })
                     }
+                    className="custom-toggle" 
+                    style={{
+                      '--bs-form-switch-color': userSettings.allowUserRegistration ? 'goldenrod' : '',
+                    }}
                   />
                 </Form.Group>
-                <Button onClick={() => handleSave("Payment & Orders")}>Save Changes</Button>
+                <Button onClick={() => handleSave("Payment & Orders")} style={{backgroundColor: "goldenrod", borderColor: "goldenrod", color: "white", padding: "10px 20px" }} >Save Changes</Button>
               </Form>
             </Card.Body>
           </Card>
         </Tab>
 
         {/* Notifications */}
-        <Tab eventKey="notifications" title="Notifications">
+        <Tab eventKey="notifications" title={<span style={{ color:"black", backgroundColor: "goldenrod", padding: "5px 10px", borderRadius: "5px" }}>Notificatio</span>}>
           <Card>
             <Card.Body>
             <h5 style={{ backgroundColor: "#DAA520", color: "white", padding: "10px", borderRadius: "5px" }}>
@@ -264,7 +269,8 @@ const Settings = () => {
                     })
                   }
                 />
-                <Button onClick={() => handleSave("Notifications")}>Save Changes</Button>
+                <Button onClick={() => handleSave("Notifications")} style={{backgroundColor: "goldenrod", borderColor: "goldenrod", color: "white", padding: "10px 20px" }}
+  >Save Changes</Button>
               </Form>
             </Card.Body>
           </Card>
@@ -275,3 +281,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
