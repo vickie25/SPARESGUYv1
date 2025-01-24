@@ -17,4 +17,6 @@ discountSchema.methods.isValid = function () {
     return this.isActive && currentDate < this.expirationDate && this.timesUsed < this.maxUsage;
 };
 
-module.exports = mongoose.model('Discount', discountSchema);
+// module.exports = mongoose.model('Discount', discountSchema);
+
+export default discountSchema;

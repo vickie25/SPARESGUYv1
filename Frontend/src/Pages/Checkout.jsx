@@ -4,43 +4,33 @@ import Header from '../Homepage/Header';
 import Footer from '../Homepage/Footer';
 import { useCart } from '../context/CartContext.jsx';
 import { useNavigate } from 'react-router-dom';
-import { useCreateOrderMutation } from '../slices/OrderApiSlice.js';
+import { useCreateOrderMutation } from '../slices/orderApiSlice.js';
 
 const Checkout = () => {
-    const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, calculateGrandTotal } = useCart();
+    const { cart, updateCartItemQuantity, removeFromCart, calculateSubtotal, discount, setDiscount, calculateGrandTotal } = useCart();
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
     const [discountCode, setDiscountCode] = useState('');
     const [discountError, setDiscountError] = useState('');
+    const [createOrder] = useCreateOrderMutation();
 
     // Fetch user info from localStorage
     useEffect(() => {
         const storedUserInfo = localStorage.getItem('userInfo');
-        console.log('Stored User Info:', storedUserInfo);
         if (storedUserInfo) {
             setUserInfo(JSON.parse(storedUserInfo));
         }
     }, []);
 
-    const [createOrder] = useCreateOrderMutation();
-
     const applyDiscount = () => {
         if (discountCode === 'SAVE35') {
+            const discountAmount = calculateSubtotal() * 0.35;
+            setDiscount({ code: discountCode, amount: discountAmount });
             setDiscountError('');
         } else {
             setDiscountError('Invalid discount code');
+            setDiscount({ code: '', amount: 0 });
         }
-    };
-
-    const handleProceedToCheckout = () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty. Add items to proceed.');
-            return;
-        }
-
-        console.log('Proceeding to checkout...');
-        // Navigate to the checkout page (if needed) or trigger order logic
-        handleCreateOrder();
     };
 
     const handleCreateOrder = async () => {
@@ -56,14 +46,14 @@ const Checkout = () => {
             if (!totalAmount || totalAmount <= 0) {
                 return alert('Invalid total amount. Please review your cart.');
             }
+
             const customerId = userInfo._id;
-            console.log(customerId, "customer Id")
             // Prepare the data for the order
             const orderData = {
                 customerId,
                 cartItems: cart,
                 totalAmount,
-                discountApplied: discountCode === 'SAVE35' ? 35 : 0, // Discount logic
+                discountApplied: discount.amount, // Pass the applied discount
             };
 
             // Use the createOrder mutation
@@ -71,17 +61,12 @@ const Checkout = () => {
 
             // If order creation is successful, redirect to payment page
             if (res) {
-                console.log('Order created successfully:', res);
                 const orderId = res._id; // Extract order ID from response
-
-                // Redirect user to Payment Page with Order ID
                 navigate(`/payment/${orderId}`);
             } else {
-                console.error('Order creation failed:', res);
                 alert('Failed to place the order. Please try again.');
             }
         } catch (error) {
-            console.error('Error creating order:', error);
             alert('An error occurred while placing the order.');
         }
     };
@@ -137,10 +122,7 @@ const Checkout = () => {
                         <h4>Discount Applied: <strong>Ksh{discount.amount.toFixed(2)}</strong></h4>
                         <h4>Grand Total: <strong>Ksh{calculateGrandTotal().toFixed(2)}</strong></h4>
 
-                        {/* Place Order Button */}
-                        <button className="btn btn-success mt-3 me-2" onClick={handleCreateOrder}>Place Order</button>
-
-                        <button className="btn btn-dark mt-3" onClick={handleProceedToCheckout}>Proceed to Checkout</button>
+                        <button className="btn btn-success mt-3" onClick={handleCreateOrder}>Place Order</button>
                     </div>
                 </div>
             </div>

@@ -34,11 +34,13 @@ import Customers from './Admin/Customer.jsx';
 import Order from './Admin/Order.jsx';
 import Categories from './Admin/Categories.jsx';
 import Reports from './Admin/Reports.jsx';
+import AdminHeader from './Admin/AdminHeader.jsx';
 import Logout from './Admin/Logout.jsx';
 // import settings from ;
 import Notification from './Admin/Header/Notification.jsx';
 import Success from './Pages/Success.jsx';
-
+import Discount from './Pages/Discount.jsx';
+const clientId = '881796254664-fc8l2k6pvsa02fe1fql5jqdjrihnpbvm.apps.googleusercontent.com';
 const routes = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<App />}>
     <Route index element={<Homepage />} />
@@ -70,9 +72,11 @@ const routes = createBrowserRouter(createRoutesFromElements(
       <Route path="customers" element={<Customers />} />
       <Route path="orders" element={<Order />} />
       <Route path="categories" element={<Categories />} />
+      <Route path="discount" element={<Discount />} />
       <Route path="reports" element={<Reports />} />
       <Route path="header/notification" element={<Notification />} />
     </Route>
+     <Route path="Admin/AdminHeader" element={<AdminHeader />} />
     <Route path="logout" element={<Logout />} />
   </Route>
 ));
@@ -80,6 +84,7 @@ const routes = createBrowserRouter(createRoutesFromElements(
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
+      
       <Provider store={store}>
         <CartProvider>
           <SearchProvider>
@@ -88,5 +93,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </CartProvider>
       </Provider>
     </HelmetProvider>
+    <App />
   </React.StrictMode>
 );

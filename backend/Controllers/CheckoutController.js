@@ -8,6 +8,20 @@ export const createOrder = async (req, res) => {
 
         // Calculate the total amount from cart items
         const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        //checking if the discount is applied
+        if (discountCode) {
+            const discount = await discount.findOne({ code: discount });
+            if (discount && discount.isValid()) {
+                if (discount.type === 'percentage') {
+                    totalAmount -= (totalAmount * discount.value) / 100;
+                }
+                else if (discount.type === 'fixed') {
+                    totalAmount -= discount.value;
+                }
+                discount.timeUsed += 1;
+                await discount.save();
+                }
+            }
 
         const newOrder = new Order({
             customerId,
