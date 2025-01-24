@@ -121,11 +121,15 @@ const CategoriesPage = () => {
         <Col>
           {/* Page title */}
           <PageTitle>Manage Categories</PageTitle>
+
           {/* Button to open modal for adding a new category */}
           <Button variant="success" onClick={() => { 
             setNewCategory({ name: '', description: '', status: 'Active', imageUrl: '' }); 
             setShowModal(true); 
           }}>
+
+          <Button variant="success" style={{ backgroundColor: "goldenrod", borderColor: "goldenrod" }}  onClick={() => { setNewCategory({ name: '', description: '', status: 'Active', imageUrl: '' }); setShowModal(true); }}>
+
             <FaPlus /> Add New Category
           </Button>
           {/* Table to display categories */}
@@ -190,8 +194,12 @@ const CategoriesPage = () => {
                   <Form.Control type="file" onChange={handleImageChange} />
                 </Form.Group>
 
+
                 {/* Submit button */}
                 <Button variant="primary" type="submit">
+
+                <Button variant="primary" type="submit" style={{ backgroundColor: "goldenrod", borderColor: "goldenrod" }}>
+
                   {currentCategory ? 'Save Changes' : 'Add Category'}
                 </Button>
               </Form>

@@ -1,5 +1,10 @@
 
 import express from 'express';
+
+import mongoose from 'mongoose';
+import passport from 'passport';
+import googleAuth from './routes/googleAuth.js'; // Importing the Google authentication route
+
 import connectDB from './Config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import cors from 'cors';
@@ -18,20 +23,36 @@ import contactRoutes from './routes/contactRoutes.js';
 import deliveryScheRoutes from './routes/deliveryScheRoutes.js';
 import { requireAdmin } from './Middleware/roleMiddleware.js';
 import NotificationRoutes from './routes/NotificationRoutes.js';
+
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 
-dotenv.config();
+import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
+
 
 
 const app = express();
+
+// Log Google Client ID and Secret for debugging
+console.log("Google Client ID:", process.env.GOOGLE_CLIENT_ID);
+console.log("Google Client Secret:", process.env.GOOGLE_CLIENT_SECRET);
+
+// Middleware
+app.use(express.json());
+app.use(passport.initialize());
+
 const PORT = process.env.PORT || 8000;
 
 
 // Middleware
+
 app.use(cors()); // Enable CORS for all routes
 app.use(bodyParser.json());
 app.use(cookieParser()); // To parse cookies from the request
@@ -123,4 +144,16 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
+
+// Use the Google authentication route
+app.use('/api', googleAuth);
+
+// Connect to MongoDB and start the server
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        app.listen(process.env.PORT, () => {
+            console.log(`Server running on port ${process.env.PORT}`);
+        });
+    })
+    .catch(err => console.error(err));
 
