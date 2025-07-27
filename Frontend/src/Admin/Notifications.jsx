@@ -115,10 +115,10 @@ const Notifications = () => {
                         </Col>
                         <Col xs="auto">
                             <ActionButton
-                                className="primary-button"
+                                className="primary-button" style={{backgroundColor: "goldenrod", borderColor: "goldenrod"}}
                                 onClick={() => handleShow()}
                             >
-                                <FaPlus /> Add Notification
+                                <FaPlus /> <span style={{backgroundColor: "goldenrod", borderColor: "goldenrod"}}>Add Notification</span> 
                             </ActionButton>
                         </Col>
                     </Row>
@@ -162,22 +162,22 @@ const Notifications = () => {
                     </StyledTable>
 
                     {/* Pagination */}
-                    <div className="d-flex justify-content-center">
-                        <Pagination>
-                            <Pagination.First onClick={() => paginate(1)} />
+                    <div className="d-flex justify-content-center" >
+                        <Pagination style={{backgroundColor: "goldenrod", borderColor: "goldenrod"}}>
+                            <Pagination.First  onClick={() => paginate(1)} />
                             <Pagination.Prev
                                 onClick={() => paginate(Math.max(1, currentPage - 1))}
                             />
                             {[...Array(Math.ceil(notifications.length / itemsPerPage))].map((_, index) => (
                                 <Pagination.Item
                                     key={index + 1}
-                                    active={index + 1 === currentPage}
+                                    active={index + 1 === currentPage} 
                                     onClick={() => paginate(index + 1)}
                                 >
                                     {index + 1}
                                 </Pagination.Item>
                             ))}
-                            <Pagination.Next
+                            <Pagination.Next 
                                 onClick={() => paginate(Math.min(
                                     Math.ceil(notifications.length / itemsPerPage),
                                     currentPage + 1

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom"; // To get productId from the URL
 
-const  RelatedProducts = () => {
+const RelatedProducts = () => {
   const { productId } = useParams(); // Get productId from the URL
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [error, setError] = useState("");
@@ -16,40 +16,31 @@ const  RelatedProducts = () => {
 
     // Fetch related products from the backend
     axios
-      .get(`http://localhost:8000/api/products/related/${productId}`)
+      .get(`/related/${productId}`)
       .then((response) => {
-        if (response.data.length === 0) {
-          setError("No related products found.");
-        } else {
-          setRelatedProducts(response.data);
-        }
+        setRelatedProducts(response.data);
       })
-      .catch((err) => {
-        console.error(err);
+      .catch((error) => {
         setError("Failed to fetch related products.");
       });
   }, [productId]);
 
+  if (error) {
+    return <div className="alert alert-danger">{error}</div>;
+  }
+
   return (
-    <div className="mt-4">
-      <h5>Related Products</h5>
-      {error && <p className="text-danger">{error}</p>}
-      <Row>
-        {relatedProducts.map((product) => (
-          <Col key={product._id} md={3}>
-            <div className="product-card">
-              <img
-                src={`http://localhost:8000${product.imageUrl}`} // Assuming `imageUrl` is correct
-                alt={product.name}
-                className="img-fluid"
-              />
-              <h6>{product.name}</h6>
-              <p>Ksh {product.price}</p>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </div>
+    <Row>
+      {relatedProducts.map((product) => (
+        <Col key={product.id} md={4}>
+          <div className="product-card">
+            <img src={product.image} alt={product.name} className="img-fluid" />
+            <h5>{product.name}</h5>
+            <p>{product.price}</p>
+          </div>
+        </Col>
+      ))}
+    </Row>
   );
 };
 
